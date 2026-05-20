@@ -1,1 +1,402 @@
-a{text-decoration-thickness:1px!important;text-underline-offset:.1em}:where(.wp-site-blocks :focus){outline-style:solid;outline-width:2px}.wp-block-navigation .wp-block-navigation-submenu .wp-block-navigation-item:not(:last-child){margin-bottom:3px}.wp-block-navigation .wp-block-navigation-item .wp-block-navigation-item__content{outline-offset:4px}.wp-block-navigation .wp-block-navigation-item ul.wp-block-navigation__submenu-container .wp-block-navigation-item__content{outline-offset:0}blockquote,caption,figcaption,h1,h2,h3,h4,h5,h6,p{text-wrap:pretty}.more-link{display:block}:where(pre){overflow-x:auto}.impro-home{display:grid;min-height:100svh;margin-top:0!important;overflow:hidden;place-items:center;padding:clamp(24px,5vw,72px)!important}.impro-sun{position:relative;display:grid;width:min(88vw,760px);aspect-ratio:1;margin:0 auto;place-items:center}.impro-home-logo{position:absolute;z-index:2;top:50%;left:50%;margin:0;transform:translate(-50%,-50%)}.impro-home-logo img{width:clamp(138px,24vw,240px);height:auto;border-radius:999px;box-shadow:0 18px 50px color-mix(in srgb,var(--wp--preset--color--contrast) 20%,transparent)}.impro-sun-nav{position:absolute;inset:0;margin:0!important}.impro-sun-nav .wp-block-navigation__container{position:absolute;inset:0;display:block;width:100%;height:100%;margin:0;padding:0}.impro-sun-nav .wp-block-navigation-item{position:absolute;top:50%;left:50%;margin:0!important;transform:rotate(var(--impro-angle)) translateX(clamp(130px,25vw,280px));transform-origin:0 50%}.impro-sun-nav .wp-block-navigation-item:nth-child(1){--impro-angle:-82deg}.impro-sun-nav .wp-block-navigation-item:nth-child(2){--impro-angle:-30deg}.impro-sun-nav .wp-block-navigation-item:nth-child(3){--impro-angle:24deg}.impro-sun-nav .wp-block-navigation-item:nth-child(4){--impro-angle:76deg}.impro-sun-nav .wp-block-navigation-item:nth-child(5){--impro-angle:148deg}.impro-sun-nav .wp-block-navigation-item:nth-child(6){--impro-angle:212deg}.impro-sun-nav .wp-block-navigation-item__content{display:inline-flex;align-items:center;min-height:2.7rem;padding:.3rem .9rem;border:1px solid currentColor;border-radius:999px;background:var(--wp--preset--color--base);box-shadow:0 10px 25px color-mix(in srgb,var(--wp--preset--color--contrast) 12%,transparent);font-size:clamp(.78rem,1.7vw,1rem);font-weight:700;line-height:1;text-decoration:none!important;white-space:nowrap}.impro-sun-nav .wp-block-navigation-item__content:hover{background:var(--wp--preset--color--accent-1)}@media (max-width:700px){.impro-sun{width:min(94vw,430px)}.impro-home-logo img{width:clamp(112px,34vw,150px)}.impro-sun-nav .wp-block-navigation-item{transform:rotate(var(--impro-angle)) translateX(clamp(100px,34vw,150px))}.impro-sun-nav .wp-block-navigation-item__content{min-height:2.25rem;padding:.25rem .65rem}}
+/*
+Theme Name: Impro C'est Tout
+Theme URI: https://github.com/myconcretelab/improcestout-wp-template
+Author: My Concrete Lab
+Author URI: https://github.com/myconcretelab
+Description: Custom WordPress block theme for Impro C'est Tout.
+Requires at least: 6.7
+Tested up to: 6.9
+Requires PHP: 7.2
+Version: 1.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: improcestout
+Tags: one-column, custom-colors, custom-menu, custom-logo, editor-style, featured-images, full-site-editing, block-patterns, rtl-language-support, sticky-post, threaded-comments, translation-ready, wide-blocks, block-styles, style-variations, accessibility-ready, blog, portfolio, news
+*/
+
+/*
+ * IMPORTANT: This file is only served on the frontend when `SCRIPT_DEBUG` is enabled;
+ * in most instances, the `style.min.css` file will be served. It is not recommended that you
+ * use the Theme File Editor to modify this stylesheet. Instead, add the necessary style
+ * overrides via "Additional CSS" in the Site Editor.
+ */
+
+/*
+ * Link styles
+ * https://github.com/WordPress/gutenberg/issues/42319
+ */
+a {
+	text-decoration-thickness: 1px !important;
+	text-underline-offset: .1em;
+}
+
+/* Focus styles */
+:where(.wp-site-blocks *:focus) {
+	outline-width: 2px;
+	outline-style: solid;
+}
+
+/* Increase the bottom margin on submenus, so that the outline is visible. */
+.wp-block-navigation .wp-block-navigation-submenu .wp-block-navigation-item:not(:last-child) {
+	margin-bottom: 3px;
+}
+
+/* Increase the outline offset on the parent menu items, so that the outline does not touch the text. */
+.wp-block-navigation .wp-block-navigation-item .wp-block-navigation-item__content {
+	outline-offset: 4px;
+}
+
+/* Remove outline offset from the submenus, otherwise the outline is visible outside the submenu container. */
+.wp-block-navigation .wp-block-navigation-item ul.wp-block-navigation__submenu-container .wp-block-navigation-item__content {
+	outline-offset: 0;
+}
+
+/*
+ * Progressive enhancement to reduce widows and orphans
+ * https://github.com/WordPress/gutenberg/issues/55190
+ */
+h1, h2, h3, h4, h5, h6, blockquote, caption, figcaption, p {
+	text-wrap: pretty;
+}
+
+/*
+ * Change the position of the more block on the front, by making it a block level element.
+ * https://github.com/WordPress/gutenberg/issues/65934
+*/
+.more-link {
+	display: block;
+}
+
+/*
+ * Prevents unnecessary scrollbars while handling long lines of preformatted text.
+ * https://core.trac.wordpress.org/ticket/63875
+ */
+:where(pre) {
+	overflow-x: auto;
+}
+
+:root {
+	--impro-ink: #1b0708;
+	--impro-brown: #54261f;
+	--impro-red: #e63258;
+	--impro-red-dark: #bd2144;
+	--impro-cream: #ffd9a4;
+	--impro-paper: #fff7e8;
+	--impro-blush: #f1b9aa;
+}
+
+body {
+	background:
+		radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--impro-red) 18%, transparent) 0 8%, transparent 22%),
+		radial-gradient(circle at 85% 18%, color-mix(in srgb, var(--impro-cream) 55%, transparent) 0 12%, transparent 32%),
+		linear-gradient(135deg, color-mix(in srgb, var(--impro-brown) 10%, transparent) 1px, transparent 1px),
+		var(--impro-paper);
+	background-size: auto, auto, 18px 18px, auto;
+	color: var(--impro-ink);
+}
+
+.wp-site-blocks {
+	min-height: 100vh;
+	background:
+		repeating-radial-gradient(circle at 50% 38%, transparent 0 46px, color-mix(in srgb, var(--impro-ink) 10%, transparent) 47px 48px, transparent 49px 82px),
+		linear-gradient(180deg, transparent, color-mix(in srgb, var(--impro-cream) 32%, transparent));
+}
+
+.impro-home {
+	display: grid;
+	min-height: 100svh;
+	margin-top: 0 !important;
+	overflow: hidden;
+	place-items: center;
+	padding: clamp(20px, 4vw, 54px) !important;
+}
+
+.impro-sun-stage {
+	position: relative;
+	width: min(92vw, 980px);
+	aspect-ratio: 1.1;
+}
+
+.impro-sun-orbit {
+	position: absolute;
+	inset: 8%;
+	border: clamp(12px, 1.8vw, 22px) solid var(--impro-ink);
+	border-radius: 50%;
+	background:
+		radial-gradient(circle, var(--impro-cream) 0 44%, transparent 45%),
+		repeating-conic-gradient(from -8deg, transparent 0 8deg, color-mix(in srgb, var(--impro-ink) 80%, transparent) 9deg 10deg, transparent 11deg 18deg);
+	box-shadow: 0 28px 80px color-mix(in srgb, var(--impro-ink) 22%, transparent);
+}
+
+.impro-sun-orbit::before {
+	position: absolute;
+	inset: -18px;
+	border-radius: 50%;
+	background: repeating-conic-gradient(var(--impro-red) 0 2deg, transparent 2deg 7deg);
+	content: "";
+	mask: radial-gradient(circle, transparent 0 76%, #000 77% 79%, transparent 80%);
+}
+
+.impro-sun-logo {
+	position: absolute;
+	z-index: 3;
+	top: 50%;
+	left: 50%;
+	width: clamp(180px, 26vw, 310px);
+	transform: translate(-50%, -50%) rotate(-3deg);
+}
+
+.impro-sun-logo .custom-logo-link,
+.impro-sun-logo img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.impro-sun-logo img {
+	filter: drop-shadow(0 20px 30px color-mix(in srgb, var(--impro-ink) 26%, transparent));
+}
+
+.impro-ray-nav {
+	position: absolute;
+	inset: 0;
+	z-index: 4;
+}
+
+.impro-ray-card {
+	position: absolute;
+	display: grid;
+	grid-template-columns: 78px minmax(0, 1fr);
+	gap: 12px;
+	align-items: center;
+	width: clamp(230px, 25vw, 315px);
+	min-height: 112px;
+	padding: 10px 14px 10px 10px;
+	border: 3px solid var(--impro-ink);
+	border-radius: 14px;
+	background: color-mix(in srgb, var(--impro-paper) 84%, white);
+	box-shadow: 8px 9px 0 var(--impro-ink);
+	color: var(--impro-ink);
+	text-decoration: none !important;
+	transform: rotate(var(--ray-rotation));
+	transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.impro-ray-card:hover {
+	background: var(--impro-cream);
+	box-shadow: 4px 5px 0 var(--impro-ink);
+	transform: rotate(var(--ray-rotation)) translate(4px, 4px);
+}
+
+.impro-ray-card--one {
+	--ray-rotation: -11deg;
+	top: 3%;
+	left: 36%;
+}
+
+.impro-ray-card--two {
+	--ray-rotation: 10deg;
+	top: 32%;
+	right: 0;
+}
+
+.impro-ray-card--three {
+	--ray-rotation: -6deg;
+	right: 20%;
+	bottom: 2%;
+}
+
+.impro-ray-card--four {
+	--ray-rotation: 8deg;
+	bottom: 25%;
+	left: 0;
+}
+
+.impro-ray-image {
+	display: block;
+	overflow: hidden;
+	width: 78px;
+	aspect-ratio: 1;
+	border: 2px solid var(--impro-ink);
+	border-radius: 50%;
+	background: var(--impro-red);
+}
+
+.impro-ray-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.impro-ray-copy {
+	display: grid;
+	gap: 5px;
+}
+
+.impro-ray-copy strong {
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: clamp(1rem, 1.8vw, 1.28rem);
+	font-weight: 700;
+	letter-spacing: 0;
+	text-transform: uppercase;
+}
+
+.impro-ray-copy em {
+	font-size: 0.82rem;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 1.22;
+}
+
+.impro-site-header {
+	position: sticky;
+	z-index: 20;
+	top: 0;
+	margin-top: 0 !important;
+	border-bottom: 3px solid var(--impro-ink);
+	background: color-mix(in srgb, var(--impro-paper) 92%, white);
+	box-shadow: 0 8px 0 color-mix(in srgb, var(--impro-red) 22%, transparent);
+}
+
+.impro-site-header__inner {
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+
+.impro-site-brand {
+	gap: 12px;
+}
+
+.impro-site-brand .wp-block-site-title {
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: clamp(1rem, 2.2vw, 1.35rem);
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.impro-site-brand .wp-block-site-title a,
+.impro-site-nav a {
+	text-decoration: none !important;
+}
+
+.impro-site-nav .wp-block-navigation-item__content {
+	padding: 0.35rem 0.65rem;
+	border-bottom: 2px solid transparent;
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: 0.88rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.impro-site-nav .wp-block-navigation-item__content:hover {
+	border-color: var(--impro-red);
+	color: var(--impro-red-dark);
+}
+
+.impro-page-main {
+	margin-top: 0 !important;
+	padding: clamp(48px, 7vw, 96px) var(--wp--style--root--padding-right) clamp(64px, 8vw, 120px) var(--wp--style--root--padding-left);
+}
+
+.impro-page-shell {
+	padding: clamp(28px, 5vw, 64px);
+	border: 3px solid var(--impro-ink);
+	border-radius: 18px;
+	background:
+		linear-gradient(135deg, transparent 0 92%, color-mix(in srgb, var(--impro-red) 28%, transparent) 92% 100%),
+		color-mix(in srgb, var(--impro-paper) 88%, white);
+	box-shadow: 12px 14px 0 var(--impro-ink);
+}
+
+.impro-page-shell .wp-block-post-featured-image img {
+	max-height: 420px;
+	border: 3px solid var(--impro-ink);
+	border-radius: 16px;
+	box-shadow: 8px 8px 0 var(--impro-red);
+	object-fit: cover;
+}
+
+.impro-page-shell h1 {
+	max-width: 920px;
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-weight: 700;
+	letter-spacing: 0;
+	text-transform: uppercase;
+}
+
+.impro-page-shell h2 {
+	margin-top: 1.6em;
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-weight: 700;
+	letter-spacing: 0;
+}
+
+.impro-page-shell p {
+	font-weight: 500;
+}
+
+.impro-site-footer {
+	margin-top: 0 !important;
+	border-top: 3px solid var(--impro-ink);
+	background: var(--impro-ink);
+	color: var(--impro-paper);
+}
+
+.impro-site-footer .wp-block-group {
+	padding-top: 22px;
+	padding-bottom: 22px;
+}
+
+@media (max-width: 760px) {
+	.impro-sun-stage {
+		width: min(94vw, 440px);
+		aspect-ratio: 0.72;
+	}
+
+	.impro-sun-orbit {
+		inset: 21% 4%;
+	}
+
+	.impro-sun-logo {
+		width: 160px;
+	}
+
+	.impro-ray-card {
+		grid-template-columns: 58px minmax(0, 1fr);
+		width: min(88vw, 330px);
+		min-height: 88px;
+		box-shadow: 5px 6px 0 var(--impro-ink);
+	}
+
+	.impro-ray-card--one {
+		top: 1%;
+		left: 2%;
+	}
+
+	.impro-ray-card--two {
+		top: 23%;
+		right: 0;
+	}
+
+	.impro-ray-card--three {
+		right: 3%;
+		bottom: 21%;
+	}
+
+	.impro-ray-card--four {
+		bottom: 0;
+		left: 0;
+	}
+
+	.impro-ray-image {
+		width: 58px;
+	}
+
+	.impro-ray-copy em {
+		font-size: 0.76rem;
+	}
+
+	.impro-site-header__inner {
+		gap: 10px;
+	}
+}

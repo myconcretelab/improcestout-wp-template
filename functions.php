@@ -164,3 +164,67 @@ if ( ! function_exists( 'improcestout_format_binding' ) ) :
 		}
 	}
 endif;
+
+if ( ! function_exists( 'improcestout_sun_navigation' ) ) :
+	/**
+	 * Outputs the home radial navigation.
+	 *
+	 * @return string
+	 */
+	function improcestout_sun_navigation() {
+		$items = array(
+			array(
+				'slug'    => 'spectacles',
+				'title'   => __( 'Spectacles', 'improcestout' ),
+				'text'    => __( 'Des formats courts, nerveux et collectifs pour faire surgir l\'histoire en direct.', 'improcestout' ),
+				'image'   => 13,
+				'variant' => 'one',
+			),
+			array(
+				'slug'    => 'ateliers',
+				'title'   => __( 'Ateliers', 'improcestout' ),
+				'text'    => __( 'Des exercices de jeu, d\'écoute et de lâcher prise pour entrer dans l\'impro.', 'improcestout' ),
+				'image'   => 12,
+				'variant' => 'two',
+			),
+			array(
+				'slug'    => 'stages',
+				'title'   => __( 'Stages', 'improcestout' ),
+				'text'    => __( 'Des immersions plus longues pour travailler le personnage, le rythme et le groupe.', 'improcestout' ),
+				'image'   => 10,
+				'variant' => 'three',
+			),
+			array(
+				'slug'    => 'agenda',
+				'title'   => __( 'Agenda', 'improcestout' ),
+				'text'    => __( 'Les prochaines dates, les rendez-vous publics et les occasions de nous rejoindre.', 'improcestout' ),
+				'image'   => 11,
+				'variant' => 'four',
+			),
+		);
+
+		$output  = '<div class="impro-sun-stage">';
+		$output .= '<div class="impro-sun-orbit" aria-hidden="true"></div>';
+		$output .= '<div class="impro-sun-logo">' . get_custom_logo() . '</div>';
+		$output .= '<nav class="impro-ray-nav" aria-label="' . esc_attr__( 'Navigation principale', 'improcestout' ) . '">';
+
+		foreach ( $items as $item ) {
+			$page = get_page_by_path( $item['slug'] );
+			$url  = $page ? get_permalink( $page ) : home_url( '/' . $item['slug'] . '/' );
+
+			$output .= sprintf(
+				'<a class="impro-ray-card impro-ray-card--%1$s" href="%2$s"><span class="impro-ray-image">%3$s</span><span class="impro-ray-copy"><strong>%4$s</strong><em>%5$s</em></span></a>',
+				esc_attr( $item['variant'] ),
+				esc_url( $url ),
+				wp_get_attachment_image( $item['image'], 'medium_large', false, array( 'loading' => 'eager' ) ),
+				esc_html( $item['title'] ),
+				esc_html( $item['text'] )
+			);
+		}
+
+		$output .= '</nav></div>';
+
+		return $output;
+	}
+endif;
+add_shortcode( 'impro_sun_navigation', 'improcestout_sun_navigation' );

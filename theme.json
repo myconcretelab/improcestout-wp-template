@@ -9,38 +9,38 @@
 			"defaultPalette": false,
 			"palette": [
 				{
-					"color": "#FFFFFF",
-					"name": "Base",
+					"color": "#FFF7E8",
+					"name": "Papier",
 					"slug": "base"
 				},
 				{
-					"color": "#111111",
-					"name": "Contrast",
+					"color": "#1B0708",
+					"name": "Encre brune",
 					"slug": "contrast"
 				},
 				{
-					"color": "#FFEE58",
-					"name": "Accent 1",
+					"color": "#E63258",
+					"name": "Masque rouge",
 					"slug": "accent-1"
 				},
 				{
-					"color": "#F6CFF4",
-					"name": "Accent 2",
+					"color": "#F1B9AA",
+					"name": "Rose museau",
 					"slug": "accent-2"
 				},
 				{
-					"color": "#503AA8",
-					"name": "Accent 3",
+					"color": "#54261F",
+					"name": "Bois scène",
 					"slug": "accent-3"
 				},
 				{
-					"color": "#686868",
-					"name": "Accent 4",
+					"color": "#B47A6D",
+					"name": "Pelage",
 					"slug": "accent-4"
 				},
 				{
-					"color": "#FBFAF3",
-					"name": "Accent 5",
+					"color": "#FFD9A4",
+					"name": "Projecteur crème",
 					"slug": "accent-5"
 				},
 				{
@@ -201,7 +201,7 @@
 			"fontFamily": "var:preset|font-family|manrope",
 			"fontSize": "var:preset|font-size|large",
 			"fontWeight": "300",
-			"letterSpacing": "-0.1px",
+			"letterSpacing": "0",
 			"lineHeight": "1.4"
 		},
 		"blocks": {
@@ -552,7 +552,7 @@
 			"core/site-title": {
 				"typography": {
 					"fontWeight": "700",
-					"letterSpacing": "-.5px"
+					"letterSpacing": "0"
 				},
 				"elements": {
 					"link": {
@@ -655,14 +655,14 @@
 			"h5": {
 				"typography": {
 					"fontSize": "var:preset|font-size|small",
-					"letterSpacing": "0.5px"
+					"letterSpacing": "0"
 				}
 			},
 			"h6": {
 				"typography": {
 					"fontSize": "var:preset|font-size|small",
 					"fontWeight": "700",
-					"letterSpacing": "1.4px",
+					"letterSpacing": "0",
 					"textTransform": "uppercase"
 				}
 			},
@@ -670,7 +670,7 @@
 				"typography": {
 					"fontWeight": "400",
 					"lineHeight": "1.125",
-					"letterSpacing": "-0.1px"
+					"letterSpacing": "0"
 				}
 			},
 			"link": {
