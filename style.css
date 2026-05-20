@@ -161,23 +161,23 @@ body {
 }
 
 .impro-sun-ray--one {
-	--ray-angle: -116deg;
-	--ray-length: clamp(250px, 32vw, 395px);
+	--ray-angle: -145deg;
+	--ray-length: clamp(260px, 33vw, 405px);
 }
 
 .impro-sun-ray--two {
-	--ray-angle: -57deg;
-	--ray-length: clamp(240px, 30vw, 370px);
+	--ray-angle: -35deg;
+	--ray-length: clamp(255px, 32vw, 395px);
 }
 
 .impro-sun-ray--three {
-	--ray-angle: 67deg;
-	--ray-length: clamp(235px, 28vw, 355px);
+	--ray-angle: 35deg;
+	--ray-length: clamp(250px, 31vw, 385px);
 }
 
 .impro-sun-ray--four {
-	--ray-angle: 122deg;
-	--ray-length: clamp(245px, 30vw, 375px);
+	--ray-angle: 145deg;
+	--ray-length: clamp(255px, 32vw, 395px);
 }
 
 .impro-ray-nav {
@@ -214,25 +214,25 @@ body {
 
 .impro-ray-card--one {
 	--card-rotation: -3deg;
-	top: 6%;
+	top: 13%;
 	left: 2%;
 }
 
 .impro-ray-card--two {
 	--card-rotation: 3deg;
-	top: 8%;
+	top: 13%;
 	right: 0;
 }
 
 .impro-ray-card--three {
 	--card-rotation: -2deg;
 	right: 5%;
-	bottom: 5%;
+	bottom: 13%;
 }
 
 .impro-ray-card--four {
 	--card-rotation: 2deg;
-	bottom: 9%;
+	bottom: 13%;
 	left: 0;
 }
 
