@@ -258,6 +258,13 @@ body {
 	box-shadow: 0 8px 0 color-mix(in srgb, var(--impro-red) 22%, transparent);
 }
 
+.impro-site-header::after {
+	display: block;
+	height: 6px;
+	background: repeating-linear-gradient(90deg, var(--impro-red) 0 8px, transparent 8px 18px);
+	content: "";
+}
+
 .impro-site-header__inner {
 	padding-top: 12px;
 	padding-bottom: 12px;
@@ -277,6 +284,47 @@ body {
 .impro-site-brand .wp-block-site-title a,
 .impro-site-nav a {
 	text-decoration: none !important;
+}
+
+.impro-nav-wrap {
+	gap: 18px;
+}
+
+.impro-ticket {
+	position: relative;
+	margin: 0;
+	padding: 0.45rem 0.72rem 0.42rem;
+	border: 2px solid var(--impro-ink);
+	background: var(--impro-red);
+	box-shadow: 4px 4px 0 var(--impro-ink);
+	color: var(--impro-paper);
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: 0.72rem;
+	font-weight: 700;
+	line-height: 1;
+	text-transform: uppercase;
+	transform: rotate(-4deg);
+}
+
+.impro-ticket::before,
+.impro-ticket::after {
+	position: absolute;
+	top: 50%;
+	width: 9px;
+	aspect-ratio: 1;
+	border: 2px solid var(--impro-ink);
+	border-radius: 50%;
+	background: var(--impro-paper);
+	content: "";
+	transform: translateY(-50%);
+}
+
+.impro-ticket::before {
+	left: -7px;
+}
+
+.impro-ticket::after {
+	right: -7px;
 }
 
 .impro-site-nav .wp-block-navigation-item__content {
@@ -398,5 +446,14 @@ body {
 
 	.impro-site-header__inner {
 		gap: 10px;
+	}
+
+	.impro-nav-wrap {
+		width: 100%;
+		justify-content: space-between;
+	}
+
+	.impro-ticket {
+		font-size: 0.66rem;
 	}
 }
