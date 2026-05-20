@@ -228,3 +228,47 @@ if ( ! function_exists( 'improcestout_sun_navigation' ) ) :
 	}
 endif;
 add_shortcode( 'impro_sun_navigation', 'improcestout_sun_navigation' );
+
+if ( ! function_exists( 'improcestout_mark_current_navigation_link' ) ) :
+	/**
+	 * Adds an active class to static navigation links matching the current URL.
+	 *
+	 * @param string $block_content Rendered block HTML.
+	 * @param array  $block         Parsed block data.
+	 * @return string
+	 */
+	function improcestout_mark_current_navigation_link( $block_content, $block ) {
+		if ( 'core/navigation-link' !== ( $block['blockName'] ?? '' ) || empty( $block['attrs']['url'] ) ) {
+			return $block_content;
+		}
+
+		$current_path = wp_parse_url( home_url( wp_unslash( $_SERVER['REQUEST_URI'] ?? '/' ) ), PHP_URL_PATH );
+		$target_path  = wp_parse_url( home_url( $block['attrs']['url'] ), PHP_URL_PATH );
+
+		$current_path = untrailingslashit( $current_path ?: '/' );
+		$target_path  = untrailingslashit( $target_path ?: '/' );
+
+		if ( '' === $current_path ) {
+			$current_path = '/';
+		}
+
+		if ( '' === $target_path ) {
+			$target_path = '/';
+		}
+
+		if ( $current_path !== $target_path ) {
+			return $block_content;
+		}
+
+		$processor = new WP_HTML_Tag_Processor( $block_content );
+
+		if ( $processor->next_tag( 'a' ) ) {
+			$processor->add_class( 'is-current-path' );
+			$processor->set_attribute( 'aria-current', 'page' );
+			return $processor->get_updated_html();
+		}
+
+		return $block_content;
+	}
+endif;
+add_filter( 'render_block', 'improcestout_mark_current_navigation_link', 10, 2 );
