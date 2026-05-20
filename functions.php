@@ -204,8 +204,12 @@ if ( ! function_exists( 'improcestout_sun_navigation' ) ) :
 		);
 
 		$output  = '<div class="impro-sun-stage">';
-		$output .= '<div class="impro-sun-orbit" aria-hidden="true"></div>';
-		$output .= '<div class="impro-sun-logo">' . get_custom_logo() . '</div>';
+		$output .= sprintf(
+			'<div class="impro-sun-logo"><a href="%1$s" aria-label="%2$s"><img src="%3$s" alt="%2$s"></a></div>',
+			esc_url( home_url( '/' ) ),
+			esc_attr( get_bloginfo( 'name' ) ),
+			esc_url( get_theme_file_uri( 'assets/images/impro-logo-transparent.png' ) )
+		);
 		$output .= '<nav class="impro-ray-nav" aria-label="' . esc_attr__( 'Navigation principale', 'improcestout' ) . '">';
 
 		foreach ( $items as $item ) {
