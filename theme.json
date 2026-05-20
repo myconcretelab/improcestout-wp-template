@@ -725,6 +725,11 @@
 	],
 	"customTemplates": [
 		{
+			"name": "home",
+			"postTypes": ["page"],
+			"title": "Home"
+		},
+		{
 			"name": "page-no-title",
 			"postTypes": ["page"],
 			"title": "Page No Title"
