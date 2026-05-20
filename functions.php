@@ -204,6 +204,7 @@ if ( ! function_exists( 'improcestout_sun_navigation' ) ) :
 		);
 
 		$output  = '<div class="impro-sun-stage">';
+		$output .= '<div class="impro-sun-rays" aria-hidden="true"><span class="impro-sun-ray impro-sun-ray--one"></span><span class="impro-sun-ray impro-sun-ray--two"></span><span class="impro-sun-ray impro-sun-ray--three"></span><span class="impro-sun-ray impro-sun-ray--four"></span></div>';
 		$output .= sprintf(
 			'<div class="impro-sun-logo"><a href="%1$s" aria-label="%2$s"><img src="%3$s" alt="%2$s"></a></div>',
 			esc_url( home_url( '/' ) ),
