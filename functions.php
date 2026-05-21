@@ -389,6 +389,7 @@ if ( ! function_exists( 'improcestout_render_sun_navigation_block' ) ) :
 			$url       = $page ? get_permalink( $page ) : home_url( '/' );
 			$title     = ! empty( $item['title'] ) ? sanitize_text_field( $item['title'] ) : ( $page ? get_the_title( $page ) : __( 'Page', 'improcestout' ) );
 			$details   = improcestout_parse_sun_details( $item['details'] ?? ( $item['text'] ?? '' ) );
+			$paragraph = isset( $item['paragraph'] ) ? trim( sanitize_textarea_field( $item['paragraph'] ) ) : '';
 			$image_id  = absint( $item['imageId'] ?? ( $item['image'] ?? 0 ) );
 			$image_id  = $image_id ? $image_id : ( $page ? get_post_thumbnail_id( $page ) : 0 );
 			$angle     = isset( $item['angle'] ) ? (float) $item['angle'] : ( -135 + ( $index * 54 ) );
@@ -408,14 +409,17 @@ if ( ! function_exists( 'improcestout_render_sun_navigation_block' ) ) :
 				$detail_html .= '<span>' . esc_html( $detail ) . '</span>';
 			}
 
+			$paragraph_html = $paragraph ? '<span class="impro-ray-paragraph">' . nl2br( esc_html( $paragraph ) ) . '</span>' : '';
+
 			$output .= sprintf(
-				'<a class="impro-ray-card impro-ray-card--dynamic impro-ray-card--item-%1$d" style="%2$s" href="%3$s"><span class="impro-ray-image">%4$s</span><span class="impro-ray-copy"><strong>%5$s</strong><span class="impro-ray-details">%6$s</span></span></a>',
+				'<a class="impro-ray-card impro-ray-card--dynamic impro-ray-card--item-%1$d" style="%2$s" href="%3$s"><span class="impro-ray-image">%4$s</span><span class="impro-ray-copy"><strong>%5$s</strong><span class="impro-ray-details">%6$s</span>%7$s</span></a>',
 				(int) $index + 1,
 				esc_attr( $card_css ),
 				esc_url( $url ),
 				$image,
 				esc_html( $title ),
-				$detail_html
+				$detail_html,
+				$paragraph_html
 			);
 		}
 

@@ -10,6 +10,7 @@
 	var RangeControl = components.RangeControl;
 	var SelectControl = components.SelectControl;
 	var TextControl = components.TextControl;
+	var TextareaControl = components.TextareaControl;
 	var useSelect = data.useSelect;
 
 	var DEFAULT_ITEMS = [
@@ -41,6 +42,7 @@
 		return ( items && items.length ? items : DEFAULT_ITEMS ).map( function ( item ) {
 			return Object.assign( {}, item, {
 				details: Array.isArray( item.details ) ? item.details.slice() : String( item.details || '' ).split( /\r?\n|\|/ ),
+				paragraph: item.paragraph || '',
 				colors: Object.assign( {}, item.colors || {} ),
 			} );
 		} );
@@ -262,7 +264,7 @@
 			var angle = items.length ? Math.min( 180, -135 + items.length * 45 ) : 0;
 			setAttributes( {
 				items: items.concat( [
-					{ pageId: 0, title: __( 'Nouvelle page', 'improcestout' ), details: [ __( 'Texte court', 'improcestout' ) ], imageId: 0, imageUrl: '', angle: angle, radius: globalRadius, cardRotation: 0 },
+					{ pageId: 0, title: __( 'Nouvelle page', 'improcestout' ), details: [ __( 'Texte court', 'improcestout' ) ], paragraph: '', imageId: 0, imageUrl: '', angle: angle, radius: globalRadius, cardRotation: 0 },
 				] ),
 			} );
 		}
@@ -457,6 +459,14 @@
 									'+'
 								)
 							),
+							el( TextareaControl, {
+								label: __( 'Petit paragraphe sous la liste', 'improcestout' ),
+								value: item.paragraph || '',
+								rows: 3,
+								onChange: function ( value ) {
+									updateItem( index, { paragraph: value } );
+								},
+							} ),
 							el( RangeControl, {
 								label: __( 'Angle du rayon', 'improcestout' ),
 								value: Number( item.angle || 0 ),
@@ -528,6 +538,7 @@
 						var position = getPosition( item );
 						var details = Array.isArray( item.details ) ? item.details : String( item.details || '' ).split( /\r?\n|\|/ );
 						var imageUrl = getImageUrl( item );
+						var paragraph = String( item.paragraph || '' ).trim();
 
 							return el(
 								'div',
@@ -551,7 +562,8 @@
 										details.filter( Boolean ).map( function ( detail, detailIndex ) {
 											return el( 'span', { key: detailIndex }, detail );
 										} )
-									)
+									),
+									paragraph ? el( 'span', { className: 'impro-ray-paragraph' }, paragraph ) : null
 								)
 							);
 						} )

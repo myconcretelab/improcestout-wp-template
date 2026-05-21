@@ -397,6 +397,17 @@ body {
 	margin-left: 0.62em;
 }
 
+.impro-ray-paragraph {
+	display: block;
+	max-width: 28ch;
+	margin-top: 1px;
+	font-size: 0.68rem;
+	font-weight: 500;
+	line-height: 1.25;
+	opacity: 0.86;
+	white-space: pre-line;
+}
+
 .impro-sun-stage--editor {
 	width: min(100%, 1180px);
 	margin: 0 auto;
@@ -807,6 +818,10 @@ body {
 	.impro-ray-copy em,
 	.impro-ray-details {
 		font-size: 0.76rem;
+	}
+
+	.impro-ray-paragraph {
+		font-size: 0.72rem;
 	}
 
 	.impro-site-header__inner {
