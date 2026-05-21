@@ -4,6 +4,7 @@
 	var InspectorControls = blockEditor.InspectorControls;
 	var MediaUpload = blockEditor.MediaUpload;
 	var MediaUploadCheck = blockEditor.MediaUploadCheck;
+	var useBlockProps = blockEditor.useBlockProps;
 	var Button = components.Button;
 	var PanelBody = components.PanelBody;
 	var RangeControl = components.RangeControl;
@@ -61,6 +62,9 @@
 		var attributes = props.attributes;
 		var setAttributes = props.setAttributes;
 		var items = cloneItems( attributes.items );
+		var blockProps = useBlockProps( {
+			className: 'impro-sun-block-editor',
+		} );
 		var pages = useSelect( function ( select ) {
 			return select( 'core' ).getEntityRecords( 'postType', 'page', {
 				per_page: -1,
@@ -290,59 +294,63 @@
 			),
 			el(
 				'div',
-				{ className: 'impro-sun-stage impro-sun-stage--dynamic impro-sun-stage--editor' },
+				blockProps,
 				el(
 					'div',
-					{ className: 'impro-sun-rays', 'aria-hidden': true },
-					items.map( function ( item, index ) {
-						return el( 'span', {
-							key: index,
-							className: 'impro-sun-ray',
-							style: {
-								'--ray-angle': Number( item.angle || 0 ) + 'deg',
-								'--ray-length': Math.max( 20, Math.min( 48, Number( item.radius || 43 ) ) ) + '%',
-							},
-						} );
-					} )
-				),
-				el(
-					'div',
-					{ className: 'impro-sun-logo' },
-					el( 'span', { 'aria-label': 'Impro c est tout' }, el( 'img', { src: window.improcestoutSunNavigationBlock.logoUrl, alt: '' } ) )
-				),
-				el(
-					'div',
-					{ className: 'impro-ray-nav', 'aria-label': __( 'Navigation principale', 'improcestout' ) },
-					items.map( function ( item, index ) {
-						var position = getPosition( item );
-						var details = Array.isArray( item.details ) ? item.details : String( item.details || '' ).split( /\r?\n|\|/ );
-
-						return el(
-							'div',
-							{
+					{ className: 'impro-sun-stage impro-sun-stage--dynamic impro-sun-stage--editor' },
+					el(
+						'div',
+						{ className: 'impro-sun-rays', 'aria-hidden': true },
+						items.map( function ( item, index ) {
+							return el( 'span', {
 								key: index,
-								className: 'impro-ray-card impro-ray-card--dynamic impro-ray-card--item-' + ( index + 1 ),
+								className: 'impro-sun-ray',
 								style: {
-									'--card-x': position.x + '%',
-									'--card-y': position.y + '%',
-									'--card-rotation': Number( item.cardRotation || 0 ) + 'deg',
+									'--ray-angle': Number( item.angle || 0 ) + 'deg',
+									'--ray-length': Math.max( 20, Math.min( 48, Number( item.radius || 43 ) ) ) + '%',
 								},
-							},
-							el( 'span', { className: 'impro-ray-image' }, item.imageUrl ? el( 'img', { src: item.imageUrl, alt: '' } ) : null ),
-							el(
-								'span',
-								{ className: 'impro-ray-copy' },
-								el( 'strong', null, item.title || getPageTitle( pages, item.pageId ) || __( 'Page', 'improcestout' ) ),
+							} );
+						} )
+					),
+					el(
+						'div',
+						{ className: 'impro-sun-logo' },
+						el( 'span', { 'aria-label': 'Impro c est tout' }, el( 'img', { src: window.improcestoutSunNavigationBlock.logoUrl, alt: '' } ) )
+					),
+					el(
+						'div',
+						{ className: 'impro-ray-nav', 'aria-label': __( 'Navigation principale', 'improcestout' ) },
+						items.map( function ( item, index ) {
+							var position = getPosition( item );
+							var details = Array.isArray( item.details ) ? item.details : String( item.details || '' ).split( /\r?\n|\|/ );
+
+							return el(
+								'div',
+								{
+									key: index,
+									className: 'impro-ray-card impro-ray-card--dynamic impro-ray-card--item-' + ( index + 1 ),
+									style: {
+										'--card-x': position.x + '%',
+										'--card-y': position.y + '%',
+										'--card-rotation': Number( item.cardRotation || 0 ) + 'deg',
+									},
+								},
+								el( 'span', { className: 'impro-ray-image' }, item.imageUrl ? el( 'img', { src: item.imageUrl, alt: '' } ) : null ),
 								el(
 									'span',
-									{ className: 'impro-ray-details' },
-									details.filter( Boolean ).map( function ( detail, detailIndex ) {
-										return el( 'span', { key: detailIndex }, detail );
-									} )
+									{ className: 'impro-ray-copy' },
+									el( 'strong', null, item.title || getPageTitle( pages, item.pageId ) || __( 'Page', 'improcestout' ) ),
+									el(
+										'span',
+										{ className: 'impro-ray-details' },
+										details.filter( Boolean ).map( function ( detail, detailIndex ) {
+											return el( 'span', { key: detailIndex }, detail );
+										} )
+									)
 								)
-							)
-						);
-					} )
+							);
+						} )
+					)
 				)
 			)
 		);
