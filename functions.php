@@ -349,18 +349,6 @@ if ( ! function_exists( 'improcestout_render_sun_navigation_block' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'improcestout_sun_navigation' ) ) :
-	/**
-	 * Outputs the home radial navigation shortcode for backward compatibility.
-	 *
-	 * @return string
-	 */
-	function improcestout_sun_navigation() {
-		return improcestout_render_sun_navigation_block();
-	}
-endif;
-add_shortcode( 'impro_sun_navigation', 'improcestout_sun_navigation' );
-
 if ( ! function_exists( 'improcestout_register_sun_navigation_block' ) ) :
 	/**
 	 * Registers the configurable sun navigation block.
