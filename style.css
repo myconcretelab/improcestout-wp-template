@@ -106,6 +106,7 @@ body {
 
 .impro-home {
 	display: grid;
+	position: relative;
 	min-height: 100svh;
 	margin-top: 0 !important;
 	overflow: hidden;
@@ -113,11 +114,53 @@ body {
 	padding: clamp(20px, 4vw, 54px) !important;
 }
 
+.impro-home-topbar {
+	position: absolute;
+	z-index: 10;
+	top: clamp(16px, 2.2vw, 28px);
+	left: clamp(18px, 3vw, 42px);
+	right: clamp(18px, 3vw, 42px);
+	width: auto;
+	max-width: none !important;
+}
+
+.impro-home-kicker,
+.impro-home-links p {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-weight: 700;
+	letter-spacing: 0;
+	text-transform: uppercase;
+}
+
+.impro-home-kicker {
+	font-size: clamp(1.05rem, 2vw, 1.7rem);
+}
+
+.impro-home-links {
+	gap: 10px;
+}
+
+.impro-home-links a {
+	display: inline-block;
+	padding: 0.42rem 0.64rem;
+	border: 2px solid var(--impro-ink);
+	background: color-mix(in srgb, var(--impro-paper) 88%, white);
+	box-shadow: 4px 4px 0 var(--impro-ink);
+	color: var(--impro-ink);
+	font-size: 0.82rem;
+	text-decoration: none !important;
+}
+
+.impro-home-links p:nth-child(2) a {
+	transform: rotate(2deg);
+}
+
 .impro-sun-stage {
 	position: relative;
-	width: min(94vw, 1080px);
-	max-width: min(94vw, 1080px) !important;
-	aspect-ratio: 1.28;
+	width: min(96vw, 1180px);
+	max-width: min(96vw, 1180px) !important;
+	aspect-ratio: 1.18;
 }
 
 .impro-sun-logo {
@@ -161,23 +204,33 @@ body {
 }
 
 .impro-sun-ray--one {
-	--ray-angle: -145deg;
-	--ray-length: clamp(260px, 33vw, 405px);
+	--ray-angle: -135deg;
+	--ray-length: clamp(250px, 31vw, 390px);
 }
 
 .impro-sun-ray--two {
-	--ray-angle: -35deg;
-	--ray-length: clamp(255px, 32vw, 395px);
+	--ray-angle: -45deg;
+	--ray-length: clamp(250px, 31vw, 390px);
 }
 
 .impro-sun-ray--three {
-	--ray-angle: 35deg;
-	--ray-length: clamp(250px, 31vw, 385px);
+	--ray-angle: 0deg;
+	--ray-length: clamp(235px, 26vw, 330px);
 }
 
 .impro-sun-ray--four {
-	--ray-angle: 145deg;
-	--ray-length: clamp(255px, 32vw, 395px);
+	--ray-angle: 42deg;
+	--ray-length: clamp(260px, 34vw, 420px);
+}
+
+.impro-sun-ray--five {
+	--ray-angle: 138deg;
+	--ray-length: clamp(260px, 34vw, 420px);
+}
+
+.impro-sun-ray--six {
+	--ray-angle: 180deg;
+	--ray-length: clamp(235px, 26vw, 330px);
 }
 
 .impro-ray-nav {
@@ -190,11 +243,11 @@ body {
 	position: absolute;
 	z-index: 3;
 	display: grid;
-	grid-template-columns: 78px minmax(0, 1fr);
-	gap: 12px;
+	grid-template-columns: 66px minmax(0, 1fr);
+	gap: 10px;
 	align-items: center;
-	width: clamp(245px, 28vw, 360px);
-	min-height: 112px;
+	width: clamp(230px, 24vw, 320px);
+	min-height: 96px;
 	padding: 10px 14px 10px 10px;
 	border: 3px solid var(--impro-ink);
 	border-radius: 14px;
@@ -214,32 +267,44 @@ body {
 
 .impro-ray-card--one {
 	--card-rotation: -3deg;
-	top: 13%;
+	top: 12%;
 	left: 2%;
 }
 
 .impro-ray-card--two {
 	--card-rotation: 3deg;
-	top: 13%;
-	right: 0;
+	top: 9%;
+	right: 3%;
 }
 
 .impro-ray-card--three {
-	--card-rotation: -2deg;
-	right: 5%;
-	bottom: 13%;
+	--card-rotation: -1deg;
+	top: 42%;
+	right: 0;
 }
 
 .impro-ray-card--four {
 	--card-rotation: 2deg;
-	bottom: 13%;
+	right: 5%;
+	bottom: 9%;
+}
+
+.impro-ray-card--five {
+	--card-rotation: -2deg;
+	bottom: 8%;
+	left: 4%;
+}
+
+.impro-ray-card--six {
+	--card-rotation: 1deg;
+	top: 43%;
 	left: 0;
 }
 
 .impro-ray-image {
 	display: block;
 	overflow: hidden;
-	width: 78px;
+	width: 66px;
 	aspect-ratio: 1;
 	border: 2px solid var(--impro-ink);
 	border-radius: 50%;
@@ -259,14 +324,14 @@ body {
 
 .impro-ray-copy strong {
 	font-family: var(--wp--preset--font-family--fira-code);
-	font-size: clamp(1rem, 1.8vw, 1.28rem);
+	font-size: clamp(0.92rem, 1.4vw, 1.12rem);
 	font-weight: 700;
 	letter-spacing: 0;
 	text-transform: uppercase;
 }
 
 .impro-ray-copy em {
-	font-size: 0.82rem;
+	font-size: 0.77rem;
 	font-style: normal;
 	font-weight: 600;
 	line-height: 1.22;
@@ -432,6 +497,22 @@ body {
 		aspect-ratio: auto;
 	}
 
+	.impro-home-topbar {
+		position: relative;
+		top: auto;
+		left: auto;
+		right: auto;
+		display: grid;
+		gap: 10px;
+		justify-items: center;
+		margin-bottom: 18px;
+		text-align: center;
+	}
+
+	.impro-home-links {
+		justify-content: center;
+	}
+
 	.impro-ray-nav {
 		position: relative;
 		display: grid;
@@ -466,24 +547,46 @@ body {
 		transform: translate(3px, 3px);
 	}
 
-	.impro-ray-card--one {
+	.impro-ray-card--one,
+	.impro-ray-card--two,
+	.impro-ray-card--three,
+	.impro-ray-card--four,
+	.impro-ray-card--five,
+	.impro-ray-card--six {
 		top: auto;
-		left: -8px;
+		right: auto;
+		bottom: auto;
+		left: auto;
+	}
+
+	.impro-ray-card--one {
+		justify-self: start;
+		margin-left: -8px;
 	}
 
 	.impro-ray-card--two {
-		top: auto;
-		right: -8px;
+		justify-self: end;
+		margin-right: -8px;
 	}
 
 	.impro-ray-card--three {
-		right: -2px;
-		bottom: auto;
+		justify-self: start;
+		margin-left: -2px;
 	}
 
 	.impro-ray-card--four {
-		bottom: auto;
-		left: -2px;
+		justify-self: end;
+		margin-right: -2px;
+	}
+
+	.impro-ray-card--five {
+		justify-self: start;
+		margin-left: -8px;
+	}
+
+	.impro-ray-card--six {
+		justify-self: end;
+		margin-right: -2px;
 	}
 
 	.impro-ray-image {

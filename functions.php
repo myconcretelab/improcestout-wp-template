@@ -174,37 +174,51 @@ if ( ! function_exists( 'improcestout_sun_navigation' ) ) :
 	function improcestout_sun_navigation() {
 		$items = array(
 			array(
-				'slug'    => 'spectacles',
-				'title'   => __( 'Spectacles', 'improcestout' ),
-				'text'    => __( 'Des formats courts, nerveux et collectifs pour faire surgir l\'histoire en direct.', 'improcestout' ),
-				'image'   => 13,
+				'slug'    => 'evenementiel',
+				'title'   => __( 'Evenementiel', 'improcestout' ),
+				'text'    => __( 'Restitution improvisee, animation et formats sur mesure pour vos temps forts.', 'improcestout' ),
+				'image'   => 11,
 				'variant' => 'one',
 			),
 			array(
-				'slug'    => 'ateliers',
-				'title'   => __( 'Ateliers', 'improcestout' ),
-				'text'    => __( 'Des exercices de jeu, d\'écoute et de lâcher prise pour entrer dans l\'impro.', 'improcestout' ),
+				'slug'    => 'theatre-forum',
+				'title'   => __( 'Theatre forum', 'improcestout' ),
+				'text'    => __( 'Mettre une situation en jeu, ouvrir le debat et tester d\'autres issues.', 'improcestout' ),
 				'image'   => 12,
 				'variant' => 'two',
 			),
 			array(
-				'slug'    => 'stages',
-				'title'   => __( 'Stages', 'improcestout' ),
-				'text'    => __( 'Des immersions plus longues pour travailler le personnage, le rythme et le groupe.', 'improcestout' ),
-				'image'   => 10,
+				'slug'    => 'publics-fragilises',
+				'title'   => __( 'Publics fragilises', 'improcestout' ),
+				'text'    => __( 'Ateliers d\'impro adaptes, cadre clair et parole remise en mouvement.', 'improcestout' ),
+				'image'   => 13,
 				'variant' => 'three',
 			),
 			array(
-				'slug'    => 'agenda',
-				'title'   => __( 'Agenda', 'improcestout' ),
-				'text'    => __( 'Les prochaines dates, les rendez-vous publics et les occasions de nous rejoindre.', 'improcestout' ),
-				'image'   => 11,
+				'slug'    => 'pros-du-social-medico-social',
+				'title'   => __( 'Pros du social', 'improcestout' ),
+				'text'    => __( 'Mises en situation, cohesion et experiences forum pour les equipes.', 'improcestout' ),
+				'image'   => 10,
 				'variant' => 'four',
+			),
+			array(
+				'slug'    => 'entreprises',
+				'title'   => __( 'Entreprises', 'improcestout' ),
+				'text'    => __( 'Prise de parole, posture professionnelle et cohesion d\'equipe.', 'improcestout' ),
+				'image'   => 13,
+				'variant' => 'five',
+			),
+			array(
+				'slug'    => 'just-do-impro',
+				'title'   => __( 'Just do impro', 'improcestout' ),
+				'text'    => __( 'Stages, ateliers et spectacles pour pratiquer l\'impro sans detour.', 'improcestout' ),
+				'image'   => 12,
+				'variant' => 'six',
 			),
 		);
 
 		$output  = '<div class="impro-sun-stage">';
-		$output .= '<div class="impro-sun-rays" aria-hidden="true"><span class="impro-sun-ray impro-sun-ray--one"></span><span class="impro-sun-ray impro-sun-ray--two"></span><span class="impro-sun-ray impro-sun-ray--three"></span><span class="impro-sun-ray impro-sun-ray--four"></span></div>';
+		$output .= '<div class="impro-sun-rays" aria-hidden="true"><span class="impro-sun-ray impro-sun-ray--one"></span><span class="impro-sun-ray impro-sun-ray--two"></span><span class="impro-sun-ray impro-sun-ray--three"></span><span class="impro-sun-ray impro-sun-ray--four"></span><span class="impro-sun-ray impro-sun-ray--five"></span><span class="impro-sun-ray impro-sun-ray--six"></span></div>';
 		$output .= sprintf(
 			'<div class="impro-sun-logo"><a href="%1$s" aria-label="%2$s"><img src="%3$s" alt="%2$s"></a></div>',
 			esc_url( home_url( '/' ) ),
