@@ -548,11 +548,11 @@ body {
 .impro-site-header::before {
 	position: absolute;
 	z-index: -1;
-	inset: 0 0 -38px;
+	inset: 0;
 	background:
 		linear-gradient(102deg, color-mix(in srgb, var(--impro-paper) 94%, white), color-mix(in srgb, var(--impro-cream) 88%, white)),
 		var(--impro-paper);
-	clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), 78% calc(100% - 11px), 45% calc(100% - 25px), 0 calc(100% - 2px));
+	clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), 78% 100%, 45% calc(100% - 12px), 0 calc(100% - 1px));
 	content: "";
 }
 
@@ -693,7 +693,7 @@ body {
 nav.impro-site-nav--secondary {
 	position: absolute;
 	right: clamp(4px, 2vw, 30px);
-	bottom: -19px;
+	bottom: -12px;
 	z-index: 2;
 	padding: 7px 12px 7px 22px;
 	border: 3px solid var(--impro-ink);
@@ -771,11 +771,21 @@ nav.impro-site-nav--secondary::before {
 
 .impro-site-header.is-condensed nav.impro-site-nav--secondary {
 	right: clamp(2px, 1.4vw, 20px);
-	bottom: -18px;
+	bottom: -11px;
 	padding-top: 5px;
 	padding-bottom: 5px;
 	box-shadow: 3px 3px 0 #4b1b13;
 	transform: rotate(-3deg);
+}
+
+body.admin-bar .impro-site-header {
+	top: 32px;
+}
+
+@media (max-width: 782px) {
+	body.admin-bar .impro-site-header {
+		top: 46px;
+	}
 }
 
 .impro-page-main {
@@ -1004,7 +1014,7 @@ nav.impro-site-nav--secondary::before {
 
 	nav.impro-site-nav--secondary {
 		right: 50%;
-		bottom: -20px;
+		bottom: -12px;
 		justify-self: center;
 		padding: 6px 12px 6px 20px;
 		transform: translateX(50%) rotate(-3deg);
@@ -1021,7 +1031,7 @@ nav.impro-site-nav--secondary::before {
 
 	.impro-site-header.is-condensed nav.impro-site-nav--secondary {
 		right: 50%;
-		bottom: -18px;
+		bottom: -11px;
 		transform: translateX(50%) rotate(-3deg);
 	}
 
