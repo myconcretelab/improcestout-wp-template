@@ -256,19 +256,19 @@ body {
 	width: clamp(230px, 24vw, 320px);
 	min-height: 96px;
 	padding: 10px 14px 10px 10px;
-	border: 3px solid var(--impro-ink);
+	border: 3px solid var(--card-border, var(--impro-ink));
 	border-radius: 14px;
-	background: color-mix(in srgb, var(--impro-paper) 84%, white);
-	box-shadow: 8px 9px 0 var(--impro-ink);
-	color: var(--impro-ink);
+	background: var(--card-bg, color-mix(in srgb, var(--impro-paper) 84%, white));
+	box-shadow: 8px 9px 0 var(--card-shadow, var(--impro-ink));
+	color: var(--card-text, var(--impro-ink));
 	text-decoration: none !important;
 	transform: rotate(var(--card-rotation));
 	transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
 }
 
 .impro-ray-card:hover {
-	background: var(--impro-cream);
-	box-shadow: 4px 5px 0 var(--impro-ink);
+	background: color-mix(in srgb, var(--card-bg, var(--impro-cream)) 94%, white);
+	box-shadow: 4px 5px 0 var(--card-shadow, var(--impro-ink));
 	transform: rotate(var(--card-rotation)) translate(4px, 4px);
 }
 
@@ -325,9 +325,9 @@ body {
 	overflow: hidden;
 	width: 66px;
 	aspect-ratio: 1;
-	border: 2px solid var(--impro-ink);
+	border: 2px solid var(--card-border, var(--impro-ink));
 	border-radius: 50%;
-	background: var(--impro-red);
+	background: var(--card-accent, var(--impro-red));
 }
 
 .impro-ray-image img {
@@ -367,7 +367,7 @@ body {
 
 .impro-ray-details span::before {
 	margin-right: 0.42em;
-	color: var(--impro-red);
+	color: var(--card-accent, var(--impro-red));
 	content: "\2605";
 	font-size: 0.72em;
 }
@@ -405,6 +405,38 @@ body {
 
 .impro-editor-image-control {
 	margin: 16px 0;
+}
+
+.impro-editor-card-colors {
+	margin: 16px 0;
+	padding: 12px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+}
+
+.impro-editor-color-control {
+	margin-bottom: 10px;
+}
+
+.impro-editor-color-row {
+	display: grid;
+	grid-template-columns: 36px minmax(0, 1fr) auto;
+	gap: 8px;
+	align-items: center;
+}
+
+.impro-editor-color-row input[type="color"] {
+	width: 36px;
+	height: 36px;
+	padding: 0;
+	border: 1px solid #949494;
+	border-radius: 2px;
+	background: transparent;
+}
+
+.impro-editor-color-row .components-base-control,
+.impro-editor-color-row .components-base-control__field {
+	margin-bottom: 0;
 }
 
 .impro-editor-image-preview {

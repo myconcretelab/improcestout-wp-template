@@ -22,13 +22,55 @@
 	];
 	var MIN_RADIUS = 20;
 	var MAX_RADIUS = 70;
+	var DEFAULT_CARD_COLORS = {
+		background: '#fff8e8',
+		border: '#1e0507',
+		shadow: '#1e0507',
+		text: '#1e0507',
+		accent: '#e92c5a',
+	};
+	var CARD_COLOR_FIELDS = [
+		{ key: 'background', label: __( 'Fond de carte', 'improcestout' ), css: '--card-bg' },
+		{ key: 'border', label: __( 'Bordure', 'improcestout' ), css: '--card-border' },
+		{ key: 'shadow', label: __( 'Ombre', 'improcestout' ), css: '--card-shadow' },
+		{ key: 'text', label: __( 'Texte', 'improcestout' ), css: '--card-text' },
+		{ key: 'accent', label: __( 'Accent', 'improcestout' ), css: '--card-accent' },
+	];
 
 	function cloneItems( items ) {
 		return ( items && items.length ? items : DEFAULT_ITEMS ).map( function ( item ) {
 			return Object.assign( {}, item, {
 				details: Array.isArray( item.details ) ? item.details.slice() : String( item.details || '' ).split( /\r?\n|\|/ ),
+				colors: Object.assign( {}, item.colors || {} ),
 			} );
 		} );
+	}
+
+	function isHexColor( value ) {
+		return /^#[0-9a-f]{6}$/i.test( String( value || '' ) );
+	}
+
+	function normalizeCardColors( colors ) {
+		var normalized = {};
+
+		CARD_COLOR_FIELDS.forEach( function ( field ) {
+			normalized[ field.key ] = isHexColor( colors && colors[ field.key ] ) ? colors[ field.key ] : DEFAULT_CARD_COLORS[ field.key ];
+		} );
+
+		return normalized;
+	}
+
+	function getColorStyles( colors, includeDefaults ) {
+		var source = includeDefaults ? normalizeCardColors( colors ) : ( colors || {} );
+		var styles = {};
+
+		CARD_COLOR_FIELDS.forEach( function ( field ) {
+			if ( isHexColor( source[ field.key ] ) ) {
+				styles[ field.css ] = source[ field.key ];
+			}
+		} );
+
+		return styles;
 	}
 
 	function getPageTitle( pages, pageId ) {
@@ -64,6 +106,7 @@
 		var attributes = props.attributes;
 		var setAttributes = props.setAttributes;
 		var items = cloneItems( attributes.items );
+		var cardColors = normalizeCardColors( attributes.cardColors || {} );
 		var blockProps = useBlockProps( {
 			className: 'impro-sun-block-editor',
 		} );
@@ -158,6 +201,63 @@
 			} );
 		}
 
+		function updateGlobalCardColor( key, value ) {
+			setAttributes( {
+				cardColors: Object.assign( {}, cardColors, { [ key ]: value } ),
+			} );
+		}
+
+		function updateItemColor( index, key, value ) {
+			var colors = Object.assign( {}, items[ index ].colors || {} );
+
+			if ( value ) {
+				colors[ key ] = value;
+			} else {
+				delete colors[ key ];
+			}
+
+			updateItem( index, { colors: colors } );
+		}
+
+		function renderColorControl( label, value, fallback, onChange, allowClear ) {
+			var colorValue = isHexColor( value ) ? value : fallback;
+
+			return el(
+				'div',
+				{ className: 'impro-editor-color-control', key: label },
+				el( 'p', { className: 'impro-editor-label' }, label ),
+				el(
+					'div',
+					{ className: 'impro-editor-color-row' },
+					el( 'input', {
+						type: 'color',
+						value: colorValue,
+						onChange: function ( event ) {
+							onChange( event.target.value );
+						},
+					} ),
+					el( TextControl, {
+						value: value || '',
+						placeholder: fallback,
+						onChange: onChange,
+					} ),
+					allowClear && value ? el(
+						Button,
+						{
+							variant: 'secondary',
+							isDestructive: true,
+							className: 'impro-editor-trash-button',
+							label: __( 'Utiliser la couleur globale', 'improcestout' ),
+							onClick: function () {
+								onChange( '' );
+							},
+						},
+						el( 'span', { className: 'dashicons dashicons-no-alt', 'aria-hidden': true } )
+					) : null
+				)
+			);
+		}
+
 		function addItem() {
 			var angle = items.length ? Math.min( 180, -135 + items.length * 45 ) : 0;
 			setAttributes( {
@@ -189,6 +289,21 @@
 			el(
 				InspectorControls,
 				null,
+				el(
+					PanelBody,
+					{ title: __( 'Couleurs globales des cartes', 'improcestout' ), initialOpen: false },
+					CARD_COLOR_FIELDS.map( function ( field ) {
+						return renderColorControl(
+							field.label,
+							cardColors[ field.key ],
+							DEFAULT_CARD_COLORS[ field.key ],
+							function ( value ) {
+								updateGlobalCardColor( field.key, value );
+							},
+							false
+						);
+					} )
+				),
 				el(
 					PanelBody,
 					{ title: __( 'Elements du soleil', 'improcestout' ), initialOpen: true },
@@ -283,6 +398,25 @@
 							),
 							el(
 								'div',
+								{ className: 'impro-editor-card-colors' },
+								el( 'p', { className: 'impro-editor-label' }, __( 'Couleurs personnalisees', 'improcestout' ) ),
+								CARD_COLOR_FIELDS.map( function ( field ) {
+									var itemColors = item.colors || {};
+									var fallbackColor = isHexColor( cardColors[ field.key ] ) ? cardColors[ field.key ] : DEFAULT_CARD_COLORS[ field.key ];
+
+									return renderColorControl(
+										field.label,
+										itemColors[ field.key ] || '',
+										fallbackColor,
+										function ( value ) {
+											updateItemColor( index, field.key, value );
+										},
+										true
+									);
+								} )
+							),
+							el(
+								'div',
 								{ className: 'impro-editor-detail-list' },
 								el( 'p', { className: 'impro-editor-label' }, __( 'Petite liste dans la carte', 'improcestout' ) ),
 								itemDetails.map( function ( detail, detailIndex ) {
@@ -364,7 +498,10 @@
 				blockProps,
 				el(
 					'div',
-					{ className: 'impro-sun-stage impro-sun-stage--dynamic impro-sun-stage--editor' },
+					{
+						className: 'impro-sun-stage impro-sun-stage--dynamic impro-sun-stage--editor',
+						style: getColorStyles( cardColors, true ),
+					},
 					el(
 						'div',
 						{ className: 'impro-sun-rays', 'aria-hidden': true },
@@ -397,11 +534,11 @@
 								{
 									key: index,
 									className: 'impro-ray-card impro-ray-card--dynamic impro-ray-card--item-' + ( index + 1 ),
-									style: {
+									style: Object.assign( getColorStyles( item.colors, false ), {
 										'--card-x': position.x + '%',
 										'--card-y': position.y + '%',
 										'--card-rotation': Number( item.cardRotation || 0 ) + 'deg',
-									},
+									} ),
 								},
 								el( 'span', { className: 'impro-ray-image' }, imageUrl ? el( 'img', { src: imageUrl, alt: '' } ) : null ),
 								el(
@@ -433,6 +570,10 @@
 			items: {
 				type: 'array',
 				default: DEFAULT_ITEMS,
+			},
+			cardColors: {
+				type: 'object',
+				default: DEFAULT_CARD_COLORS,
 			},
 		},
 		edit: Edit,

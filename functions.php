@@ -237,6 +237,79 @@ if ( ! function_exists( 'improcestout_get_default_sun_items' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'improcestout_get_default_sun_card_colors' ) ) :
+	/**
+	 * Returns default color controls for sun navigation cards.
+	 *
+	 * @return array
+	 */
+	function improcestout_get_default_sun_card_colors() {
+		return array(
+			'background' => '#fff8e8',
+			'border'     => '#1e0507',
+			'shadow'     => '#1e0507',
+			'text'       => '#1e0507',
+			'accent'     => '#e92c5a',
+		);
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_normalize_sun_card_colors' ) ) :
+	/**
+	 * Sanitizes card color settings.
+	 *
+	 * @param mixed $colors Color data.
+	 * @param bool  $with_defaults Whether to fill missing values with defaults.
+	 * @return array
+	 */
+	function improcestout_normalize_sun_card_colors( $colors, $with_defaults = false ) {
+		$defaults = improcestout_get_default_sun_card_colors();
+		$colors   = is_array( $colors ) ? $colors : array();
+		$output   = $with_defaults ? $defaults : array();
+
+		foreach ( $defaults as $key => $default ) {
+			if ( empty( $colors[ $key ] ) ) {
+				continue;
+			}
+
+			$color = sanitize_hex_color( $colors[ $key ] );
+
+			if ( $color ) {
+				$output[ $key ] = $color;
+			}
+		}
+
+		return $output;
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_get_sun_card_color_css' ) ) :
+	/**
+	 * Builds custom properties for sun navigation card colors.
+	 *
+	 * @param array $colors Sanitized color data.
+	 * @return string
+	 */
+	function improcestout_get_sun_card_color_css( $colors ) {
+		$properties = array(
+			'background' => '--card-bg',
+			'border'     => '--card-border',
+			'shadow'     => '--card-shadow',
+			'text'       => '--card-text',
+			'accent'     => '--card-accent',
+		);
+		$css        = '';
+
+		foreach ( $properties as $key => $property ) {
+			if ( ! empty( $colors[ $key ] ) ) {
+				$css .= $property . ':' . $colors[ $key ] . ';';
+			}
+		}
+
+		return $css;
+	}
+endif;
+
 if ( ! function_exists( 'improcestout_parse_sun_details' ) ) :
 	/**
 	 * Parses card details from block attributes.
@@ -270,13 +343,15 @@ if ( ! function_exists( 'improcestout_render_sun_navigation_block' ) ) :
 	 * @return string
 	 */
 	function improcestout_render_sun_navigation_block( $attributes = array() ) {
-		$items = $attributes['items'] ?? array();
+		$items        = $attributes['items'] ?? array();
+		$card_colors  = improcestout_normalize_sun_card_colors( $attributes['cardColors'] ?? array(), true );
+		$stage_styles = improcestout_get_sun_card_color_css( $card_colors );
 
 		if ( ! is_array( $items ) || empty( $items ) ) {
 			$items = improcestout_get_default_sun_items();
 		}
 
-		$output  = '<div class="impro-sun-stage impro-sun-stage--dynamic">';
+		$output  = '<div class="impro-sun-stage impro-sun-stage--dynamic" style="' . esc_attr( $stage_styles ) . '">';
 		$output .= '<div class="impro-sun-rays" aria-hidden="true">';
 
 		foreach ( $items as $index => $item ) {
@@ -325,6 +400,7 @@ if ( ! function_exists( 'improcestout_render_sun_navigation_block' ) ) :
 			$card_x    = max( -8, min( 108, $card_x ) );
 			$card_y    = max( -8, min( 108, $card_y ) );
 			$card_css  = sprintf( '--card-x:%.3F%%;--card-y:%.3F%%;--card-rotation:%.3Fdeg;', $card_x, $card_y, $rotation );
+			$card_css .= improcestout_get_sun_card_color_css( improcestout_normalize_sun_card_colors( $item['colors'] ?? array() ) );
 			$image     = $image_id ? wp_get_attachment_image( $image_id, 'medium_large', false, array( 'loading' => 0 === $index ? 'eager' : 'lazy' ) ) : '';
 			$detail_html = '';
 
@@ -386,6 +462,10 @@ if ( ! function_exists( 'improcestout_register_sun_navigation_block' ) ) :
 					'items' => array(
 						'type'    => 'array',
 						'default' => improcestout_get_default_sun_items(),
+					),
+					'cardColors' => array(
+						'type'    => 'object',
+						'default' => improcestout_get_default_sun_card_colors(),
 					),
 				),
 				'supports'        => array(
