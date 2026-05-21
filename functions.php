@@ -67,6 +67,26 @@ if ( ! function_exists( 'improcestout_enqueue_styles' ) ) :
 endif;
 add_action( 'wp_enqueue_scripts', 'improcestout_enqueue_styles' );
 
+if ( ! function_exists( 'improcestout_enqueue_header_script' ) ) :
+	/**
+	 * Loads the animated sticky header behavior.
+	 *
+	 * @return void
+	 */
+	function improcestout_enqueue_header_script() {
+		$script_path = get_theme_file_path( 'assets/js/header.js' );
+
+		wp_enqueue_script(
+			'improcestout-header',
+			get_theme_file_uri( 'assets/js/header.js' ),
+			array(),
+			file_exists( $script_path ) ? filemtime( $script_path ) : wp_get_theme()->get( 'Version' ),
+			true
+		);
+	}
+endif;
+add_action( 'wp_enqueue_scripts', 'improcestout_enqueue_header_script' );
+
 // Registers custom block styles.
 if ( ! function_exists( 'improcestout_block_styles' ) ) :
 	/**

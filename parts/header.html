@@ -9,11 +9,23 @@
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:navigation {"overlayMenu":"mobile","className":"impro-site-nav","layout":{"type":"flex","justifyContent":"right"}} -->
-			<!-- wp:navigation-link {"label":"Accueil","url":"/"} /-->
-			<!-- wp:navigation-link {"label":"Contact","url":"/contact/"} /-->
-			<!-- wp:navigation-link {"label":"Newsletter","url":"/newsletter/"} /-->
-		<!-- /wp:navigation -->
+		<!-- wp:group {"className":"impro-site-menus","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"right","verticalAlignment":"center"}} -->
+		<div class="wp-block-group impro-site-menus">
+			<!-- wp:navigation {"overlayMenu":"mobile","className":"impro-site-nav impro-site-nav--primary","layout":{"type":"flex","justifyContent":"right"}} -->
+				<!-- wp:navigation-link {"label":"Social et medico-social","url":"/pros-du-social-medico-social/"} /-->
+				<!-- wp:navigation-link {"label":"Theatre forum","url":"/theatre-forum/"} /-->
+				<!-- wp:navigation-link {"label":"Evenementiel","url":"/evenementiel/"} /-->
+				<!-- wp:navigation-link {"label":"Entreprises","url":"/entreprises/"} /-->
+				<!-- wp:navigation-link {"label":"Publics fragilises","url":"/publics-fragilises/"} /-->
+				<!-- wp:navigation-link {"label":"Just do impro","url":"/just-do-impro/"} /-->
+			<!-- /wp:navigation -->
+
+			<!-- wp:navigation {"overlayMenu":"never","className":"impro-site-nav impro-site-nav--secondary","ariaLabel":"Liens pratiques","layout":{"type":"flex","justifyContent":"right"}} -->
+				<!-- wp:navigation-link {"label":"Contact","url":"/contact/"} /-->
+				<!-- wp:navigation-link {"label":"Newsletter","url":"/newsletter/"} /-->
+			<!-- /wp:navigation -->
+		</div>
+		<!-- /wp:group -->
 	</div>
 	<!-- /wp:group -->
 </header>
