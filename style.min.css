@@ -406,10 +406,43 @@ body {
 
 .impro-editor-detail-row {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-columns: minmax(0, 1fr) 36px;
 	gap: 8px;
-	align-items: end;
+	align-items: center;
 	margin-bottom: 8px;
+}
+
+.impro-editor-detail-row .components-base-control,
+.impro-editor-detail-row .components-base-control__field {
+	margin-bottom: 0;
+}
+
+.impro-editor-detail-row .components-text-control__input {
+	width: 100%;
+}
+
+.impro-editor-trash-button.components-button,
+.impro-editor-add-detail.components-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 36px;
+	width: 36px;
+	height: 36px;
+	padding: 0;
+}
+
+.impro-editor-trash-button .dashicons {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	line-height: 18px;
+}
+
+.impro-editor-add-detail.components-button {
+	font-size: 22px;
+	font-weight: 600;
+	line-height: 1;
 }
 
 .impro-site-header {

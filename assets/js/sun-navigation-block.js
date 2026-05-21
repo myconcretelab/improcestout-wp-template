@@ -215,6 +215,7 @@
 										{ className: 'impro-editor-detail-row', key: detailIndex },
 										el( TextControl, {
 											label: __( 'Item', 'improcestout' ) + ' ' + ( detailIndex + 1 ),
+											hideLabelFromVision: true,
 											value: detail,
 											onChange: function ( value ) {
 												updateDetail( index, detailIndex, value );
@@ -225,15 +226,26 @@
 											{
 												variant: 'secondary',
 												isDestructive: true,
+												className: 'impro-editor-trash-button',
+												label: __( 'Retirer cet item', 'improcestout' ),
 												onClick: function () {
 													removeDetail( index, detailIndex );
 												},
 											},
-											__( 'Retirer', 'improcestout' )
+											el( 'span', { className: 'dashicons dashicons-trash', 'aria-hidden': true } )
 										)
 									);
 								} ),
-								el( Button, { variant: 'secondary', onClick: function () { addDetail( index ); } }, __( 'Ajouter un item de liste', 'improcestout' ) )
+								el(
+									Button,
+									{
+										variant: 'secondary',
+										className: 'impro-editor-add-detail',
+										label: __( 'Ajouter un item de liste', 'improcestout' ),
+										onClick: function () { addDetail( index ); },
+									},
+									'+'
+								)
 							),
 							el( RangeControl, {
 								label: __( 'Angle du rayon', 'improcestout' ),
