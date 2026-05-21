@@ -82,15 +82,15 @@ h1, h2, h3, h4, h5, h6, blockquote, caption, figcaption, p {
 	--impro-red-dark: #bd2144;
 	--impro-cream: #ffd9a4;
 	--impro-paper: #fff7e8;
+	--impro-paper-texture: url("assets/images/seamless_paper_texture.webp");
 	--impro-blush: #f1b9aa;
 }
 
 body {
-	background:
-		radial-gradient(circle at 18% 16%, color-mix(in srgb, var(--impro-red) 13%, transparent) 0 12%, transparent 34%),
-		radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--impro-cream) 58%, transparent) 0 14%, transparent 36%),
-		radial-gradient(circle at 52% 72%, color-mix(in srgb, var(--impro-brown) 10%, transparent) 0 10%, transparent 34%),
-		linear-gradient(135deg, #fff9ed 0%, #f8dfb8 48%, #efd09b 100%);
+	background-color: var(--impro-paper);
+	background-image: var(--impro-paper-texture);
+	background-repeat: repeat;
+	background-size: 200px 200px;
 	color: var(--impro-ink);
 }
 
@@ -100,7 +100,7 @@ body {
 		radial-gradient(circle at 8% 22%, color-mix(in srgb, var(--impro-red) 9%, transparent) 0 1px, transparent 1.5px),
 		radial-gradient(circle at 72% 38%, color-mix(in srgb, var(--impro-ink) 9%, transparent) 0 1px, transparent 1.4px),
 		repeating-linear-gradient(98deg, color-mix(in srgb, var(--impro-ink) 5%, transparent) 0 1px, transparent 1px 12px),
-		linear-gradient(180deg, color-mix(in srgb, white 30%, transparent), color-mix(in srgb, var(--impro-cream) 28%, transparent));
+		linear-gradient(180deg, color-mix(in srgb, white 34%, transparent), color-mix(in srgb, var(--impro-cream) 24%, transparent));
 	background-size: 31px 37px, 43px 41px, 100% 100%, auto;
 }
 
