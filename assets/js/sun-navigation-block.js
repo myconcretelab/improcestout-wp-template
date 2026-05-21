@@ -9,7 +9,6 @@
 	var RangeControl = components.RangeControl;
 	var SelectControl = components.SelectControl;
 	var TextControl = components.TextControl;
-	var TextareaControl = components.TextareaControl;
 	var useSelect = data.useSelect;
 
 	var DEFAULT_ITEMS = [
@@ -77,11 +76,35 @@
 				value: page.id,
 			};
 		} ) );
+		var globalRadius = items.length ? Math.round( items.reduce( function ( total, item ) {
+			return total + Number( item.radius || 43 );
+		}, 0 ) / items.length ) : 43;
 
 		function updateItem( index, changes ) {
 			var next = cloneItems( items );
 			next[ index ] = Object.assign( {}, next[ index ], changes );
 			setAttributes( { items: next } );
+		}
+
+		function updateDetail( itemIndex, detailIndex, value ) {
+			var details = Array.isArray( items[ itemIndex ].details ) ? items[ itemIndex ].details.slice() : [];
+			details[ detailIndex ] = value;
+			updateItem( itemIndex, { details: details } );
+		}
+
+		function addDetail( itemIndex ) {
+			var details = Array.isArray( items[ itemIndex ].details ) ? items[ itemIndex ].details.slice() : [];
+			details.push( __( 'Nouvel item', 'improcestout' ) );
+			updateItem( itemIndex, { details: details } );
+		}
+
+		function removeDetail( itemIndex, detailIndex ) {
+			var details = Array.isArray( items[ itemIndex ].details ) ? items[ itemIndex ].details.slice() : [];
+			updateItem( itemIndex, {
+				details: details.filter( function ( detail, index ) {
+					return index !== detailIndex;
+				} ),
+			} );
 		}
 
 		function removeItem( index ) {
@@ -92,11 +115,19 @@
 			} );
 		}
 
+		function updateGlobalRadius( value ) {
+			setAttributes( {
+				items: items.map( function ( item ) {
+					return Object.assign( {}, item, { radius: value } );
+				} ),
+			} );
+		}
+
 		function addItem() {
 			var angle = items.length ? Math.min( 180, -135 + items.length * 45 ) : 0;
 			setAttributes( {
 				items: items.concat( [
-					{ pageId: 0, title: __( 'Nouvelle page', 'improcestout' ), details: [ __( 'Texte court', 'improcestout' ) ], imageId: 0, imageUrl: '', angle: angle, radius: 43, cardRotation: 0 },
+					{ pageId: 0, title: __( 'Nouvelle page', 'improcestout' ), details: [ __( 'Texte court', 'improcestout' ) ], imageId: 0, imageUrl: '', angle: angle, radius: globalRadius, cardRotation: 0 },
 				] ),
 			} );
 		}
@@ -126,13 +157,23 @@
 				el(
 					PanelBody,
 					{ title: __( 'Elements du soleil', 'improcestout' ), initialOpen: true },
+					el( RangeControl, {
+						label: __( 'Distance globale cartes/logo', 'improcestout' ),
+						help: __( 'Regle la longueur des rayons et rapproche ou eloigne toutes les cartes du logo.', 'improcestout' ),
+						value: globalRadius,
+						min: 20,
+						max: 48,
+						onChange: updateGlobalRadius,
+					} ),
 					el(
 						'div',
 						{ className: 'impro-editor-actions' },
-						el( Button, { variant: 'primary', onClick: addItem }, __( 'Ajouter un element', 'improcestout' ) ),
+						el( Button, { variant: 'primary', onClick: addItem }, __( 'Ajouter une page', 'improcestout' ) ),
 						el( Button, { variant: 'secondary', onClick: distributeItems }, __( 'Repartir automatiquement', 'improcestout' ) )
 					),
 					items.map( function ( item, index ) {
+						var itemDetails = Array.isArray( item.details ) ? item.details : String( item.details || '' ).split( /\r?\n|\|/ );
+
 						return el(
 							PanelBody,
 							{
@@ -160,14 +201,36 @@
 									updateItem( index, { title: value } );
 								},
 							} ),
-							el( TextareaControl, {
-								label: __( 'Textes sous le titre', 'improcestout' ),
-								help: __( 'Un texte par ligne. Ils seront affiches en ligne avec des etoiles rouges.', 'improcestout' ),
-								value: Array.isArray( item.details ) ? item.details.join( '\n' ) : item.details || '',
-								onChange: function ( value ) {
-									updateItem( index, { details: value.split( /\r?\n/ ) } );
-								},
-							} ),
+							el(
+								'div',
+								{ className: 'impro-editor-detail-list' },
+								el( 'p', { className: 'impro-editor-label' }, __( 'Petite liste dans la carte', 'improcestout' ) ),
+								itemDetails.map( function ( detail, detailIndex ) {
+									return el(
+										'div',
+										{ className: 'impro-editor-detail-row', key: detailIndex },
+										el( TextControl, {
+											label: __( 'Item', 'improcestout' ) + ' ' + ( detailIndex + 1 ),
+											value: detail,
+											onChange: function ( value ) {
+												updateDetail( index, detailIndex, value );
+											},
+										} ),
+										el(
+											Button,
+											{
+												variant: 'secondary',
+												isDestructive: true,
+												onClick: function () {
+													removeDetail( index, detailIndex );
+												},
+											},
+											__( 'Retirer', 'improcestout' )
+										)
+									);
+								} ),
+								el( Button, { variant: 'secondary', onClick: function () { addDetail( index ); } }, __( 'Ajouter un item de liste', 'improcestout' ) )
+							),
 							el( RangeControl, {
 								label: __( 'Angle du rayon', 'improcestout' ),
 								value: Number( item.angle || 0 ),

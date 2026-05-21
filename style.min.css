@@ -358,8 +358,8 @@ body {
 	line-height: 1.22;
 }
 
-.impro-ray-details span:not(:last-child)::after {
-	margin: 0 0.42em;
+.impro-ray-details span::before {
+	margin-right: 0.42em;
 	color: var(--impro-red);
 	content: "\2605";
 	font-size: 0.72em;
@@ -374,6 +374,23 @@ body {
 	display: grid;
 	gap: 8px;
 	margin-bottom: 12px;
+}
+
+.impro-editor-detail-list {
+	margin: 16px 0;
+}
+
+.impro-editor-label {
+	margin: 0 0 8px;
+	font-weight: 600;
+}
+
+.impro-editor-detail-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 8px;
+	align-items: end;
+	margin-bottom: 8px;
 }
 
 .impro-site-header {
