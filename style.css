@@ -399,6 +399,27 @@ body {
 	margin: 16px 0;
 }
 
+.impro-editor-image-control {
+	margin: 16px 0;
+}
+
+.impro-editor-image-preview {
+	display: block;
+	width: 72px;
+	aspect-ratio: 1;
+	margin: 0 0 10px;
+	border: 2px solid var(--impro-ink);
+	border-radius: 50%;
+	background: var(--impro-red);
+	object-fit: cover;
+}
+
+.impro-editor-image-actions {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
 .impro-editor-label {
 	margin: 0 0 8px;
 	font-weight: 600;

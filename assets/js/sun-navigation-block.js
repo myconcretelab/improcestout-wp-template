@@ -20,6 +20,8 @@
 		{ pageId: 16, slug: 'entreprises', title: 'Entreprises', details: [ 'Prise de parole', 'Posture pro', 'Cohesion' ], imageId: 13, angle: 138, radius: 45, cardRotation: -2 },
 		{ pageId: 14, slug: 'just-do-impro', title: 'Just do impro', details: [ 'Stages', 'Ateliers', 'Spectacles' ], imageId: 12, angle: 180, radius: 43, cardRotation: 1 },
 	];
+	var MIN_RADIUS = 20;
+	var MAX_RADIUS = 70;
 
 	function cloneItems( items ) {
 		return ( items && items.length ? items : DEFAULT_ITEMS ).map( function ( item ) {
@@ -49,12 +51,12 @@
 
 	function getPosition( item ) {
 		var angle = Number( item.angle || 0 );
-		var radius = Math.max( 20, Math.min( 48, Number( item.radius || 43 ) ) );
+		var radius = Math.max( MIN_RADIUS, Math.min( MAX_RADIUS, Number( item.radius || 43 ) ) );
 		var radians = angle * Math.PI / 180;
 
 		return {
-			x: Math.max( 8, Math.min( 92, 50 + Math.cos( radians ) * radius ) ),
-			y: Math.max( 10, Math.min( 90, 50 + Math.sin( radians ) * radius ) ),
+			x: Math.max( -8, Math.min( 108, 50 + Math.cos( radians ) * radius ) ),
+			y: Math.max( -8, Math.min( 108, 50 + Math.sin( radians ) * radius ) ),
 		};
 	}
 
@@ -72,6 +74,20 @@
 				order: 'asc',
 			} ) || [];
 		}, [] );
+		var mediaById = useSelect( function ( select ) {
+			var core = select( 'core' );
+			var media = {};
+
+			items.forEach( function ( item ) {
+				var imageId = Number( item.imageId || 0 );
+
+				if ( imageId ) {
+					media[ imageId ] = core.getMedia( imageId );
+				}
+			} );
+
+			return media;
+		}, [ items.map( function ( item ) { return item.imageId || 0; } ).join( ',' ) ] );
 		var pageOptions = [
 			{ label: __( 'Choisir une page', 'improcestout' ), value: 0 },
 		].concat( pages.map( function ( page ) {
@@ -83,6 +99,21 @@
 		var globalRadius = items.length ? Math.round( items.reduce( function ( total, item ) {
 			return total + Number( item.radius || 43 );
 		}, 0 ) / items.length ) : 43;
+
+		function getImageUrl( item ) {
+			var imageId = Number( item.imageId || 0 );
+			var media = imageId ? mediaById[ imageId ] : null;
+
+			if ( item.imageUrl ) {
+				return item.imageUrl;
+			}
+
+			if ( media && media.media_details && media.media_details.sizes && media.media_details.sizes.thumbnail ) {
+				return media.media_details.sizes.thumbnail.source_url;
+			}
+
+			return media && media.source_url ? media.source_url : '';
+		}
 
 		function updateItem( index, changes ) {
 			var next = cloneItems( items );
@@ -165,8 +196,8 @@
 						label: __( 'Distance globale cartes/logo', 'improcestout' ),
 						help: __( 'Regle la longueur des rayons et rapproche ou eloigne toutes les cartes du logo.', 'improcestout' ),
 						value: globalRadius,
-						min: 20,
-						max: 48,
+						min: MIN_RADIUS,
+						max: MAX_RADIUS,
 						onChange: updateGlobalRadius,
 					} ),
 					el(
@@ -177,6 +208,7 @@
 					),
 					items.map( function ( item, index ) {
 						var itemDetails = Array.isArray( item.details ) ? item.details : String( item.details || '' ).split( /\r?\n|\|/ );
+						var imageUrl = getImageUrl( item );
 
 						return el(
 							PanelBody,
@@ -205,6 +237,50 @@
 									updateItem( index, { title: value } );
 								},
 							} ),
+							el(
+								'div',
+								{ className: 'impro-editor-image-control' },
+								el( 'p', { className: 'impro-editor-label' }, __( 'Image du rond', 'improcestout' ) ),
+								imageUrl ? el( 'img', { className: 'impro-editor-image-preview', src: imageUrl, alt: '' } ) : null,
+								el(
+									'div',
+									{ className: 'impro-editor-image-actions' },
+									el(
+										MediaUploadCheck,
+										null,
+										el( MediaUpload, {
+											allowedTypes: [ 'image' ],
+											value: item.imageId || 0,
+											onSelect: function ( media ) {
+												updateItem( index, {
+													imageId: media.id,
+													imageUrl: media.sizes && media.sizes.thumbnail ? media.sizes.thumbnail.url : media.url,
+												} );
+											},
+											render: function ( renderProps ) {
+												return el(
+													Button,
+													{ variant: 'secondary', onClick: renderProps.open },
+													item.imageId ? __( 'Changer l image', 'improcestout' ) : __( 'Choisir une image', 'improcestout' )
+												);
+											},
+										} )
+									),
+									item.imageId ? el(
+										Button,
+										{
+											variant: 'secondary',
+											isDestructive: true,
+											className: 'impro-editor-trash-button',
+											label: __( 'Retirer l image', 'improcestout' ),
+											onClick: function () {
+												updateItem( index, { imageId: 0, imageUrl: '' } );
+											},
+										},
+										el( 'span', { className: 'dashicons dashicons-trash', 'aria-hidden': true } )
+									) : null
+								)
+							),
 							el(
 								'div',
 								{ className: 'impro-editor-detail-list' },
@@ -259,8 +335,8 @@
 							el( RangeControl, {
 								label: __( 'Distance au logo', 'improcestout' ),
 								value: Number( item.radius || 43 ),
-								min: 20,
-								max: 48,
+								min: MIN_RADIUS,
+								max: MAX_RADIUS,
 								onChange: function ( value ) {
 									updateItem( index, { radius: value } );
 								},
@@ -272,29 +348,8 @@
 								max: 8,
 								onChange: function ( value ) {
 									updateItem( index, { cardRotation: value } );
-								},
-							} ),
-							el(
-								MediaUploadCheck,
-								null,
-								el( MediaUpload, {
-									allowedTypes: [ 'image' ],
-									value: item.imageId || 0,
-									onSelect: function ( media ) {
-										updateItem( index, {
-											imageId: media.id,
-											imageUrl: media.sizes && media.sizes.thumbnail ? media.sizes.thumbnail.url : media.url,
-										} );
 									},
-									render: function ( renderProps ) {
-										return el(
-											Button,
-											{ variant: 'secondary', onClick: renderProps.open },
-											item.imageId ? __( 'Changer l image', 'improcestout' ) : __( 'Choisir une image', 'improcestout' )
-										);
-									},
-								} )
-							),
+								} ),
 							el(
 								Button,
 								{ variant: 'link', isDestructive: true, onClick: function () { removeItem( index ); } },
@@ -314,12 +369,12 @@
 						'div',
 						{ className: 'impro-sun-rays', 'aria-hidden': true },
 						items.map( function ( item, index ) {
-							return el( 'span', {
+								return el( 'span', {
 								key: index,
 								className: 'impro-sun-ray',
 								style: {
 									'--ray-angle': Number( item.angle || 0 ) + 'deg',
-									'--ray-length': Math.max( 20, Math.min( 48, Number( item.radius || 43 ) ) ) + '%',
+									'--ray-length': Math.max( MIN_RADIUS, Math.min( MAX_RADIUS, Number( item.radius || 43 ) ) ) + '%',
 								},
 							} );
 						} )
@@ -333,8 +388,9 @@
 						'div',
 						{ className: 'impro-ray-nav', 'aria-label': __( 'Navigation principale', 'improcestout' ) },
 						items.map( function ( item, index ) {
-							var position = getPosition( item );
-							var details = Array.isArray( item.details ) ? item.details : String( item.details || '' ).split( /\r?\n|\|/ );
+						var position = getPosition( item );
+						var details = Array.isArray( item.details ) ? item.details : String( item.details || '' ).split( /\r?\n|\|/ );
+						var imageUrl = getImageUrl( item );
 
 							return el(
 								'div',
@@ -347,7 +403,7 @@
 										'--card-rotation': Number( item.cardRotation || 0 ) + 'deg',
 									},
 								},
-								el( 'span', { className: 'impro-ray-image' }, item.imageUrl ? el( 'img', { src: item.imageUrl, alt: '' } ) : null ),
+								el( 'span', { className: 'impro-ray-image' }, imageUrl ? el( 'img', { src: imageUrl, alt: '' } ) : null ),
 								el(
 									'span',
 									{ className: 'impro-ray-copy' },

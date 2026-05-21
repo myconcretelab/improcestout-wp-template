@@ -281,7 +281,7 @@ if ( ! function_exists( 'improcestout_render_sun_navigation_block' ) ) :
 
 		foreach ( $items as $index => $item ) {
 			$angle  = isset( $item['angle'] ) ? (float) $item['angle'] : ( -135 + ( $index * 54 ) );
-			$radius = isset( $item['radius'] ) ? max( 20, min( 48, (float) $item['radius'] ) ) : 43;
+			$radius = isset( $item['radius'] ) ? max( 20, min( 70, (float) $item['radius'] ) ) : 43;
 
 			$output .= sprintf(
 				'<span class="impro-sun-ray" style="%1$s"></span>',
@@ -317,13 +317,13 @@ if ( ! function_exists( 'improcestout_render_sun_navigation_block' ) ) :
 			$image_id  = absint( $item['imageId'] ?? ( $item['image'] ?? 0 ) );
 			$image_id  = $image_id ? $image_id : ( $page ? get_post_thumbnail_id( $page ) : 0 );
 			$angle     = isset( $item['angle'] ) ? (float) $item['angle'] : ( -135 + ( $index * 54 ) );
-			$radius    = isset( $item['radius'] ) ? max( 20, min( 48, (float) $item['radius'] ) ) : 43;
+			$radius    = isset( $item['radius'] ) ? max( 20, min( 70, (float) $item['radius'] ) ) : 43;
 			$rotation  = isset( $item['cardRotation'] ) ? (float) $item['cardRotation'] : 0;
 			$radians   = deg2rad( $angle );
 			$card_x    = 50 + ( cos( $radians ) * $radius );
 			$card_y    = 50 + ( sin( $radians ) * $radius );
-			$card_x    = max( 8, min( 92, $card_x ) );
-			$card_y    = max( 10, min( 90, $card_y ) );
+			$card_x    = max( -8, min( 108, $card_x ) );
+			$card_y    = max( -8, min( 108, $card_y ) );
 			$card_css  = sprintf( '--card-x:%.3F%%;--card-y:%.3F%%;--card-rotation:%.3Fdeg;', $card_x, $card_y, $rotation );
 			$image     = $image_id ? wp_get_attachment_image( $image_id, 'medium_large', false, array( 'loading' => 0 === $index ? 'eager' : 'lazy' ) ) : '';
 			$detail_html = '';
