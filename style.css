@@ -7,7 +7,7 @@ Description: Custom WordPress block theme for Impro C'est Tout.
 Requires at least: 6.7
 Tested up to: 6.9
 Requires PHP: 7.2
-Version: 1.4
+Version: 1.5
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: improcestout
@@ -301,6 +301,18 @@ body {
 	left: 0;
 }
 
+.impro-sun-stage--dynamic .impro-ray-card {
+	top: var(--card-y);
+	right: auto;
+	bottom: auto;
+	left: var(--card-x);
+	transform: translate(-50%, -50%) rotate(var(--card-rotation));
+}
+
+.impro-sun-stage--dynamic .impro-ray-card:hover {
+	transform: translate(calc(-50% + 4px), calc(-50% + 4px)) rotate(var(--card-rotation));
+}
+
 .impro-ray-image {
 	display: block;
 	overflow: hidden;
@@ -335,6 +347,33 @@ body {
 	font-style: normal;
 	font-weight: 600;
 	line-height: 1.22;
+}
+
+.impro-ray-details {
+	display: flex;
+	flex-wrap: wrap;
+	font-size: 0.77rem;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 1.22;
+}
+
+.impro-ray-details span:not(:last-child)::after {
+	margin: 0 0.42em;
+	color: var(--impro-red);
+	content: "\2605";
+	font-size: 0.72em;
+}
+
+.impro-sun-stage--editor {
+	width: min(100%, 1180px);
+	margin: 0 auto;
+}
+
+.impro-editor-actions {
+	display: grid;
+	gap: 8px;
+	margin-bottom: 12px;
 }
 
 .impro-site-header {
@@ -543,7 +582,19 @@ body {
 		transform: none;
 	}
 
+	.impro-sun-stage--dynamic .impro-ray-card {
+		top: auto;
+		right: auto;
+		bottom: auto;
+		left: auto;
+		transform: none;
+	}
+
 	.impro-ray-card:hover {
+		transform: translate(3px, 3px);
+	}
+
+	.impro-sun-stage--dynamic .impro-ray-card:hover {
 		transform: translate(3px, 3px);
 	}
 
@@ -552,7 +603,8 @@ body {
 	.impro-ray-card--three,
 	.impro-ray-card--four,
 	.impro-ray-card--five,
-	.impro-ray-card--six {
+	.impro-ray-card--six,
+	.impro-ray-card--dynamic {
 		top: auto;
 		right: auto;
 		bottom: auto;
@@ -589,11 +641,24 @@ body {
 		margin-right: -2px;
 	}
 
+	.impro-sun-stage--dynamic .impro-ray-card:nth-child(odd) {
+		justify-self: start;
+		margin-left: -8px;
+		margin-right: 0;
+	}
+
+	.impro-sun-stage--dynamic .impro-ray-card:nth-child(even) {
+		justify-self: end;
+		margin-right: -8px;
+		margin-left: 0;
+	}
+
 	.impro-ray-image {
 		width: 58px;
 	}
 
-	.impro-ray-copy em {
+	.impro-ray-copy em,
+	.impro-ray-details {
 		font-size: 0.76rem;
 	}
 
