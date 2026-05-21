@@ -107,11 +107,18 @@ body {
 .impro-home {
 	display: grid;
 	position: relative;
-	min-height: 100svh;
+	min-height: calc(100svh - 94px);
 	margin-top: 0 !important;
 	overflow: hidden;
 	place-items: center;
 	padding: clamp(20px, 4vw, 54px) !important;
+}
+
+.impro-home .wp-block-post-content {
+	display: grid;
+	width: 100%;
+	max-width: none !important;
+	place-items: center;
 }
 
 .impro-home-topbar {
@@ -158,8 +165,8 @@ body {
 
 .impro-sun-stage {
 	position: relative;
-	width: min(96vw, 1180px);
-	max-width: min(96vw, 1180px) !important;
+	width: min(96vw, 1180px, calc(118svh - 142px));
+	max-width: min(96vw, 1180px, calc(118svh - 142px)) !important;
 	aspect-ratio: 1.18;
 }
 
