@@ -548,37 +548,44 @@ body {
 .impro-site-header::before {
 	position: absolute;
 	z-index: -1;
-	inset: 0 0 -14px;
+	inset: 0 0 -20px;
 	background:
 		linear-gradient(102deg, color-mix(in srgb, var(--impro-paper) 94%, white), color-mix(in srgb, var(--impro-cream) 88%, white)),
 		var(--impro-paper);
-	clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), 72% calc(100% - 15px), 38% calc(100% - 24px), 0 100%);
+	clip-path: polygon(0 0, 100% 0, 100% calc(100% - 32px), 78% calc(100% - 17px), 45% calc(100% - 31px), 0 100%);
 	content: "";
 }
 
 .impro-site-header::after {
 	position: absolute;
-	right: 0;
-	bottom: -11px;
-	left: 0;
-	height: 17px;
+	right: -3vw;
+	bottom: -18px;
+	left: -3vw;
+	height: 29px;
 	background:
-		radial-gradient(ellipse at 7% 50%, color-mix(in srgb, var(--impro-ink) 85%, #5a2219) 0 18px, transparent 19px),
-		radial-gradient(ellipse at 31% 44%, color-mix(in srgb, var(--impro-ink) 78%, #6b2d1f) 0 12px, transparent 13px),
-		radial-gradient(ellipse at 67% 58%, color-mix(in srgb, var(--impro-ink) 82%, #4b1b14) 0 16px, transparent 17px),
-		linear-gradient(90deg, #2b0808 0%, #5a2318 24%, #32100c 52%, #6a2b1d 78%, #250706 100%);
-	clip-path: polygon(0 42%, 8% 34%, 17% 50%, 28% 31%, 39% 45%, 50% 36%, 61% 53%, 74% 31%, 86% 44%, 100% 26%, 100% 70%, 88% 61%, 74% 75%, 60% 63%, 45% 78%, 31% 61%, 16% 73%, 0 64%);
+		radial-gradient(circle at 9% 48%, #6b2b1d 0 2px, transparent 2.5px),
+		radial-gradient(circle at 19% 62%, #1d0505 0 1.5px, transparent 2px),
+		radial-gradient(circle at 36% 44%, #7a3824 0 2px, transparent 2.5px),
+		radial-gradient(circle at 53% 58%, #210707 0 1.5px, transparent 2px),
+		radial-gradient(circle at 76% 47%, #72321f 0 2px, transparent 2.5px),
+		radial-gradient(circle at 91% 61%, #1d0505 0 1.5px, transparent 2px),
+		linear-gradient(90deg, #210605 0%, #522015 18%, #2a0b08 37%, #73311f 55%, #35100b 73%, #6b2b1b 88%, #220605 100%);
+	clip-path: polygon(0 44%, 4% 30%, 8% 56%, 13% 36%, 18% 50%, 24% 28%, 30% 58%, 36% 32%, 42% 47%, 49% 25%, 56% 55%, 63% 34%, 70% 60%, 78% 29%, 86% 51%, 94% 33%, 100% 46%, 100% 78%, 96% 64%, 90% 82%, 83% 66%, 75% 86%, 67% 69%, 58% 82%, 50% 65%, 42% 88%, 34% 67%, 25% 83%, 17% 62%, 9% 78%, 0 63%);
 	content: "";
+	filter: drop-shadow(0 2px 0 color-mix(in srgb, var(--impro-ink) 35%, transparent));
 	pointer-events: none;
+	transform: rotate(-1.5deg);
+	transform-origin: center;
 }
 
 .impro-site-header__inner {
+	position: relative;
 	display: grid !important;
 	grid-template-columns: auto minmax(0, 1fr);
 	gap: clamp(16px, 3vw, 38px);
 	align-items: center;
 	padding-top: 18px;
-	padding-bottom: 28px;
+	padding-bottom: 34px;
 	transition: padding 220ms ease;
 }
 
@@ -609,7 +616,8 @@ body {
 }
 
 .impro-site-menus {
-	gap: clamp(12px, 2vw, 24px);
+	display: block !important;
+	min-width: 0;
 	justify-content: flex-end;
 }
 
@@ -617,20 +625,49 @@ body {
 	gap: clamp(6px, 0.8vw, 11px);
 }
 
+.impro-site-nav--primary {
+	justify-content: flex-end;
+}
+
 .impro-site-nav .wp-block-navigation-item__content {
-	padding: 0.24rem 0.36rem;
+	position: relative;
+	display: inline-block;
+	padding: 0.22rem 0.34rem;
 	border-bottom: 2px solid transparent;
-	font-family: var(--wp--preset--font-family--fira-sans);
-	font-size: 0.86rem;
-	font-weight: 550;
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: 0.78rem;
+	font-weight: 520;
 	letter-spacing: 0;
 	text-transform: none;
 	transition: color 160ms ease, border-color 160ms ease, background 160ms ease, transform 160ms ease, padding 220ms ease;
 }
 
-.impro-site-nav .wp-block-navigation-item__content:hover {
+.impro-site-nav--primary .wp-block-navigation-item__content::before {
+	position: absolute;
+	right: 0.18rem;
+	bottom: 0.1rem;
+	left: 0.18rem;
+	z-index: -1;
+	height: 0.38em;
+	background: color-mix(in srgb, var(--impro-red) 18%, transparent);
+	clip-path: polygon(0 58%, 18% 42%, 34% 62%, 52% 37%, 70% 56%, 100% 44%, 100% 100%, 0 100%);
+	content: "";
+	opacity: 0.72;
+	transition: background 160ms ease, opacity 160ms ease;
+}
+
+.impro-site-nav--primary .wp-block-navigation-item:nth-child(odd) .wp-block-navigation-item__content {
+	transform: rotate(-1.2deg);
+}
+
+.impro-site-nav--primary .wp-block-navigation-item:nth-child(even) .wp-block-navigation-item__content {
+	transform: rotate(0.8deg);
+}
+
+.impro-site-nav--primary .wp-block-navigation-item__content:hover {
 	border-color: var(--impro-red);
 	color: var(--impro-red-dark);
+	transform: rotate(-1.5deg) translateY(-1px);
 }
 
 .impro-site-nav--primary .current-menu-item > .wp-block-navigation-item__content,
@@ -646,8 +683,18 @@ body {
 	transform: rotate(-3deg);
 }
 
+.impro-site-nav--primary .current-menu-item > .wp-block-navigation-item__content::before,
+.impro-site-nav--primary .current-menu-ancestor > .wp-block-navigation-item__content::before,
+.impro-site-nav--primary .wp-block-navigation-item__content[aria-current="page"]::before,
+.impro-site-nav--primary .wp-block-navigation-item__content.is-current-path::before {
+	opacity: 0;
+}
+
 nav.impro-site-nav--secondary {
-	position: relative;
+	position: absolute;
+	right: clamp(4px, 2vw, 30px);
+	bottom: -28px;
+	z-index: 2;
 	padding: 7px 12px 7px 22px;
 	border: 3px solid var(--impro-ink);
 	border-radius: 999px 14px 18px 999px;
@@ -656,8 +703,8 @@ nav.impro-site-nav--secondary {
 		var(--impro-red);
 	box-shadow: 5px 5px 0 #4b1b13;
 	color: var(--impro-paper);
-	transform: rotate(-2deg);
-	transition: transform 220ms ease, padding 220ms ease, box-shadow 220ms ease;
+	transform: rotate(-3.5deg);
+	transition: right 220ms ease, bottom 220ms ease, transform 220ms ease, padding 220ms ease, box-shadow 220ms ease;
 }
 
 nav.impro-site-nav--secondary::before {
@@ -682,6 +729,10 @@ nav.impro-site-nav--secondary::before {
 	font-weight: 650;
 }
 
+.impro-site-nav--secondary .wp-block-navigation-item__content:hover {
+	color: var(--impro-cream);
+}
+
 .impro-site-nav--secondary .wp-block-navigation-item + .wp-block-navigation-item::before {
 	color: var(--impro-paper);
 	content: "\2605";
@@ -695,7 +746,7 @@ nav.impro-site-nav--secondary::before {
 
 .impro-site-header.is-condensed .impro-site-header__inner {
 	padding-top: 7px;
-	padding-bottom: 15px;
+	padding-bottom: 24px;
 }
 
 .impro-site-header.is-condensed .custom-logo {
@@ -719,10 +770,12 @@ nav.impro-site-nav--secondary::before {
 }
 
 .impro-site-header.is-condensed nav.impro-site-nav--secondary {
+	right: clamp(2px, 1.4vw, 20px);
+	bottom: -24px;
 	padding-top: 5px;
 	padding-bottom: 5px;
 	box-shadow: 3px 3px 0 #4b1b13;
-	transform: rotate(-1deg);
+	transform: rotate(-3deg);
 }
 
 .impro-page-main {
@@ -921,7 +974,7 @@ nav.impro-site-nav--secondary::before {
 		grid-template-columns: 1fr;
 		gap: 10px;
 		padding-top: 10px;
-		padding-bottom: 20px;
+		padding-bottom: 32px;
 	}
 
 	.impro-site-brand {
@@ -939,7 +992,7 @@ nav.impro-site-nav--secondary::before {
 	}
 
 	.impro-site-menus {
-		display: grid !important;
+		display: block !important;
 		justify-content: stretch;
 		width: 100%;
 		gap: 8px;
@@ -950,8 +1003,11 @@ nav.impro-site-nav--secondary::before {
 	}
 
 	nav.impro-site-nav--secondary {
+		right: 50%;
+		bottom: -26px;
 		justify-self: center;
 		padding: 6px 12px 6px 20px;
+		transform: translateX(50%) rotate(-3deg);
 	}
 
 	.impro-site-nav .wp-block-navigation-item__content {
@@ -960,7 +1016,13 @@ nav.impro-site-nav--secondary::before {
 
 	.impro-site-header.is-condensed .impro-site-header__inner {
 		padding-top: 6px;
-		padding-bottom: 13px;
+		padding-bottom: 25px;
+	}
+
+	.impro-site-header.is-condensed nav.impro-site-nav--secondary {
+		right: 50%;
+		bottom: -23px;
+		transform: translateX(50%) rotate(-3deg);
 	}
 
 }
