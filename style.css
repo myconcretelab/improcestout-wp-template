@@ -1163,14 +1163,14 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 	margin-top: 0;
 }
 
-.impro-tf :where(.impro-tf-section, .impro-tf-formats, .impro-tf-hero__copy) > * {
+.impro-tf :where(.impro-tf-section, .impro-tf-formats) > * {
 	max-width: none !important;
 	margin-block-start: 0;
 	margin-right: 0 !important;
 	margin-left: 0 !important;
 }
 
-.impro-tf-hero {
+.wp-block-cover.is-style-theatre-hero {
 	position: relative;
 	display: grid;
 	width: 100vw;
@@ -1186,30 +1186,7 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 	padding: 0;
 }
 
-.impro-tf-hero__media {
-	position: absolute;
-	inset: 0;
-	z-index: -2;
-	min-height: 0;
-}
-
-.impro-tf-hero__media::after {
-	position: absolute;
-	inset: 0;
-	background:
-		linear-gradient(90deg, color-mix(in srgb, var(--impro-ink) 76%, transparent) 0 34%, color-mix(in srgb, var(--impro-red) 38%, transparent) 62%, color-mix(in srgb, var(--impro-ink) 34%, transparent)),
-		linear-gradient(180deg, color-mix(in srgb, var(--impro-paper) 12%, transparent), color-mix(in srgb, var(--impro-ink) 54%, transparent));
-	content: "";
-}
-
-.impro-tf-hero__media img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	object-position: center 58%;
-}
-
-.impro-tf-hero .wp-block-cover__background {
+.wp-block-cover.is-style-theatre-hero .wp-block-cover__background {
 	position: absolute;
 	inset: 0;
 	background:
@@ -1218,25 +1195,19 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 	opacity: 1 !important;
 }
 
-.impro-tf-hero .wp-block-cover__image-background {
+.wp-block-cover.is-style-theatre-hero .wp-block-cover__image-background {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 	object-position: center 58%;
 }
 
-.impro-tf-hero .wp-block-cover__inner-container {
-	display: grid;
-	width: min(100%, var(--wp--style--global--wide-size));
-	min-height: inherit;
-	margin: 0 auto;
-}
-
-.impro-tf-hero__copy {
+.wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-container {
 	position: relative;
 	display: grid;
 	align-content: end;
-	width: 100%;
+	box-sizing: border-box;
+	width: min(100%, var(--wp--style--global--wide-size));
 	min-height: inherit;
 	margin: 0 auto;
 	gap: 18px;
@@ -1245,16 +1216,7 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 	color: var(--impro-paper);
 }
 
-body.page-id-23 .impro-tf-hero__copy {
-	align-content: start;
-	padding-top: calc(var(--impro-header-height) + clamp(32px, 5vw, 64px));
-}
-
-.impro-tf-hero__copy.wp-block-group {
-	box-sizing: border-box;
-}
-
-.impro-tf-hero__copy::after {
+.wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-container::after {
 	position: absolute;
 	right: var(--wp--style--root--padding-right);
 	bottom: clamp(34px, 7vw, 78px);
@@ -1268,6 +1230,7 @@ body.page-id-23 .impro-tf-hero__copy {
 	transform: rotate(10deg);
 }
 
+.is-style-theatre-kicker,
 .impro-tf-kicker,
 .impro-tf-section__heading p {
 	margin: 0;
@@ -1278,7 +1241,8 @@ body.page-id-23 .impro-tf-hero__copy {
 	text-transform: uppercase;
 }
 
-.impro-tf-hero h1,
+.wp-block-cover.is-style-theatre-hero h1,
+.is-style-theatre-hero-title,
 .impro-tf-section h2,
 .impro-tf-cta h2 {
 	margin: 0;
@@ -1289,19 +1253,21 @@ body.page-id-23 .impro-tf-hero__copy {
 	text-transform: uppercase;
 }
 
-.impro-tf-hero h1 {
+.wp-block-cover.is-style-theatre-hero h1,
+.is-style-theatre-hero-title {
 	max-width: min(13ch, 860px);
 	font-size: clamp(2.6rem, 7vw, 6.7rem);
 	text-shadow: 4px 4px 0 color-mix(in srgb, var(--impro-ink) 58%, transparent);
 }
 
-.impro-tf-hero p {
+.wp-block-cover.is-style-theatre-hero p {
 	max-width: 36rem;
 	margin: 0;
 	font-weight: 520;
 }
 
-.impro-tf-hero__copy > p:not(.impro-tf-kicker) {
+.wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-container > p:not(.is-style-theatre-kicker, .is-style-theatre-tag),
+.is-style-theatre-framed-text {
 	padding: 0.72rem 0.9rem;
 	border: 2px solid color-mix(in srgb, var(--impro-paper) 78%, transparent);
 	background: color-mix(in srgb, var(--impro-ink) 62%, transparent);
@@ -1309,15 +1275,8 @@ body.page-id-23 .impro-tf-hero__copy {
 	color: var(--impro-paper);
 }
 
-.impro-tf-actions {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 9px;
-	margin-top: 10px;
-}
-
-.impro-tf-actions p,
-.impro-tf-themes .impro-tf-theme-tag {
+.impro-tf-themes .impro-tf-theme-tag,
+.is-style-theatre-tag {
 	display: inline-flex;
 	align-items: center;
 	min-height: 34px;
@@ -1335,13 +1294,13 @@ body.page-id-23 .impro-tf-hero__copy {
 	transform: rotate(var(--tag-tilt, -1deg));
 }
 
-.impro-tf-actions p:nth-child(2),
-.impro-tf-themes .impro-tf-theme-tag:nth-child(2n) {
+.impro-tf-themes .impro-tf-theme-tag:nth-child(2n),
+.is-style-theatre-tag:nth-child(2n) {
 	--tag-tilt: 1.4deg;
 }
 
-.impro-tf-actions p:nth-child(3),
-.impro-tf-themes .impro-tf-theme-tag:nth-child(3n) {
+.impro-tf-themes .impro-tf-theme-tag:nth-child(3n),
+.is-style-theatre-tag:nth-child(3n) {
 	--tag-tilt: -2deg;
 	background: var(--impro-cream);
 }
@@ -1785,35 +1744,35 @@ body.page-id-23 .impro-tf-hero__copy {
 		gap: 36px;
 	}
 
-	.impro-tf-hero,
+	.wp-block-cover.is-style-theatre-hero,
 	.impro-tf-info,
 	.impro-tf-section,
 	.impro-tf-cta {
 		grid-template-columns: 1fr;
 	}
 
-	.impro-tf-hero {
+	.wp-block-cover.is-style-theatre-hero {
 		min-height: clamp(520px, 78svh, 680px);
 	}
 
-	.impro-tf-hero__media::after,
-	.impro-tf-hero .wp-block-cover__background {
+	.wp-block-cover.is-style-theatre-hero .wp-block-cover__background {
 		background:
 			linear-gradient(180deg, color-mix(in srgb, var(--impro-ink) 24%, transparent), color-mix(in srgb, var(--impro-ink) 72%, transparent)),
 			linear-gradient(90deg, color-mix(in srgb, var(--impro-red) 28%, transparent), transparent);
 	}
 
-	.impro-tf-hero__copy {
+	.wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-container {
 		align-content: start;
 		padding-top: 42px;
 		padding-bottom: 46px;
 	}
 
-	.impro-tf-hero__copy::after {
+	.wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-container::after {
 		display: none;
 	}
 
-	.impro-tf-hero h1 {
+	.wp-block-cover.is-style-theatre-hero h1,
+	.is-style-theatre-hero-title {
 		max-width: 10ch;
 		font-size: clamp(2.4rem, 12vw, 4.2rem);
 	}

@@ -15,40 +15,36 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 
 <!-- wp:group {"className":"impro-tf","layout":{"type":"constrained"}} -->
 <div class="wp-block-group impro-tf">
-	<!-- wp:cover {"url":"<?php echo esc_url( $theatre_forum_image ); ?>","dimRatio":0,"isDark":false,"align":"full","className":"impro-tf-hero","layout":{"type":"constrained"}} -->
-	<div class="wp-block-cover alignfull is-light impro-tf-hero">
+	<!-- wp:cover {"url":"<?php echo esc_url( $theatre_forum_image ); ?>","dimRatio":0,"isDark":false,"align":"full","className":"is-style-theatre-hero","layout":{"type":"constrained"}} -->
+	<div class="wp-block-cover alignfull is-light is-style-theatre-hero">
 		<span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span>
 		<img class="wp-block-cover__image-background" alt="" src="<?php echo esc_url( $theatre_forum_image ); ?>" data-object-fit="cover"/>
 		<div class="wp-block-cover__inner-container">
-			<!-- wp:group {"className":"impro-tf-hero__copy","layout":{"type":"constrained"}} -->
-			<div class="wp-block-group impro-tf-hero__copy">
-				<!-- wp:paragraph {"className":"impro-tf-kicker"} -->
-				<p class="impro-tf-kicker">Théâtre participatif</p>
+			<!-- wp:paragraph {"className":"is-style-theatre-kicker"} -->
+			<p class="is-style-theatre-kicker">Théâtre participatif</p>
+			<!-- /wp:paragraph -->
+
+			<!-- wp:heading {"level":1,"className":"is-style-theatre-hero-title"} -->
+			<h1 class="wp-block-heading is-style-theatre-hero-title">Face aux problèmes, on expérimente des solutions.</h1>
+			<!-- /wp:heading -->
+
+			<!-- wp:paragraph {"className":"is-style-theatre-framed-text"} -->
+			<p class="is-style-theatre-framed-text">Le théâtre forum met une situation sous les yeux du groupe, ouvre le débat et invite chacun à devenir spect-acteur pour tester d'autres façons d'agir.</p>
+			<!-- /wp:paragraph -->
+
+			<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap"}} -->
+			<div class="wp-block-group">
+				<!-- wp:paragraph {"className":"is-style-theatre-tag"} -->
+				<p class="is-style-theatre-tag">Pouvoir d'agir</p>
 				<!-- /wp:paragraph -->
 
-				<!-- wp:heading {"level":1} -->
-				<h1 class="wp-block-heading">Face aux problèmes, on expérimente des solutions.</h1>
-				<!-- /wp:heading -->
-
-				<!-- wp:paragraph -->
-				<p>Le théâtre forum met une situation sous les yeux du groupe, ouvre le débat et invite chacun à devenir spect-acteur pour tester d'autres façons d'agir.</p>
+				<!-- wp:paragraph {"className":"is-style-theatre-tag"} -->
+				<p class="is-style-theatre-tag">Cohésion sociale</p>
 				<!-- /wp:paragraph -->
 
-				<!-- wp:group {"className":"impro-tf-actions","layout":{"type":"flex","flexWrap":"wrap"}} -->
-				<div class="wp-block-group impro-tf-actions">
-					<!-- wp:paragraph -->
-					<p>Pouvoir d'agir</p>
-					<!-- /wp:paragraph -->
-
-					<!-- wp:paragraph -->
-					<p>Cohésion sociale</p>
-					<!-- /wp:paragraph -->
-
-					<!-- wp:paragraph -->
-					<p>Transformation sociale</p>
-					<!-- /wp:paragraph -->
-				</div>
-				<!-- /wp:group -->
+				<!-- wp:paragraph {"className":"is-style-theatre-tag"} -->
+				<p class="is-style-theatre-tag">Transformation sociale</p>
+				<!-- /wp:paragraph -->
 			</div>
 			<!-- /wp:group -->
 		</div>
