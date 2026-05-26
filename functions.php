@@ -500,6 +500,953 @@ if ( ! function_exists( 'improcestout_render_intervenants_shortcode' ) ) :
 endif;
 add_shortcode( 'improcestout_intervenants', 'improcestout_render_intervenants_shortcode' );
 
+if ( ! function_exists( 'improcestout_get_formation_icon_choices' ) ) :
+	/**
+	 * Returns the controlled icon library for formation info rows.
+	 *
+	 * @return array
+	 */
+	function improcestout_get_formation_icon_choices() {
+		return array(
+			'clock'     => __( 'Horloge', 'improcestout' ),
+			'target'    => __( 'Cible', 'improcestout' ),
+			'users'     => __( 'Groupe', 'improcestout' ),
+			'suitcase'  => __( 'Mallette', 'improcestout' ),
+			'clipboard' => __( 'Evaluation', 'improcestout' ),
+			'building'  => __( 'Batiment', 'improcestout' ),
+			'tag'       => __( 'Prix', 'improcestout' ),
+			'funding'   => __( 'Financement', 'improcestout' ),
+			'calendar'  => __( 'Calendrier', 'improcestout' ),
+			'check'     => __( 'Validation', 'improcestout' ),
+		);
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_get_formation_icon_svg' ) ) :
+	/**
+	 * Returns an SVG icon from the controlled icon library.
+	 *
+	 * @param string $icon Icon slug.
+	 * @return string
+	 */
+	function improcestout_get_formation_icon_svg( $icon ) {
+		$icon = sanitize_key( $icon );
+		$svg  = array(
+			'clock'     => '<circle cx="12" cy="12" r="9"></circle><path d="M12 6v6l4-3"></path>',
+			'target'    => '<circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="2"></circle><path d="M12 1v3M12 20v3M1 12h3M20 12h3"></path>',
+			'users'     => '<path d="M16 20v-2a4 4 0 0 0-8 0v2"></path><circle cx="12" cy="8" r="4"></circle><path d="M4 20v-1a4 4 0 0 1 3-3.8M20 20v-1a4 4 0 0 0-3-3.8"></path>',
+			'suitcase'  => '<rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"></path>',
+			'clipboard' => '<path d="M8 4h8v3H8z"></path><rect x="5" y="5" width="14" height="17" rx="2"></rect><path d="M9 12h6M9 17h6"></path>',
+			'building'  => '<path d="M4 21h16"></path><path d="M6 21V7l8-4v18"></path><path d="M14 9h4v12"></path><path d="M9 10h2M9 14h2M9 18h2"></path>',
+			'tag'       => '<path d="M20 13 13 20 4 11V4h7z"></path><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M13 8h5"></path>',
+			'funding'   => '<circle cx="10" cy="10" r="7"></circle><path d="m15 15 6 6"></path><path d="M10 6v8M7 10h6"></path>',
+			'calendar'  => '<rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18"></path>',
+			'check'     => '<path d="M20 6 9 17l-5-5"></path><path d="M4 21h16"></path>',
+		);
+
+		if ( empty( $svg[ $icon ] ) ) {
+			$icon = 'check';
+		}
+
+		return '<svg class="impro-formation-info__svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">' . $svg[ $icon ] . '</svg>';
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_get_default_formation_info_items' ) ) :
+	/**
+	 * Returns the default shared information rows for formations.
+	 *
+	 * @return array
+	 */
+	function improcestout_get_default_formation_info_items() {
+		return array(
+			array( 'id' => 'duree', 'title' => __( 'Duree', 'improcestout' ), 'icon' => 'clock', 'default' => '', 'order' => 10, 'active' => true ),
+			array( 'id' => 'publics', 'title' => __( 'Cibles / publics vises', 'improcestout' ), 'icon' => 'target', 'default' => '', 'order' => 20, 'active' => true ),
+			array( 'id' => 'participants', 'title' => __( 'Nombre de participants', 'improcestout' ), 'icon' => 'users', 'default' => '', 'order' => 30, 'active' => true ),
+			array( 'id' => 'prerequis', 'title' => __( 'Prerequis', 'improcestout' ), 'icon' => 'suitcase', 'default' => '', 'order' => 40, 'active' => true ),
+			array( 'id' => 'evaluation', 'title' => __( 'Modalites d\'evaluation', 'improcestout' ), 'icon' => 'clipboard', 'default' => '', 'order' => 50, 'active' => true ),
+			array( 'id' => 'format', 'title' => __( 'Format', 'improcestout' ), 'icon' => 'building', 'default' => '', 'order' => 60, 'active' => true ),
+			array( 'id' => 'prix', 'title' => __( 'Prix', 'improcestout' ), 'icon' => 'tag', 'default' => '', 'order' => 70, 'active' => true ),
+			array( 'id' => 'financement', 'title' => __( 'Financement', 'improcestout' ), 'icon' => 'funding', 'default' => '', 'order' => 80, 'active' => true ),
+		);
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_normalize_formation_info_item' ) ) :
+	/**
+	 * Sanitizes a shared formation information row.
+	 *
+	 * @param array  $item Formation info item.
+	 * @param string $fallback_id Fallback item ID.
+	 * @return array|null
+	 */
+	function improcestout_normalize_formation_info_item( $item, $fallback_id = '' ) {
+		$item    = is_array( $item ) ? $item : array();
+		$choices = improcestout_get_formation_icon_choices();
+		$id      = sanitize_key( $item['id'] ?? $fallback_id );
+		$title   = sanitize_text_field( $item['title'] ?? '' );
+
+		if ( ! $id && $title ) {
+			$id = sanitize_key( sanitize_title( $title ) );
+		}
+
+		if ( ! $id || ! $title ) {
+			return null;
+		}
+
+		$icon = sanitize_key( $item['icon'] ?? 'check' );
+		if ( ! isset( $choices[ $icon ] ) ) {
+			$icon = 'check';
+		}
+
+		return array(
+			'id'      => $id,
+			'title'   => $title,
+			'icon'    => $icon,
+			'default' => sanitize_textarea_field( $item['default'] ?? '' ),
+			'order'   => isset( $item['order'] ) ? (int) $item['order'] : 0,
+			'active'  => rest_sanitize_boolean( $item['active'] ?? false ),
+		);
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_get_formation_info_items' ) ) :
+	/**
+	 * Returns shared formation information rows.
+	 *
+	 * @param bool $include_inactive Whether inactive rows should be returned.
+	 * @return array
+	 */
+	function improcestout_get_formation_info_items( $include_inactive = false ) {
+		$stored = get_option( 'improcestout_formation_info_items', null );
+		$raw    = is_array( $stored ) ? $stored : improcestout_get_default_formation_info_items();
+		$items  = array();
+
+		foreach ( $raw as $item ) {
+			$normalized = improcestout_normalize_formation_info_item( $item );
+
+			if ( $normalized && ( $include_inactive || $normalized['active'] ) ) {
+				$items[] = $normalized;
+			}
+		}
+
+		usort(
+			$items,
+			static function ( $a, $b ) {
+				if ( $a['order'] === $b['order'] ) {
+					return strnatcasecmp( $a['title'], $b['title'] );
+				}
+
+				return $a['order'] <=> $b['order'];
+			}
+		);
+
+		return $items;
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_get_formation_info_items_by_id' ) ) :
+	/**
+	 * Returns shared formation information rows keyed by ID.
+	 *
+	 * @param bool $include_inactive Whether inactive rows should be returned.
+	 * @return array
+	 */
+	function improcestout_get_formation_info_items_by_id( $include_inactive = false ) {
+		$items = array();
+
+		foreach ( improcestout_get_formation_info_items( $include_inactive ) as $item ) {
+			$items[ $item['id'] ] = $item;
+		}
+
+		return $items;
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_register_formations' ) ) :
+	/**
+	 * Registers the formation content type, taxonomy and public metas.
+	 *
+	 * @return void
+	 */
+	function improcestout_register_formations() {
+		register_post_type(
+			'formation',
+			array(
+				'labels'       => array(
+					'name'                  => _x( 'Formations', 'Post type general name', 'improcestout' ),
+					'singular_name'         => _x( 'Formation', 'Post type singular name', 'improcestout' ),
+					'menu_name'             => _x( 'Formations', 'Admin Menu text', 'improcestout' ),
+					'name_admin_bar'        => _x( 'Formation', 'Add New on Toolbar', 'improcestout' ),
+					'add_new'               => __( 'Ajouter', 'improcestout' ),
+					'add_new_item'          => __( 'Ajouter une formation', 'improcestout' ),
+					'new_item'              => __( 'Nouvelle formation', 'improcestout' ),
+					'edit_item'             => __( 'Modifier la formation', 'improcestout' ),
+					'view_item'             => __( 'Voir la formation', 'improcestout' ),
+					'all_items'             => __( 'Toutes les formations', 'improcestout' ),
+					'search_items'          => __( 'Rechercher des formations', 'improcestout' ),
+					'not_found'             => __( 'Aucune formation trouvee.', 'improcestout' ),
+					'not_found_in_trash'    => __( 'Aucune formation dans la corbeille.', 'improcestout' ),
+					'featured_image'        => __( 'Image de la formation', 'improcestout' ),
+					'set_featured_image'    => __( 'Ajouter une image', 'improcestout' ),
+					'remove_featured_image' => __( 'Retirer l\'image', 'improcestout' ),
+					'use_featured_image'    => __( 'Utiliser comme image', 'improcestout' ),
+				),
+				'public'       => true,
+				'show_in_rest' => true,
+				'menu_icon'    => 'dashicons-welcome-learn-more',
+				'has_archive'  => true,
+				'rewrite'      => array( 'slug' => 'formations' ),
+				'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes' ),
+			)
+		);
+
+		register_taxonomy(
+			'categorie_formation',
+			array( 'formation', 'page' ),
+			array(
+				'labels'            => array(
+					'name'                       => _x( 'Categories de formations', 'Taxonomy general name', 'improcestout' ),
+					'singular_name'              => _x( 'Categorie de formations', 'Taxonomy singular name', 'improcestout' ),
+					'search_items'               => __( 'Rechercher des categories', 'improcestout' ),
+					'all_items'                  => __( 'Toutes les categories', 'improcestout' ),
+					'parent_item'                => __( 'Categorie parente', 'improcestout' ),
+					'parent_item_colon'          => __( 'Categorie parente :', 'improcestout' ),
+					'edit_item'                  => __( 'Modifier la categorie', 'improcestout' ),
+					'update_item'                => __( 'Mettre a jour la categorie', 'improcestout' ),
+					'add_new_item'               => __( 'Ajouter une categorie', 'improcestout' ),
+					'new_item_name'              => __( 'Nom de la nouvelle categorie', 'improcestout' ),
+					'menu_name'                  => __( 'Categories', 'improcestout' ),
+					'separate_items_with_commas' => __( 'Separer les categories par des virgules', 'improcestout' ),
+					'choose_from_most_used'      => __( 'Choisir parmi les plus utilisees', 'improcestout' ),
+				),
+				'hierarchical'      => true,
+				'public'            => true,
+				'show_admin_column' => true,
+				'show_in_rest'      => true,
+				'rewrite'           => array( 'slug' => 'formations-categorie' ),
+			)
+		);
+
+		foreach ( array( 'subtitle', 'hook' ) as $meta_key ) {
+			register_post_meta(
+				'formation',
+				'improcestout_formation_' . $meta_key,
+				array(
+					'type'              => 'string',
+					'single'            => true,
+					'show_in_rest'      => true,
+					'sanitize_callback' => 'hook' === $meta_key ? 'sanitize_textarea_field' : 'sanitize_text_field',
+					'auth_callback'     => static function () {
+						return current_user_can( 'edit_posts' );
+					},
+				)
+			);
+		}
+
+		register_post_meta(
+			'formation',
+			'improcestout_formation_info_values',
+			array(
+				'type'              => 'object',
+				'single'            => true,
+				'show_in_rest'      => false,
+				'sanitize_callback' => 'improcestout_sanitize_formation_info_values',
+				'auth_callback'     => static function () {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
+	}
+endif;
+add_action( 'init', 'improcestout_register_formations' );
+
+if ( ! function_exists( 'improcestout_flush_formations_rewrite_rules_once' ) ) :
+	/**
+	 * Flushes rewrite rules once after introducing the formations archive.
+	 *
+	 * @return void
+	 */
+	function improcestout_flush_formations_rewrite_rules_once() {
+		if ( get_option( 'improcestout_formations_rewrite_flushed' ) ) {
+			return;
+		}
+
+		flush_rewrite_rules( false );
+		update_option( 'improcestout_formations_rewrite_flushed', wp_get_theme()->get( 'Version' ), false );
+	}
+endif;
+add_action( 'admin_init', 'improcestout_flush_formations_rewrite_rules_once' );
+
+if ( ! function_exists( 'improcestout_sanitize_formation_info_values' ) ) :
+	/**
+	 * Sanitizes formation-specific information values.
+	 *
+	 * @param mixed $values Raw meta values.
+	 * @return array
+	 */
+	function improcestout_sanitize_formation_info_values( $values ) {
+		$values = is_array( $values ) ? $values : array();
+		$items  = improcestout_get_formation_info_items_by_id( true );
+		$output = array();
+
+		foreach ( $values as $id => $value ) {
+			$id = sanitize_key( $id );
+
+			if ( ! isset( $items[ $id ] ) || ! is_array( $value ) ) {
+				continue;
+			}
+
+			$output[ $id ] = array(
+				'enabled'     => rest_sanitize_boolean( $value['enabled'] ?? false ),
+				'use_default' => rest_sanitize_boolean( $value['use_default'] ?? false ),
+				'text'        => sanitize_textarea_field( $value['text'] ?? '' ),
+			);
+		}
+
+		return $output;
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_add_formation_admin_menu' ) ) :
+	/**
+	 * Adds the shared formation info settings page.
+	 *
+	 * @return void
+	 */
+	function improcestout_add_formation_admin_menu() {
+		add_submenu_page(
+			'edit.php?post_type=formation',
+			__( 'Rubriques d\'infos', 'improcestout' ),
+			__( 'Rubriques d\'infos', 'improcestout' ),
+			'edit_posts',
+			'improcestout-formation-info',
+			'improcestout_render_formation_info_admin_page'
+		);
+	}
+endif;
+add_action( 'admin_menu', 'improcestout_add_formation_admin_menu' );
+
+if ( ! function_exists( 'improcestout_save_formation_info_admin_page' ) ) :
+	/**
+	 * Saves the shared formation info settings page.
+	 *
+	 * @return void
+	 */
+	function improcestout_save_formation_info_admin_page() {
+		if ( empty( $_POST['improcestout_formation_info_settings_nonce'] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( sanitize_key( $_POST['improcestout_formation_info_settings_nonce'] ), 'improcestout_save_formation_info_settings' ) || ! current_user_can( 'edit_posts' ) ) {
+			return;
+		}
+
+		$raw_items = isset( $_POST['formation_info_items'] ) && is_array( $_POST['formation_info_items'] ) ? wp_unslash( $_POST['formation_info_items'] ) : array();
+		$items     = array();
+
+		foreach ( $raw_items as $fallback_id => $raw_item ) {
+			if ( ! empty( $raw_item['delete'] ) ) {
+				continue;
+			}
+
+			$raw_item['id']     = sanitize_key( $raw_item['id'] ?? $fallback_id );
+			$raw_item['active'] = ! empty( $raw_item['active'] );
+			$item               = improcestout_normalize_formation_info_item( $raw_item, $fallback_id );
+
+			if ( ! $item ) {
+				continue;
+			}
+
+			$base_id = $item['id'];
+			$suffix  = 2;
+
+			while ( isset( $items[ $item['id'] ] ) ) {
+				$item['id'] = $base_id . '-' . $suffix;
+				$suffix++;
+			}
+
+			$items[ $item['id'] ] = $item;
+		}
+
+		$new_item = isset( $_POST['formation_info_new_item'] ) && is_array( $_POST['formation_info_new_item'] ) ? wp_unslash( $_POST['formation_info_new_item'] ) : array();
+		if ( ! empty( $new_item['title'] ) ) {
+			$new_item['active'] = ! empty( $new_item['active'] );
+			$item               = improcestout_normalize_formation_info_item( $new_item );
+
+			if ( $item ) {
+				$base_id = $item['id'];
+				$suffix  = 2;
+
+				while ( isset( $items[ $item['id'] ] ) ) {
+					$item['id'] = $base_id . '-' . $suffix;
+					$suffix++;
+				}
+
+				$items[ $item['id'] ] = $item;
+			}
+		}
+
+		update_option( 'improcestout_formation_info_items', array_values( $items ), false );
+
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'post_type' => 'formation',
+					'page'      => 'improcestout-formation-info',
+					'updated'   => 'true',
+				),
+				admin_url( 'edit.php' )
+			)
+		);
+		exit;
+	}
+endif;
+add_action( 'admin_init', 'improcestout_save_formation_info_admin_page' );
+
+if ( ! function_exists( 'improcestout_render_formation_icon_select' ) ) :
+	/**
+	 * Renders a formation icon select field.
+	 *
+	 * @param string $name Field name.
+	 * @param string $selected Selected icon.
+	 * @return void
+	 */
+	function improcestout_render_formation_icon_select( $name, $selected ) {
+		?>
+		<select name="<?php echo esc_attr( $name ); ?>">
+			<?php foreach ( improcestout_get_formation_icon_choices() as $icon => $label ) : ?>
+				<option value="<?php echo esc_attr( $icon ); ?>" <?php selected( $selected, $icon ); ?>><?php echo esc_html( $label ); ?></option>
+			<?php endforeach; ?>
+		</select>
+		<?php
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_render_formation_info_admin_page' ) ) :
+	/**
+	 * Renders the shared formation info settings page.
+	 *
+	 * @return void
+	 */
+	function improcestout_render_formation_info_admin_page() {
+		$items = improcestout_get_formation_info_items( true );
+		?>
+		<div class="wrap">
+			<h1><?php esc_html_e( 'Rubriques d\'infos des formations', 'improcestout' ); ?></h1>
+			<?php if ( ! empty( $_GET['updated'] ) ) : ?>
+				<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Rubriques mises a jour.', 'improcestout' ); ?></p></div>
+			<?php endif; ?>
+			<form method="post">
+				<?php wp_nonce_field( 'improcestout_save_formation_info_settings', 'improcestout_formation_info_settings_nonce' ); ?>
+				<table class="widefat striped">
+					<thead>
+						<tr>
+							<th><?php esc_html_e( 'ID', 'improcestout' ); ?></th>
+							<th><?php esc_html_e( 'Titre', 'improcestout' ); ?></th>
+							<th><?php esc_html_e( 'Picto', 'improcestout' ); ?></th>
+							<th><?php esc_html_e( 'Texte par defaut', 'improcestout' ); ?></th>
+							<th><?php esc_html_e( 'Ordre', 'improcestout' ); ?></th>
+							<th><?php esc_html_e( 'Actif', 'improcestout' ); ?></th>
+							<th><?php esc_html_e( 'Supprimer', 'improcestout' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $items as $item ) : ?>
+							<tr>
+								<td>
+									<code><?php echo esc_html( $item['id'] ); ?></code>
+									<input type="hidden" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][id]" value="<?php echo esc_attr( $item['id'] ); ?>">
+								</td>
+								<td><input class="regular-text" type="text" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][title]" value="<?php echo esc_attr( $item['title'] ); ?>"></td>
+								<td><?php improcestout_render_formation_icon_select( 'formation_info_items[' . $item['id'] . '][icon]', $item['icon'] ); ?></td>
+								<td><textarea class="large-text" rows="2" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][default]"><?php echo esc_textarea( $item['default'] ); ?></textarea></td>
+								<td><input type="number" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][order]" value="<?php echo esc_attr( $item['order'] ); ?>" style="width:5rem"></td>
+								<td><input type="checkbox" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][active]" value="1" <?php checked( $item['active'] ); ?>></td>
+								<td><input type="checkbox" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][delete]" value="1"></td>
+							</tr>
+						<?php endforeach; ?>
+						<tr>
+							<td><input type="text" name="formation_info_new_item[id]" placeholder="<?php esc_attr_e( 'nouvelle-rubrique', 'improcestout' ); ?>"></td>
+							<td><input class="regular-text" type="text" name="formation_info_new_item[title]" placeholder="<?php esc_attr_e( 'Nouvelle rubrique', 'improcestout' ); ?>"></td>
+							<td><?php improcestout_render_formation_icon_select( 'formation_info_new_item[icon]', 'check' ); ?></td>
+							<td><textarea class="large-text" rows="2" name="formation_info_new_item[default]"></textarea></td>
+							<td><input type="number" name="formation_info_new_item[order]" value="<?php echo esc_attr( count( $items ) * 10 + 10 ); ?>" style="width:5rem"></td>
+							<td><input type="checkbox" name="formation_info_new_item[active]" value="1" checked></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<?php submit_button( __( 'Enregistrer les rubriques', 'improcestout' ) ); ?>
+			</form>
+		</div>
+		<?php
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_add_formation_meta_boxes' ) ) :
+	/**
+	 * Adds editable formation fields.
+	 *
+	 * @return void
+	 */
+	function improcestout_add_formation_meta_boxes() {
+		add_meta_box(
+			'improcestout_formation_intro',
+			__( 'Introduction formation', 'improcestout' ),
+			'improcestout_render_formation_intro_meta_box',
+			'formation',
+			'normal',
+			'high'
+		);
+
+		add_meta_box(
+			'improcestout_formation_info',
+			__( 'Infos avec pictos', 'improcestout' ),
+			'improcestout_render_formation_info_meta_box',
+			'formation',
+			'normal',
+			'high'
+		);
+	}
+endif;
+add_action( 'add_meta_boxes', 'improcestout_add_formation_meta_boxes' );
+
+if ( ! function_exists( 'improcestout_render_formation_intro_meta_box' ) ) :
+	/**
+	 * Renders formation intro fields.
+	 *
+	 * @param WP_Post $post Current post.
+	 * @return void
+	 */
+	function improcestout_render_formation_intro_meta_box( $post ) {
+		$subtitle = get_post_meta( $post->ID, 'improcestout_formation_subtitle', true );
+		$hook     = get_post_meta( $post->ID, 'improcestout_formation_hook', true );
+
+		wp_nonce_field( 'improcestout_save_formation_intro', 'improcestout_formation_intro_nonce' );
+		?>
+		<p>
+			<label for="improcestout_formation_subtitle"><strong><?php esc_html_e( 'Sous-titre', 'improcestout' ); ?></strong></label><br>
+			<input type="text" id="improcestout_formation_subtitle" name="improcestout_formation_subtitle" value="<?php echo esc_attr( $subtitle ); ?>" class="widefat">
+		</p>
+		<p>
+			<label for="improcestout_formation_hook"><strong><?php esc_html_e( 'Accroche', 'improcestout' ); ?></strong></label><br>
+			<textarea id="improcestout_formation_hook" name="improcestout_formation_hook" rows="4" class="widefat"><?php echo esc_textarea( $hook ); ?></textarea>
+		</p>
+		<?php
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_render_formation_info_meta_box' ) ) :
+	/**
+	 * Renders formation-specific information rows.
+	 *
+	 * @param WP_Post $post Current post.
+	 * @return void
+	 */
+	function improcestout_render_formation_info_meta_box( $post ) {
+		$items  = improcestout_get_formation_info_items();
+		$values = get_post_meta( $post->ID, 'improcestout_formation_info_values', true );
+		$values = is_array( $values ) ? $values : array();
+
+		wp_nonce_field( 'improcestout_save_formation_info_values', 'improcestout_formation_info_nonce' );
+
+		if ( ! $items ) {
+			echo '<p>' . esc_html__( 'Aucune rubrique active. Ajoutez-en dans Formations > Rubriques d\'infos.', 'improcestout' ) . '</p>';
+			return;
+		}
+		?>
+		<div class="impro-formation-admin-info">
+			<?php foreach ( $items as $item ) : ?>
+				<?php
+				$value       = $values[ $item['id'] ] ?? array();
+				$has_value   = is_array( $value );
+				$enabled     = $has_value ? rest_sanitize_boolean( $value['enabled'] ?? false ) : true;
+				$use_default = $has_value ? rest_sanitize_boolean( $value['use_default'] ?? false ) : false;
+				$text        = $has_value ? (string) ( $value['text'] ?? '' ) : '';
+				?>
+				<div class="impro-formation-admin-info__item" style="border:1px solid #dcdcde;margin:0 0 12px;padding:12px;background:#fff;">
+					<p style="margin-top:0;">
+						<label>
+							<input type="checkbox" name="improcestout_formation_info_values[<?php echo esc_attr( $item['id'] ); ?>][enabled]" value="1" <?php checked( $enabled ); ?>>
+							<strong><?php echo esc_html( $item['title'] ); ?></strong>
+						</label>
+						<code style="margin-left:8px;"><?php echo esc_html( $item['id'] ); ?></code>
+					</p>
+					<?php if ( $item['default'] ) : ?>
+						<p>
+							<label>
+								<input type="checkbox" name="improcestout_formation_info_values[<?php echo esc_attr( $item['id'] ); ?>][use_default]" value="1" <?php checked( $use_default ); ?>>
+								<?php esc_html_e( 'Utiliser le texte par defaut', 'improcestout' ); ?>
+							</label><br>
+							<em><?php echo esc_html( $item['default'] ); ?></em>
+						</p>
+					<?php endif; ?>
+					<p>
+						<label for="improcestout_formation_info_<?php echo esc_attr( $item['id'] ); ?>"><?php esc_html_e( 'Texte specifique', 'improcestout' ); ?></label><br>
+						<textarea id="improcestout_formation_info_<?php echo esc_attr( $item['id'] ); ?>" name="improcestout_formation_info_values[<?php echo esc_attr( $item['id'] ); ?>][text]" rows="3" class="widefat"><?php echo esc_textarea( $text ); ?></textarea>
+					</p>
+				</div>
+			<?php endforeach; ?>
+		</div>
+		<?php
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_save_formation_meta' ) ) :
+	/**
+	 * Saves formation fields.
+	 *
+	 * @param int $post_id Current post ID.
+	 * @return void
+	 */
+	function improcestout_save_formation_meta( $post_id ) {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		if ( isset( $_POST['improcestout_formation_intro_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['improcestout_formation_intro_nonce'] ), 'improcestout_save_formation_intro' ) ) {
+			$subtitle = isset( $_POST['improcestout_formation_subtitle'] ) ? sanitize_text_field( wp_unslash( $_POST['improcestout_formation_subtitle'] ) ) : '';
+			$hook     = isset( $_POST['improcestout_formation_hook'] ) ? sanitize_textarea_field( wp_unslash( $_POST['improcestout_formation_hook'] ) ) : '';
+
+			update_post_meta( $post_id, 'improcestout_formation_subtitle', $subtitle );
+			update_post_meta( $post_id, 'improcestout_formation_hook', $hook );
+		}
+
+		if ( isset( $_POST['improcestout_formation_info_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['improcestout_formation_info_nonce'] ), 'improcestout_save_formation_info_values' ) ) {
+			$raw_values = isset( $_POST['improcestout_formation_info_values'] ) && is_array( $_POST['improcestout_formation_info_values'] ) ? wp_unslash( $_POST['improcestout_formation_info_values'] ) : array();
+			$items      = improcestout_get_formation_info_items();
+			$values     = get_post_meta( $post_id, 'improcestout_formation_info_values', true );
+			$values     = is_array( $values ) ? $values : array();
+
+			foreach ( $items as $item ) {
+				$id  = $item['id'];
+				$row = isset( $raw_values[ $id ] ) && is_array( $raw_values[ $id ] ) ? $raw_values[ $id ] : array();
+
+				$values[ $id ] = array(
+					'enabled'     => ! empty( $row['enabled'] ),
+					'use_default' => ! empty( $row['use_default'] ),
+					'text'        => sanitize_textarea_field( $row['text'] ?? '' ),
+				);
+			}
+
+			update_post_meta( $post_id, 'improcestout_formation_info_values', $values );
+		}
+	}
+endif;
+add_action( 'save_post_formation', 'improcestout_save_formation_meta' );
+
+if ( ! function_exists( 'improcestout_get_formation_info_rows' ) ) :
+	/**
+	 * Returns display-ready formation info rows.
+	 *
+	 * @param int $post_id Formation post ID.
+	 * @return array
+	 */
+	function improcestout_get_formation_info_rows( $post_id ) {
+		$items  = improcestout_get_formation_info_items();
+		$values = get_post_meta( $post_id, 'improcestout_formation_info_values', true );
+		$values = is_array( $values ) ? $values : array();
+		$rows   = array();
+
+		foreach ( $items as $item ) {
+			$value   = isset( $values[ $item['id'] ] ) && is_array( $values[ $item['id'] ] ) ? $values[ $item['id'] ] : array();
+			$enabled = $value ? rest_sanitize_boolean( $value['enabled'] ?? false ) : true;
+
+			if ( ! $enabled ) {
+				continue;
+			}
+
+			$text = ! empty( $value['use_default'] ) ? $item['default'] : (string) ( $value['text'] ?? '' );
+			$text = trim( $text );
+
+			if ( '' === $text ) {
+				continue;
+			}
+
+			$rows[] = array(
+				'id'    => $item['id'],
+				'title' => $item['title'],
+				'icon'  => $item['icon'],
+				'text'  => $text,
+			);
+		}
+
+		return $rows;
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_render_formation_info_list' ) ) :
+	/**
+	 * Renders formation information rows.
+	 *
+	 * @param array $attributes Block attributes.
+	 * @param bool  $use_block_wrapper Whether to add block wrapper attributes.
+	 * @return string
+	 */
+	function improcestout_render_formation_info_list( $attributes = array(), $use_block_wrapper = false ) {
+		$post_id = get_the_ID();
+
+		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) && ! empty( $attributes['previewPostId'] ) ) {
+			$post_id = absint( $attributes['previewPostId'] );
+		}
+
+		if ( ! $post_id ) {
+			return '';
+		}
+
+		$rows = improcestout_get_formation_info_rows( $post_id );
+
+		if ( ! $rows ) {
+			return $use_block_wrapper ? '<div ' . get_block_wrapper_attributes( array( 'class' => 'impro-formation-info impro-formation-info--empty' ) ) . '></div>' : '';
+		}
+
+		ob_start();
+		?>
+		<section <?php echo $use_block_wrapper ? get_block_wrapper_attributes( array( 'class' => 'impro-formation-info' ) ) : 'class="impro-formation-info"'; ?>>
+			<?php foreach ( $rows as $row ) : ?>
+				<article class="impro-formation-info__row">
+					<div class="impro-formation-info__icon"><?php echo improcestout_get_formation_icon_svg( $row['icon'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+					<div class="impro-formation-info__content">
+						<h2><?php echo esc_html( $row['title'] ); ?></h2>
+						<p><?php echo nl2br( esc_html( $row['text'] ) ); ?></p>
+					</div>
+				</article>
+			<?php endforeach; ?>
+		</section>
+		<?php
+
+		return ob_get_clean();
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_render_formation_hero' ) ) :
+	/**
+	 * Renders the formation hero block.
+	 *
+	 * @param array $attributes Block attributes.
+	 * @return string
+	 */
+	function improcestout_render_formation_hero( $attributes = array() ) {
+		$post_id = get_the_ID();
+
+		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) && ! empty( $attributes['previewPostId'] ) ) {
+			$post_id = absint( $attributes['previewPostId'] );
+		}
+
+		if ( ! $post_id ) {
+			return '';
+		}
+
+		$subtitle = get_post_meta( $post_id, 'improcestout_formation_subtitle', true );
+		$hook     = get_post_meta( $post_id, 'improcestout_formation_hook', true );
+		$image    = get_the_post_thumbnail( $post_id, 'large', array( 'class' => 'impro-formation-hero__image' ) );
+
+		ob_start();
+		?>
+		<section <?php echo get_block_wrapper_attributes( array( 'class' => 'impro-formation-hero alignfull' ) ); ?>>
+			<div class="impro-formation-hero__inner">
+				<div class="impro-formation-hero__copy">
+					<?php if ( $subtitle ) : ?>
+						<p class="impro-formation-hero__subtitle"><?php echo esc_html( $subtitle ); ?></p>
+					<?php endif; ?>
+					<h1><?php echo esc_html( get_the_title( $post_id ) ); ?></h1>
+					<?php if ( $hook ) : ?>
+						<p class="impro-formation-hero__hook"><?php echo nl2br( esc_html( $hook ) ); ?></p>
+					<?php endif; ?>
+				</div>
+				<?php if ( $image ) : ?>
+					<figure class="impro-formation-hero__media"><?php echo $image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></figure>
+				<?php endif; ?>
+			</div>
+		</section>
+		<?php
+
+		return ob_get_clean();
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_normalize_formations_list_attributes' ) ) :
+	/**
+	 * Normalizes public settings for the formations listing.
+	 *
+	 * @param array $attributes Listing attributes.
+	 * @return array
+	 */
+	function improcestout_normalize_formations_list_attributes( $attributes = array() ) {
+		$attributes = wp_parse_args(
+			$attributes,
+			array(
+				'categorySlug'     => '',
+				'categories'       => array(),
+				'inheritPageTerms' => false,
+				'columns'          => 3,
+				'showImage'        => true,
+				'showSubtitle'     => true,
+				'showHook'         => true,
+				'showCategories'   => true,
+				'emptyText'        => __( 'Les formations apparaitront ici des qu\'elles seront publiees.', 'improcestout' ),
+			)
+		);
+
+		$categories = array();
+
+		if ( '' !== trim( (string) $attributes['categorySlug'] ) ) {
+			$categories[] = sanitize_title( $attributes['categorySlug'] );
+		} elseif ( ! empty( $attributes['categories'] ) ) {
+			$categories = array_map( 'sanitize_title', wp_parse_list( $attributes['categories'] ) );
+		}
+
+		return array(
+			'categories'       => array_values( array_filter( array_unique( $categories ) ) ),
+			'inheritPageTerms' => rest_sanitize_boolean( $attributes['inheritPageTerms'] ),
+			'columns'          => min( 4, max( 1, absint( $attributes['columns'] ) ) ),
+			'showImage'        => rest_sanitize_boolean( $attributes['showImage'] ),
+			'showSubtitle'     => rest_sanitize_boolean( $attributes['showSubtitle'] ),
+			'showHook'         => rest_sanitize_boolean( $attributes['showHook'] ),
+			'showCategories'   => rest_sanitize_boolean( $attributes['showCategories'] ),
+			'emptyText'        => sanitize_text_field( $attributes['emptyText'] ),
+		);
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_render_formations_list' ) ) :
+	/**
+	 * Renders the formations listing block.
+	 *
+	 * @param array $attributes Listing attributes.
+	 * @param bool  $use_block_wrapper Whether to add block wrapper attributes.
+	 * @return string
+	 */
+	function improcestout_render_formations_list( $attributes = array(), $use_block_wrapper = false ) {
+		$settings = improcestout_normalize_formations_list_attributes( $attributes );
+
+		$query_args = array(
+			'post_type'      => 'formation',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => array(
+				'menu_order' => 'ASC',
+				'title'      => 'ASC',
+			),
+		);
+
+		if ( $settings['categories'] ) {
+			$query_args['tax_query'] = array(
+				array(
+					'taxonomy' => 'categorie_formation',
+					'field'    => 'slug',
+					'terms'    => $settings['categories'],
+				),
+			);
+		} elseif ( $settings['inheritPageTerms'] && is_page() ) {
+			$terms = get_the_terms( get_the_ID(), 'categorie_formation' );
+
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+				$query_args['tax_query'] = array(
+					array(
+						'taxonomy' => 'categorie_formation',
+						'field'    => 'term_id',
+						'terms'    => wp_list_pluck( $terms, 'term_id' ),
+					),
+				);
+			}
+		}
+
+		$formations = new WP_Query( $query_args );
+		$classes    = 'impro-formations-list impro-formations-list--columns-' . $settings['columns'];
+
+		ob_start();
+		?>
+		<section <?php echo $use_block_wrapper ? get_block_wrapper_attributes( array( 'class' => $classes ) ) : 'class="' . esc_attr( $classes ) . '"'; ?>>
+			<?php if ( $formations->have_posts() ) : ?>
+				<div class="impro-formations-list__grid">
+					<?php while ( $formations->have_posts() ) : ?>
+						<?php
+						$formations->the_post();
+						$post_id  = get_the_ID();
+						$subtitle = get_post_meta( $post_id, 'improcestout_formation_subtitle', true );
+						$hook     = get_post_meta( $post_id, 'improcestout_formation_hook', true );
+						?>
+						<article class="impro-formation-card">
+							<?php if ( $settings['showImage'] && has_post_thumbnail() ) : ?>
+								<a class="impro-formation-card__image" href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'medium_large' ); ?></a>
+							<?php endif; ?>
+							<div class="impro-formation-card__content">
+								<?php if ( $settings['showCategories'] ) : ?>
+									<?php
+									$term_list = get_the_term_list( $post_id, 'categorie_formation', '<div class="impro-formation-card__terms">', '', '</div>' );
+									if ( $term_list && ! is_wp_error( $term_list ) ) {
+										echo $term_list; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									}
+									?>
+								<?php endif; ?>
+								<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+								<?php if ( $settings['showSubtitle'] && $subtitle ) : ?>
+									<p class="impro-formation-card__subtitle"><?php echo esc_html( $subtitle ); ?></p>
+								<?php endif; ?>
+								<?php if ( $settings['showHook'] && $hook ) : ?>
+									<p><?php echo esc_html( $hook ); ?></p>
+								<?php endif; ?>
+							</div>
+						</article>
+					<?php endwhile; ?>
+				</div>
+				<?php wp_reset_postdata(); ?>
+			<?php else : ?>
+				<p class="impro-formations-list__empty"><?php echo esc_html( $settings['emptyText'] ); ?></p>
+			<?php endif; ?>
+		</section>
+		<?php
+
+		return ob_get_clean();
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_render_formations_shortcode' ) ) :
+	/**
+	 * Renders the formations listing shortcode.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string
+	 */
+	function improcestout_render_formations_shortcode( $atts = array() ) {
+		$atts = shortcode_atts(
+			array(
+				'category'        => '',
+				'categories'      => '',
+				'columns'         => 3,
+				'show_image'      => true,
+				'show_subtitle'   => true,
+				'show_hook'       => true,
+				'show_categories' => true,
+				'empty_text'      => __( 'Les formations apparaitront ici des qu\'elles seront publiees.', 'improcestout' ),
+			),
+			$atts,
+			'improcestout_formations'
+		);
+
+		return improcestout_render_formations_list(
+			array(
+				'categorySlug'     => $atts['category'],
+				'categories'       => $atts['categories'],
+				'inheritPageTerms' => '' === trim( (string) $atts['category'] ) && '' === trim( (string) $atts['categories'] ),
+				'columns'          => $atts['columns'],
+				'showImage'        => $atts['show_image'],
+				'showSubtitle'     => $atts['show_subtitle'],
+				'showHook'         => $atts['show_hook'],
+				'showCategories'   => $atts['show_categories'],
+				'emptyText'        => $atts['empty_text'],
+			)
+		);
+	}
+endif;
+add_shortcode( 'improcestout_formations', 'improcestout_render_formations_shortcode' );
+
 // Registers custom block styles.
 if ( ! function_exists( 'improcestout_block_styles' ) ) :
 	/**
@@ -995,6 +1942,127 @@ if ( ! function_exists( 'improcestout_register_intervenants_block' ) ) :
 	}
 endif;
 add_action( 'init', 'improcestout_register_intervenants_block' );
+
+if ( ! function_exists( 'improcestout_register_formations_blocks' ) ) :
+	/**
+	 * Registers formation blocks.
+	 *
+	 * @return void
+	 */
+	function improcestout_register_formations_blocks() {
+		$script_path = get_theme_file_path( 'assets/js/formations-blocks.js' );
+
+		wp_register_script(
+			'improcestout-formations-blocks',
+			get_theme_file_uri( 'assets/js/formations-blocks.js' ),
+			array( 'wp-blocks', 'wp-block-editor', 'wp-components', 'wp-data', 'wp-element', 'wp-i18n', 'wp-server-side-render' ),
+			file_exists( $script_path ) ? filemtime( $script_path ) : wp_get_theme()->get( 'Version' ),
+			true
+		);
+
+		register_block_type(
+			'improcestout/formation-hero',
+			array(
+				'api_version'     => 3,
+				'title'           => __( 'Hero formation', 'improcestout' ),
+				'description'     => __( 'Titre, sous-titre et accroche de la formation.', 'improcestout' ),
+				'category'        => 'theme',
+				'icon'            => 'welcome-learn-more',
+				'editor_script'   => 'improcestout-formations-blocks',
+				'render_callback' => 'improcestout_render_formation_hero',
+				'attributes'      => array(
+					'previewPostId' => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+				),
+				'supports'        => array(
+					'align' => array( 'wide', 'full' ),
+					'html'  => false,
+				),
+			)
+		);
+
+		register_block_type(
+			'improcestout/formation-info-list',
+			array(
+				'api_version'     => 3,
+				'title'           => __( 'Infos formation', 'improcestout' ),
+				'description'     => __( 'Liste des informations partagees avec pictos.', 'improcestout' ),
+				'category'        => 'widgets',
+				'icon'            => 'list-view',
+				'editor_script'   => 'improcestout-formations-blocks',
+				'render_callback' => static function ( $attributes ) {
+					return improcestout_render_formation_info_list( $attributes, true );
+				},
+				'attributes'      => array(
+					'previewPostId' => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+				),
+				'supports'        => array(
+					'align' => array( 'wide', 'full' ),
+					'html'  => false,
+				),
+			)
+		);
+
+		register_block_type(
+			'improcestout/formations-list',
+			array(
+				'api_version'     => 3,
+				'title'           => __( 'Formations', 'improcestout' ),
+				'description'     => __( 'Liste configurable des formations.', 'improcestout' ),
+				'category'        => 'widgets',
+				'icon'            => 'welcome-learn-more',
+				'editor_script'   => 'improcestout-formations-blocks',
+				'render_callback' => static function ( $attributes ) {
+					return improcestout_render_formations_list( $attributes, true );
+				},
+				'attributes'      => array(
+					'categorySlug'     => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'inheritPageTerms' => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'columns'          => array(
+						'type'    => 'number',
+						'default' => 3,
+					),
+					'showImage'        => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showSubtitle'     => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showHook'         => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showCategories'   => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'emptyText'        => array(
+						'type'    => 'string',
+						'default' => __( 'Les formations apparaitront ici des qu\'elles seront publiees.', 'improcestout' ),
+					),
+				),
+				'supports'        => array(
+					'align' => array( 'wide', 'full' ),
+					'html'  => false,
+				),
+			)
+		);
+	}
+endif;
+add_action( 'init', 'improcestout_register_formations_blocks' );
 
 if ( ! function_exists( 'improcestout_enqueue_block_editor_assets' ) ) :
 	/**

@@ -1157,6 +1157,314 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 	font-weight: 700;
 }
 
+.impro-formation-single,
+.impro-formations-archive {
+	padding-top: clamp(28px, 5vw, 64px);
+	padding-bottom: clamp(54px, 8vw, 100px);
+}
+
+.impro-formation-hero {
+	margin-top: 0;
+	margin-bottom: clamp(34px, 6vw, 76px);
+	background:
+		linear-gradient(135deg, color-mix(in srgb, var(--impro-red) 70%, var(--impro-cream)) 0 58%, var(--impro-cream) 58% 100%);
+	color: var(--impro-ink);
+}
+
+.impro-formation-hero__inner {
+	display: grid;
+	grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.72fr);
+	gap: clamp(26px, 5vw, 70px);
+	align-items: center;
+	width: min(100% - (2 * var(--wp--preset--spacing--50)), var(--wp--style--global--wide-size));
+	margin-inline: auto;
+	padding-top: clamp(62px, 9vw, 124px);
+	padding-bottom: clamp(54px, 8vw, 104px);
+}
+
+.impro-formation-hero__copy {
+	display: grid;
+	gap: clamp(14px, 2vw, 22px);
+}
+
+.impro-formation-hero__subtitle {
+	justify-self: start;
+	margin: 0;
+	padding: 0.42rem 0.72rem;
+	border: 2px solid currentColor;
+	background: var(--impro-paper);
+	box-shadow: 5px 5px 0 var(--impro-ink);
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: 0.82rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	transform: rotate(-2deg);
+}
+
+.impro-formation-hero h1 {
+	max-width: 11ch;
+	margin: 0;
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: clamp(3rem, 8vw, 7.8rem);
+	font-weight: 700;
+	letter-spacing: 0;
+	line-height: 0.9;
+	text-transform: uppercase;
+}
+
+.impro-formation-hero__hook {
+	max-width: 46rem;
+	margin: 0;
+	padding: clamp(16px, 3vw, 26px);
+	border: 3px solid var(--impro-ink);
+	background: color-mix(in srgb, var(--impro-paper) 90%, white);
+	box-shadow: 7px 7px 0 var(--impro-ink);
+	font-size: clamp(1.1rem, 2vw, 1.55rem);
+	font-weight: 500;
+	line-height: 1.35;
+	transform: rotate(1deg);
+}
+
+.impro-formation-hero__media {
+	position: relative;
+	margin: 0;
+	border: 3px solid var(--impro-ink);
+	background: var(--impro-paper);
+	box-shadow: 10px 12px 0 var(--impro-ink);
+	transform: rotate(2deg);
+}
+
+.impro-formation-hero__media::before {
+	position: absolute;
+	top: -16px;
+	left: 12%;
+	width: 72px;
+	height: 28px;
+	border: 2px solid color-mix(in srgb, var(--impro-ink) 70%, transparent);
+	background: color-mix(in srgb, var(--impro-cream) 75%, white);
+	content: "";
+	transform: rotate(-6deg);
+	z-index: 1;
+}
+
+.impro-formation-hero__image {
+	display: block;
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	height: auto;
+	object-fit: cover;
+}
+
+.impro-formation-single__body,
+.impro-formation-pattern-body {
+	display: grid;
+	gap: clamp(34px, 6vw, 76px);
+}
+
+.impro-formation-info {
+	display: grid;
+	max-width: 980px;
+	margin-inline: auto;
+	background: color-mix(in srgb, var(--impro-red) 58%, var(--impro-cream));
+	color: var(--impro-paper);
+}
+
+.impro-formation-info__row {
+	display: grid;
+	grid-template-columns: clamp(54px, 8vw, 82px) minmax(0, 1fr);
+	gap: clamp(18px, 3vw, 30px);
+	align-items: start;
+	padding: clamp(18px, 3vw, 30px) clamp(18px, 4vw, 38px);
+	border-bottom: 3px solid currentColor;
+}
+
+.impro-formation-info__row:last-child {
+	border-bottom: 0;
+}
+
+.impro-formation-info__icon {
+	display: grid;
+	width: clamp(48px, 7vw, 72px);
+	aspect-ratio: 1;
+	color: var(--impro-ink);
+	place-items: center;
+}
+
+.impro-formation-info__svg {
+	width: 100%;
+	height: 100%;
+}
+
+.impro-formation-info__content {
+	display: grid;
+	gap: 8px;
+	min-width: 0;
+}
+
+.impro-formation-info__content h2 {
+	margin: 0;
+	color: var(--impro-ink);
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: clamp(1.28rem, 3vw, 2.15rem);
+	font-weight: 700;
+	letter-spacing: 0;
+	line-height: 1.05;
+	text-transform: uppercase;
+}
+
+.impro-formation-info__content p {
+	margin: 0;
+	font-size: clamp(1.05rem, 2.3vw, 1.72rem);
+	font-weight: 500;
+	line-height: 1.42;
+}
+
+.impro-formations-archive__header {
+	display: grid;
+	gap: 14px;
+	margin-bottom: clamp(30px, 5vw, 64px);
+}
+
+.impro-formations-archive__header h1 {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: clamp(3rem, 8vw, 7rem);
+	font-weight: 700;
+	letter-spacing: 0;
+	line-height: 0.9;
+	text-transform: uppercase;
+}
+
+.impro-formations-archive__header p {
+	max-width: 58rem;
+	margin: 0;
+	font-size: clamp(1.1rem, 2vw, 1.45rem);
+	font-weight: 400;
+}
+
+.impro-formations-list__grid {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	gap: clamp(18px, 3vw, 34px);
+	align-items: stretch;
+}
+
+.impro-formation-card {
+	position: relative;
+	display: grid;
+	grid-column: span 4;
+	grid-template-rows: auto 1fr;
+	overflow: hidden;
+	border: 3px solid var(--impro-ink);
+	background: color-mix(in srgb, var(--impro-paper) 92%, white);
+	box-shadow: 8px 9px 0 var(--impro-ink);
+	transform: rotate(-0.8deg);
+}
+
+.impro-formation-card:nth-child(2n) {
+	transform: rotate(1deg);
+}
+
+.impro-formations-list--columns-1 .impro-formation-card {
+	grid-column: span 12;
+}
+
+.impro-formations-list--columns-2 .impro-formation-card {
+	grid-column: span 6;
+}
+
+.impro-formations-list--columns-3 .impro-formation-card {
+	grid-column: span 4;
+}
+
+.impro-formations-list--columns-4 .impro-formation-card {
+	grid-column: span 3;
+}
+
+.impro-formation-card__image {
+	display: block;
+	overflow: hidden;
+	aspect-ratio: 16 / 10;
+	border-bottom: 3px solid var(--impro-ink);
+	background: var(--impro-blush);
+}
+
+.impro-formation-card__image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 180ms ease;
+}
+
+.impro-formation-card:hover .impro-formation-card__image img {
+	transform: scale(1.04);
+}
+
+.impro-formation-card__content {
+	display: grid;
+	gap: 12px;
+	align-content: start;
+	padding: clamp(18px, 3vw, 26px);
+}
+
+.impro-formation-card__terms {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 7px;
+}
+
+.impro-formation-card__terms a {
+	display: inline-block;
+	padding: 0.22rem 0.46rem;
+	border: 2px solid var(--impro-ink);
+	background: var(--impro-cream);
+	color: var(--impro-ink);
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: 0.66rem;
+	font-weight: 700;
+	text-decoration: none !important;
+	text-transform: uppercase;
+}
+
+.impro-formation-card h2 {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: clamp(1.22rem, 2.2vw, 1.8rem);
+	font-weight: 700;
+	letter-spacing: 0;
+	line-height: 1.05;
+	text-transform: uppercase;
+}
+
+.impro-formation-card h2 a {
+	color: inherit;
+	text-decoration-thickness: 2px !important;
+}
+
+.impro-formation-card p {
+	margin: 0;
+	font-size: 0.98rem;
+	font-weight: 400;
+	line-height: 1.38;
+}
+
+.impro-formation-card__subtitle {
+	color: var(--impro-red-dark);
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-size: 0.82rem !important;
+	font-weight: 700 !important;
+	text-transform: uppercase;
+}
+
+.impro-formations-list__empty {
+	max-width: 42rem;
+	padding: 1rem 1.2rem;
+	border: 2px dashed var(--impro-ink);
+	background: color-mix(in srgb, var(--impro-paper) 82%, white);
+	font-family: var(--wp--preset--font-family--fira-code);
+	font-weight: 700;
+}
+
 .impro-tf {
 	display: grid;
 	gap: clamp(34px, 6vw, 76px);
@@ -1742,6 +2050,59 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 
 	.impro-intervenant-card:nth-child(even) {
 		--card-tilt: 1.2deg;
+	}
+
+	.impro-formation-hero__inner {
+		grid-template-columns: 1fr;
+		width: min(100% - 36px, var(--wp--style--global--wide-size));
+		padding-top: 42px;
+		padding-bottom: 48px;
+	}
+
+	.impro-formation-hero h1,
+	.impro-formations-archive__header h1 {
+		max-width: 10ch;
+		font-size: clamp(2.45rem, 12vw, 4.25rem);
+	}
+
+	.impro-formation-hero__hook {
+		padding: 14px;
+		box-shadow: 5px 5px 0 var(--impro-ink);
+	}
+
+	.impro-formation-hero__media {
+		max-width: min(100%, 360px);
+		box-shadow: 6px 7px 0 var(--impro-ink);
+	}
+
+	.impro-formation-info__row {
+		grid-template-columns: 46px minmax(0, 1fr);
+		gap: 14px;
+		padding: 18px 16px;
+	}
+
+	.impro-formation-info__icon {
+		width: 42px;
+	}
+
+	.impro-formation-info__content h2 {
+		font-size: 1.32rem;
+	}
+
+	.impro-formation-info__content p {
+		font-size: 1.05rem;
+	}
+
+	.impro-formations-list__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.impro-formation-card,
+	.impro-formations-list--columns-1 .impro-formation-card,
+	.impro-formations-list--columns-2 .impro-formation-card,
+	.impro-formations-list--columns-3 .impro-formation-card,
+	.impro-formations-list--columns-4 .impro-formation-card {
+		grid-column: auto;
 	}
 
 	.impro-tf {
