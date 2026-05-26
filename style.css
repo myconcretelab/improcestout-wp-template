@@ -1216,6 +1216,11 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 	color: var(--impro-paper);
 }
 
+body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-container {
+	align-content: start;
+	padding-top: calc(var(--impro-header-height) + clamp(32px, 5vw, 64px));
+}
+
 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-container::after {
 	position: absolute;
 	right: var(--wp--style--root--padding-right);
