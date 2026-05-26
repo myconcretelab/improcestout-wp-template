@@ -87,6 +87,22 @@ if ( ! function_exists( 'improcestout_enqueue_header_script' ) ) :
 endif;
 add_action( 'wp_enqueue_scripts', 'improcestout_enqueue_header_script' );
 
+if ( ! function_exists( 'improcestout_custom_logo_image_attributes' ) ) :
+	/**
+	 * Keeps the responsive image choice in sync with the enlarged sticky header logo.
+	 *
+	 * @param array $attr Custom logo image attributes.
+	 *
+	 * @return array
+	 */
+	function improcestout_custom_logo_image_attributes( $attr ) {
+		$attr['sizes'] = '(max-width: 760px) 52px, 320px';
+
+		return $attr;
+	}
+endif;
+add_filter( 'get_custom_logo_image_attributes', 'improcestout_custom_logo_image_attributes' );
+
 if ( ! function_exists( 'improcestout_register_intervenants' ) ) :
 	/**
 	 * Registers the intervenant content type and its page assignment taxonomy.
