@@ -59,8 +59,8 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 	</div>
 	<!-- /wp:group -->
 
-	<!-- wp:columns {"className":"impro-tf-info"} -->
-	<div class="wp-block-columns impro-tf-info">
+	<!-- wp:columns {"className":"is-style-theatre-info-cards"} -->
+	<div class="wp-block-columns is-style-theatre-info-cards">
 		<!-- wp:column -->
 		<div class="wp-block-column">
 			<!-- wp:heading {"level":3} -->
@@ -111,10 +111,10 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 	</div>
 	<!-- /wp:columns -->
 
-	<!-- wp:group {"tagName":"section","className":"impro-tf-section","layout":{"type":"constrained"}} -->
-	<section class="wp-block-group impro-tf-section">
-		<!-- wp:group {"className":"impro-tf-section__heading","layout":{"type":"constrained"}} -->
-		<div class="wp-block-group impro-tf-section__heading">
+	<!-- wp:group {"tagName":"section","className":"is-style-theatre-section","layout":{"type":"constrained"}} -->
+	<section class="wp-block-group is-style-theatre-section">
+		<!-- wp:group {"className":"is-style-theatre-section-heading","layout":{"type":"constrained"}} -->
+		<div class="wp-block-group is-style-theatre-section-heading">
 			<!-- wp:paragraph -->
 			<p>Objectifs</p>
 			<!-- /wp:paragraph -->
@@ -125,8 +125,8 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:list {"className":"impro-tf-objectives"} -->
-		<ul class="wp-block-list impro-tf-objectives">
+		<!-- wp:list {"className":"is-style-theatre-objectives-list"} -->
+		<ul class="wp-block-list is-style-theatre-objectives-list">
 			<!-- wp:list-item -->
 			<li>Sensibiliser et participer collectivement à la transformation sociale.</li>
 			<!-- /wp:list-item -->
@@ -147,10 +147,10 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 	</section>
 	<!-- /wp:group -->
 
-	<!-- wp:group {"tagName":"section","className":"impro-tf-section","layout":{"type":"constrained"}} -->
-	<section class="wp-block-group impro-tf-section">
-		<!-- wp:group {"className":"impro-tf-section__heading","layout":{"type":"constrained"}} -->
-		<div class="wp-block-group impro-tf-section__heading">
+	<!-- wp:group {"tagName":"section","className":"is-style-theatre-section","layout":{"type":"constrained"}} -->
+	<section class="wp-block-group is-style-theatre-section">
+		<!-- wp:group {"className":"is-style-theatre-section-heading","layout":{"type":"constrained"}} -->
+		<div class="wp-block-group is-style-theatre-section-heading">
 			<!-- wp:paragraph -->
 			<p>Formats</p>
 			<!-- /wp:paragraph -->
@@ -161,10 +161,10 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:group {"className":"impro-tf-formats","layout":{"type":"constrained"}} -->
-		<div class="wp-block-group impro-tf-formats">
-			<!-- wp:group {"className":"impro-tf-format-card","layout":{"type":"constrained"}} -->
-			<div class="wp-block-group impro-tf-format-card">
+		<!-- wp:group {"className":"is-style-theatre-formats-grid","layout":{"type":"constrained"}} -->
+		<div class="wp-block-group is-style-theatre-formats-grid">
+			<!-- wp:group {"className":"is-style-theatre-format-card","layout":{"type":"constrained"}} -->
+			<div class="wp-block-group is-style-theatre-format-card">
 				<!-- wp:heading {"level":3} -->
 				<h3 class="wp-block-heading">Ateliers</h3>
 				<!-- /wp:heading -->
@@ -175,8 +175,8 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 			</div>
 			<!-- /wp:group -->
 
-			<!-- wp:group {"className":"impro-tf-format-card","layout":{"type":"constrained"}} -->
-			<div class="wp-block-group impro-tf-format-card">
+			<!-- wp:group {"className":"is-style-theatre-format-card","layout":{"type":"constrained"}} -->
+			<div class="wp-block-group is-style-theatre-format-card">
 				<!-- wp:heading {"level":3} -->
 				<h3 class="wp-block-heading">Spectacles</h3>
 				<!-- /wp:heading -->
@@ -187,8 +187,8 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 			</div>
 			<!-- /wp:group -->
 
-			<!-- wp:group {"className":"impro-tf-format-card","layout":{"type":"constrained"}} -->
-			<div class="wp-block-group impro-tf-format-card">
+			<!-- wp:group {"className":"is-style-theatre-format-card","layout":{"type":"constrained"}} -->
+			<div class="wp-block-group is-style-theatre-format-card">
 				<!-- wp:heading {"level":3} -->
 				<h3 class="wp-block-heading">Analyse de pratiques</h3>
 				<!-- /wp:heading -->
@@ -199,8 +199,8 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 			</div>
 			<!-- /wp:group -->
 
-			<!-- wp:group {"className":"impro-tf-format-card","layout":{"type":"constrained"}} -->
-			<div class="wp-block-group impro-tf-format-card">
+			<!-- wp:group {"className":"is-style-theatre-format-card","layout":{"type":"constrained"}} -->
+			<div class="wp-block-group is-style-theatre-format-card">
 				<!-- wp:heading {"level":3} -->
 				<h3 class="wp-block-heading">Formation</h3>
 				<!-- /wp:heading -->
@@ -211,8 +211,8 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 			</div>
 			<!-- /wp:group -->
 
-			<!-- wp:group {"className":"impro-tf-format-card","layout":{"type":"constrained"}} -->
-			<div class="wp-block-group impro-tf-format-card">
+			<!-- wp:group {"className":"is-style-theatre-format-card","layout":{"type":"constrained"}} -->
+			<div class="wp-block-group is-style-theatre-format-card">
 				<!-- wp:heading {"level":3} -->
 				<h3 class="wp-block-heading">Espace public</h3>
 				<!-- /wp:heading -->
@@ -227,44 +227,44 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 	</section>
 	<!-- /wp:group -->
 
-	<!-- wp:group {"tagName":"section","className":"impro-tf-themes","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"center"}} -->
-	<section class="wp-block-group impro-tf-themes" aria-label="Thématiques possibles">
-		<!-- wp:paragraph {"className":"impro-tf-theme-tag"} -->
-		<p class="impro-tf-theme-tag">Vivre ensemble</p>
+	<!-- wp:group {"tagName":"section","className":"is-style-theatre-theme-strip","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"center"}} -->
+	<section class="wp-block-group is-style-theatre-theme-strip" aria-label="Thématiques possibles">
+		<!-- wp:paragraph {"className":"is-style-theatre-tag"} -->
+		<p class="is-style-theatre-tag">Vivre ensemble</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:paragraph {"className":"impro-tf-theme-tag"} -->
-		<p class="impro-tf-theme-tag">Racisme</p>
+		<!-- wp:paragraph {"className":"is-style-theatre-tag"} -->
+		<p class="is-style-theatre-tag">Racisme</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:paragraph {"className":"impro-tf-theme-tag"} -->
-		<p class="impro-tf-theme-tag">Sexisme</p>
+		<!-- wp:paragraph {"className":"is-style-theatre-tag"} -->
+		<p class="is-style-theatre-tag">Sexisme</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:paragraph {"className":"impro-tf-theme-tag"} -->
-		<p class="impro-tf-theme-tag">Harcèlement</p>
+		<!-- wp:paragraph {"className":"is-style-theatre-tag"} -->
+		<p class="is-style-theatre-tag">Harcèlement</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:paragraph {"className":"impro-tf-theme-tag"} -->
-		<p class="impro-tf-theme-tag">Réseaux sociaux</p>
+		<!-- wp:paragraph {"className":"is-style-theatre-tag"} -->
+		<p class="is-style-theatre-tag">Réseaux sociaux</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:paragraph {"className":"impro-tf-theme-tag"} -->
-		<p class="impro-tf-theme-tag">Stéréotypes de genre</p>
+		<!-- wp:paragraph {"className":"is-style-theatre-tag"} -->
+		<p class="is-style-theatre-tag">Stéréotypes de genre</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:paragraph {"className":"impro-tf-theme-tag"} -->
-		<p class="impro-tf-theme-tag">Discriminations</p>
+		<!-- wp:paragraph {"className":"is-style-theatre-tag"} -->
+		<p class="is-style-theatre-tag">Discriminations</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:paragraph {"className":"impro-tf-theme-tag"} -->
-		<p class="impro-tf-theme-tag">Violences</p>
+		<!-- wp:paragraph {"className":"is-style-theatre-tag"} -->
+		<p class="is-style-theatre-tag">Violences</p>
 		<!-- /wp:paragraph -->
 	</section>
 	<!-- /wp:group -->
 
-	<!-- wp:columns {"className":"impro-tf-cta","verticalAlignment":"center"} -->
-	<div class="wp-block-columns are-vertically-aligned-center impro-tf-cta">
+	<!-- wp:columns {"className":"is-style-theatre-cta","verticalAlignment":"center"} -->
+	<div class="wp-block-columns are-vertically-aligned-center is-style-theatre-cta">
 		<!-- wp:column {"verticalAlignment":"center"} -->
 		<div class="wp-block-column is-vertically-aligned-center">
 			<!-- wp:paragraph {"className":"impro-tf-kicker"} -->
@@ -285,8 +285,8 @@ $theatre_forum_image = get_theme_file_uri( 'assets/images/theatre-forum-pouvoir-
 		<div class="wp-block-column is-vertically-aligned-center" style="flex-basis:240px">
 			<!-- wp:buttons -->
 			<div class="wp-block-buttons">
-				<!-- wp:button {"className":"impro-tf-cta__button"} -->
-				<div class="wp-block-button impro-tf-cta__button"><a class="wp-block-button__link wp-element-button" href="/contact/">Construire le projet</a></div>
+				<!-- wp:button {"className":"is-style-theatre-cta-button"} -->
+				<div class="wp-block-button is-style-theatre-cta-button"><a class="wp-block-button__link wp-element-button" href="/contact/">Construire le projet</a></div>
 				<!-- /wp:button -->
 			</div>
 			<!-- /wp:buttons -->

@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.7/theme.json",
+	"version": 3,
+	"title": "Entete section theatre",
+	"slug": "theatre-section-heading",
+	"blockTypes": [ "core/group" ],
+	"styles": {
+		"css": "&{}"
+	}
+}

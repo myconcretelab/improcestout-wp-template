@@ -910,7 +910,7 @@ body.admin-bar {
 }
 
 .impro-page-shell .wp-block-post-content > :where(p, h2, h3, h4, ul, ol, blockquote) {
-	max-width: min(100%, 980px);
+	max-width: min(100%, var(--wp--style--global--content-size));
 	margin-right: auto;
 	margin-left: auto;
 }
@@ -928,7 +928,7 @@ body.admin-bar {
 }
 
 .impro-page-shell h1 {
-	max-width: 920px;
+	max-width: var(--wp--style--global--content-size);
 }
 
 .impro-page-shell h2 {
@@ -1163,7 +1163,8 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 	margin-top: 0;
 }
 
-.impro-tf :where(.impro-tf-section, .impro-tf-formats) > * {
+.impro-tf :where(.is-style-theatre-section, .is-style-theatre-formats-grid) > *,
+.wp-block-group.is-style-theatre-section > * {
 	max-width: none !important;
 	margin-block-start: 0;
 	margin-right: 0 !important;
@@ -1237,7 +1238,7 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 
 .is-style-theatre-kicker,
 .impro-tf-kicker,
-.impro-tf-section__heading p {
+.wp-block-group.is-style-theatre-section-heading > p {
 	margin: 0;
 	font-family: var(--wp--preset--font-family--fira-code);
 	font-size: 0.78rem;
@@ -1248,8 +1249,8 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 
 .wp-block-cover.is-style-theatre-hero h1,
 .is-style-theatre-hero-title,
-.impro-tf-section h2,
-.impro-tf-cta h2 {
+.wp-block-group.is-style-theatre-section h2,
+.wp-block-columns.is-style-theatre-cta h2 {
 	margin: 0;
 	font-family: var(--wp--preset--font-family--fira-code);
 	font-weight: 800;
@@ -1280,7 +1281,6 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	color: var(--impro-paper);
 }
 
-.impro-tf-themes .impro-tf-theme-tag,
 .is-style-theatre-tag {
 	display: inline-flex;
 	align-items: center;
@@ -1299,19 +1299,17 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	transform: rotate(var(--tag-tilt, -1deg));
 }
 
-.impro-tf-themes .impro-tf-theme-tag:nth-child(2n),
 .is-style-theatre-tag:nth-child(2n) {
 	--tag-tilt: 1.4deg;
 }
 
-.impro-tf-themes .impro-tf-theme-tag:nth-child(3n),
 .is-style-theatre-tag:nth-child(3n) {
 	--tag-tilt: -2deg;
 	background: var(--impro-cream);
 }
 
 .impro-tf-manifesto {
-	max-width: 980px;
+	max-width: min(100%, var(--wp--style--global--content-size));
 	margin: 0 auto;
 	padding: clamp(24px, 4vw, 42px);
 	border: 3px solid var(--impro-ink);
@@ -1329,11 +1327,11 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	margin: 0;
 }
 
-.impro-tf-info {
+.wp-block-columns.is-style-theatre-info-cards {
 	gap: clamp(14px, 2vw, 22px);
 }
 
-.impro-tf-info .wp-block-column {
+.wp-block-columns.is-style-theatre-info-cards .wp-block-column {
 	display: grid;
 	align-content: start;
 	gap: 10px;
@@ -1344,8 +1342,8 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	box-shadow: 6px 7px 0 var(--impro-ink);
 }
 
-.impro-tf-info h3,
-.impro-tf-format-card h3 {
+.wp-block-columns.is-style-theatre-info-cards h3,
+.wp-block-group.is-style-theatre-format-card h3 {
 	margin: 0;
 	font-family: var(--wp--preset--font-family--fira-code);
 	font-size: clamp(1rem, 1.7vw, 1.22rem);
@@ -1354,38 +1352,38 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	text-transform: uppercase;
 }
 
-.impro-tf-info p,
-.impro-tf-format-card p,
-.impro-tf-cta p {
+.wp-block-columns.is-style-theatre-info-cards p,
+.wp-block-group.is-style-theatre-format-card p,
+.wp-block-columns.is-style-theatre-cta p {
 	margin: 0;
 	font-size: 0.96rem;
 	font-weight: 430;
 	line-height: 1.38;
 }
 
-.impro-tf-section {
+.wp-block-group.is-style-theatre-section {
 	display: grid;
 	grid-template-columns: minmax(190px, 0.38fr) minmax(0, 1fr);
 	gap: clamp(24px, 5vw, 62px);
 	align-items: start;
 }
 
-.impro-tf-section__heading {
+.wp-block-group.is-style-theatre-section-heading {
 	position: sticky;
 	top: calc(var(--impro-admin-bar-height) + 130px);
 	display: grid;
 	gap: 10px;
 }
 
-.impro-tf-section__heading p {
+.wp-block-group.is-style-theatre-section-heading > p {
 	color: var(--impro-red-dark);
 }
 
-.impro-tf-section h2 {
+.wp-block-group.is-style-theatre-section h2 {
 	font-size: clamp(1.65rem, 3vw, 2.75rem);
 }
 
-.impro-tf-objectives {
+.wp-block-list.is-style-theatre-objectives-list {
 	display: grid;
 	gap: 14px;
 	margin: 0;
@@ -1393,7 +1391,7 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	list-style: none;
 }
 
-.impro-tf-objectives li {
+.wp-block-list.is-style-theatre-objectives-list li {
 	position: relative;
 	padding: 18px 18px 18px 58px;
 	border: 3px solid var(--impro-ink);
@@ -1403,7 +1401,7 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	font-weight: 650;
 }
 
-.impro-tf-objectives li::before {
+.wp-block-list.is-style-theatre-objectives-list li::before {
 	position: absolute;
 	top: 50%;
 	left: 18px;
@@ -1421,13 +1419,13 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	transform: translateY(-50%) rotate(-8deg);
 }
 
-.impro-tf-formats {
+.wp-block-group.is-style-theatre-formats-grid {
 	display: grid;
 	grid-template-columns: repeat(6, minmax(0, 1fr));
 	gap: clamp(14px, 2vw, 24px);
 }
 
-.impro-tf-formats > .impro-tf-format-card {
+.wp-block-group.is-style-theatre-formats-grid > .wp-block-group.is-style-theatre-format-card {
 	display: grid;
 	grid-column: span 3;
 	gap: 10px;
@@ -1441,16 +1439,16 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	margin: 0 !important;
 }
 
-.impro-tf-formats > .impro-tf-format-card:nth-child(2n) {
+.wp-block-group.is-style-theatre-formats-grid > .wp-block-group.is-style-theatre-format-card:nth-child(2n) {
 	--format-tilt: 1deg;
 	background: color-mix(in srgb, var(--impro-cream) 74%, white);
 }
 
-.impro-tf-formats > .impro-tf-format-card:nth-child(5) {
+.wp-block-group.is-style-theatre-formats-grid > .wp-block-group.is-style-theatre-format-card:nth-child(5) {
 	grid-column: 2 / span 4;
 }
 
-.impro-tf-themes {
+.wp-block-group.is-style-theatre-theme-strip {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -1460,7 +1458,7 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	border-bottom: 3px solid var(--impro-ink);
 }
 
-.impro-tf-cta {
+.wp-block-columns.is-style-theatre-cta {
 	gap: clamp(22px, 4vw, 44px);
 	align-items: center;
 	padding: clamp(24px, 4vw, 44px);
@@ -1472,16 +1470,17 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	box-shadow: 11px 12px 0 var(--impro-ink);
 }
 
-.impro-tf-cta .wp-block-column:first-child {
+.wp-block-columns.is-style-theatre-cta .wp-block-column:first-child {
 	display: grid;
 	gap: 12px;
 }
 
-.impro-tf-cta h2 {
+.wp-block-columns.is-style-theatre-cta h2 {
 	font-size: clamp(1.6rem, 3vw, 2.6rem);
 }
 
-.impro-tf-cta .wp-block-button__link {
+.wp-block-columns.is-style-theatre-cta .wp-block-button__link,
+.wp-block-button.is-style-theatre-cta-button .wp-block-button__link {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -1750,9 +1749,9 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	}
 
 	.wp-block-cover.is-style-theatre-hero,
-	.impro-tf-info,
-	.impro-tf-section,
-	.impro-tf-cta {
+	.wp-block-columns.is-style-theatre-info-cards,
+	.wp-block-group.is-style-theatre-section,
+	.wp-block-columns.is-style-theatre-cta {
 		grid-template-columns: 1fr;
 	}
 
@@ -1782,24 +1781,25 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 		font-size: clamp(2.4rem, 12vw, 4.2rem);
 	}
 
-	.impro-tf-info {
+	.wp-block-columns.is-style-theatre-info-cards {
 		gap: 14px;
 	}
 
-	.impro-tf-section__heading {
+	.wp-block-group.is-style-theatre-section-heading {
 		position: static;
 	}
 
-	.impro-tf-formats {
+	.wp-block-group.is-style-theatre-formats-grid {
 		grid-template-columns: 1fr;
 	}
 
-	.impro-tf-formats > .impro-tf-format-card,
-	.impro-tf-formats > .impro-tf-format-card:nth-child(5) {
+	.wp-block-group.is-style-theatre-formats-grid > .wp-block-group.is-style-theatre-format-card,
+	.wp-block-group.is-style-theatre-formats-grid > .wp-block-group.is-style-theatre-format-card:nth-child(5) {
 		grid-column: auto;
 	}
 
-	.impro-tf-cta .wp-block-button__link {
+	.wp-block-columns.is-style-theatre-cta .wp-block-button__link,
+	.wp-block-button.is-style-theatre-cta-button .wp-block-button__link {
 		justify-self: start;
 	}
 

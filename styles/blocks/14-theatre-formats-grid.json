@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.7/theme.json",
+	"version": 3,
+	"title": "Grille formats theatre",
+	"slug": "theatre-formats-grid",
+	"blockTypes": [ "core/group" ],
+	"styles": {
+		"css": "&{}"
+	}
+}
