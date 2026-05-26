@@ -517,6 +517,18 @@ if ( ! function_exists( 'improcestout_get_formation_icon_choices' ) ) :
 			'tag'       => __( 'Prix', 'improcestout' ),
 			'funding'   => __( 'Financement', 'improcestout' ),
 			'calendar'  => __( 'Calendrier', 'improcestout' ),
+			'map-pin'   => __( 'Lieu', 'improcestout' ),
+			'book'      => __( 'Livre', 'improcestout' ),
+			'speech'    => __( 'Parole', 'improcestout' ),
+			'handshake' => __( 'Accord', 'improcestout' ),
+			'heart'     => __( 'Coeur', 'improcestout' ),
+			'lightbulb' => __( 'Idee', 'improcestout' ),
+			'star'      => __( 'Etoile', 'improcestout' ),
+			'laptop'    => __( 'Ordinateur', 'improcestout' ),
+			'award'     => __( 'Certification', 'improcestout' ),
+			'puzzle'    => __( 'Puzzle', 'improcestout' ),
+			'shield'    => __( 'Protection', 'improcestout' ),
+			'mic'       => __( 'Micro', 'improcestout' ),
 			'check'     => __( 'Validation', 'improcestout' ),
 		);
 	}
@@ -541,6 +553,18 @@ if ( ! function_exists( 'improcestout_get_formation_icon_svg' ) ) :
 			'tag'       => '<path d="M20 13 13 20 4 11V4h7z"></path><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M13 8h5"></path>',
 			'funding'   => '<circle cx="10" cy="10" r="7"></circle><path d="m15 15 6 6"></path><path d="M10 6v8M7 10h6"></path>',
 			'calendar'  => '<rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18"></path>',
+			'map-pin'   => '<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle>',
+			'book'      => '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path><path d="M8 6h8"></path>',
+			'speech'    => '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"></path><path d="M8 9h8M8 13h5"></path>',
+			'handshake' => '<path d="m11 17 2 2a3 3 0 0 0 4.2 0l3.8-3.8"></path><path d="m3 12 5.5-5.5a3 3 0 0 1 4.2 0L14 7.8"></path><path d="m9 12 2-2 3 3a2 2 0 1 0 2.8-2.8L14 7.4"></path><path d="m2 15 4 4M22 11l-4-4"></path>',
+			'heart'     => '<path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"></path>',
+			'lightbulb' => '<path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M8 14a6 6 0 1 1 8 0c-1 1-1 2-1 4H9c0-2 0-3-1-4Z"></path>',
+			'star'      => '<path d="m12 2 3.1 6.4 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.2L7 14.3 2 9.4l6.9-1z"></path>',
+			'laptop'    => '<rect x="5" y="4" width="14" height="11" rx="2"></rect><path d="M2 20h20l-3-5H5z"></path>',
+			'award'     => '<circle cx="12" cy="8" r="5"></circle><path d="m8.5 12.5-2 8 5.5-3 5.5 3-2-8"></path>',
+			'puzzle'    => '<path d="M9 3h6v4a2 2 0 1 0 0 4v4h-4a2 2 0 1 1-4 0H3V9h4a2 2 0 1 0 2-2z"></path>',
+			'shield'    => '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-5"></path>',
+			'mic'       => '<path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z"></path><path d="M19 11a7 7 0 0 1-14 0M12 18v4M8 22h8"></path>',
 			'check'     => '<path d="M20 6 9 17l-5-5"></path><path d="M4 21h16"></path>',
 		);
 
@@ -827,6 +851,60 @@ if ( ! function_exists( 'improcestout_add_formation_admin_menu' ) ) :
 endif;
 add_action( 'admin_menu', 'improcestout_add_formation_admin_menu' );
 
+if ( ! function_exists( 'improcestout_enqueue_formation_info_admin_assets' ) ) :
+	/**
+	 * Loads admin assets for the shared formation info settings page.
+	 *
+	 * @return void
+	 */
+	function improcestout_enqueue_formation_info_admin_assets() {
+		if ( 'improcestout-formation-info' !== ( $_GET['page'] ?? '' ) || 'formation' !== ( $_GET['post_type'] ?? '' ) ) {
+			return;
+		}
+
+		$script_path = get_theme_file_path( 'assets/js/formation-info-admin.js' );
+
+		wp_enqueue_script(
+			'improcestout-formation-info-admin',
+			get_theme_file_uri( 'assets/js/formation-info-admin.js' ),
+			array(),
+			file_exists( $script_path ) ? filemtime( $script_path ) : wp_get_theme()->get( 'Version' ),
+			true
+		);
+
+		wp_add_inline_style(
+			'common',
+			'
+			.impro-formation-info-settings .widefat td { vertical-align: top; }
+			.impro-formation-info-settings th:nth-child(4),
+			.impro-formation-info-settings td:nth-child(4) { width: 130px; }
+			.impro-formation-info-settings__drag { width: 38px; text-align: center; }
+			.impro-formation-info-settings__handle { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid #c3c4c7; border-radius: 4px; background: #fff; color: #50575e; cursor: grab; }
+			.impro-formation-info-settings__row.is-dragging { opacity: .48; }
+			.impro-formation-info-settings__row.is-delete-pending { display: none; }
+			.impro-formation-icon-picker { position: relative; display: inline-block; }
+			.impro-formation-icon-picker__toggle { display: inline-flex; align-items: center; gap: 7px; min-width: 112px; height: 34px; padding: 0 9px; border: 1px solid #8c8f94; border-radius: 4px; background: #fff; color: #1d2327; cursor: pointer; }
+			.impro-formation-icon-picker__toggle svg { width: 17px; height: 17px; flex: 0 0 auto; }
+			.impro-formation-icon-picker__toggle-label { overflow: hidden; font-size: 12px; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
+			.impro-formation-icon-picker__popover { position: absolute; z-index: 100000; top: calc(100% + 6px); left: 0; display: none; width: min(360px, calc(100vw - 80px)); padding: 10px; border: 1px solid #c3c4c7; border-radius: 6px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.16); }
+			.impro-formation-icon-picker.is-open .impro-formation-icon-picker__popover { display: block; }
+			.impro-formation-icon-picker__options { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; max-height: 238px; overflow: auto; padding: 2px; }
+			.impro-formation-icon-picker input { position: absolute; opacity: 0; pointer-events: none; }
+			.impro-formation-icon-picker__option { position: relative; display: grid; gap: 3px; min-height: 50px; padding: 6px 4px; border: 1px solid #c3c4c7; border-radius: 5px; background: #fff; color: #1d2327; text-align: center; cursor: pointer; place-items: center; }
+			.impro-formation-icon-picker__option svg { width: 18px; height: 18px; }
+			.impro-formation-icon-picker__label { font-size: 11px; line-height: 1.15; }
+			.impro-formation-icon-picker input:checked + .impro-formation-icon-picker__option { border-color: #1d2327; box-shadow: inset 0 0 0 1px #1d2327; }
+			.impro-formation-icon-picker input:focus-visible + .impro-formation-icon-picker__option { outline: 2px solid #2271b1; outline-offset: 2px; }
+			.impro-formation-icon-picker__close { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; min-height: 24px; padding: 0; }
+			.impro-formation-icon-picker__popover-title { margin: 0 30px 8px 2px; font-size: 12px; font-weight: 600; }
+			.impro-formation-info-settings__delete { color: #b32d2e; }
+			.impro-formation-info-settings__new-row td { background: #f6f7f7; }
+			'
+		);
+	}
+endif;
+add_action( 'admin_enqueue_scripts', 'improcestout_enqueue_formation_info_admin_assets' );
+
 if ( ! function_exists( 'improcestout_save_formation_info_admin_page' ) ) :
 	/**
 	 * Saves the shared formation info settings page.
@@ -904,21 +982,41 @@ if ( ! function_exists( 'improcestout_save_formation_info_admin_page' ) ) :
 endif;
 add_action( 'admin_init', 'improcestout_save_formation_info_admin_page' );
 
-if ( ! function_exists( 'improcestout_render_formation_icon_select' ) ) :
+if ( ! function_exists( 'improcestout_render_formation_icon_picker' ) ) :
 	/**
-	 * Renders a formation icon select field.
+	 * Renders a visual formation icon picker.
 	 *
 	 * @param string $name Field name.
 	 * @param string $selected Selected icon.
 	 * @return void
 	 */
-	function improcestout_render_formation_icon_select( $name, $selected ) {
+	function improcestout_render_formation_icon_picker( $name, $selected ) {
+		$picker_id = 'impro-formation-icon-picker-' . wp_unique_id();
+		$choices   = improcestout_get_formation_icon_choices();
+		$selected  = isset( $choices[ $selected ] ) ? $selected : 'check';
 		?>
-		<select name="<?php echo esc_attr( $name ); ?>">
-			<?php foreach ( improcestout_get_formation_icon_choices() as $icon => $label ) : ?>
-				<option value="<?php echo esc_attr( $icon ); ?>" <?php selected( $selected, $icon ); ?>><?php echo esc_html( $label ); ?></option>
-			<?php endforeach; ?>
-		</select>
+		<div class="impro-formation-icon-picker" data-formation-icon-picker>
+			<button type="button" class="impro-formation-icon-picker__toggle" data-formation-icon-toggle aria-expanded="false" aria-controls="<?php echo esc_attr( $picker_id ); ?>">
+				<span data-formation-icon-current-svg><?php echo improcestout_get_formation_icon_svg( $selected ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+				<span class="impro-formation-icon-picker__toggle-label" data-formation-icon-current-label><?php echo esc_html( $choices[ $selected ] ); ?></span>
+			</button>
+			<div id="<?php echo esc_attr( $picker_id ); ?>" class="impro-formation-icon-picker__popover" data-formation-icon-popover>
+				<button type="button" class="button impro-formation-icon-picker__close" data-formation-icon-close aria-label="<?php esc_attr_e( 'Fermer le choix du picto', 'improcestout' ); ?>"><span aria-hidden="true">&times;</span></button>
+				<p class="impro-formation-icon-picker__popover-title"><?php esc_html_e( 'Choisir un picto', 'improcestout' ); ?></p>
+				<div class="impro-formation-icon-picker__options" role="radiogroup" aria-label="<?php esc_attr_e( 'Choix du picto', 'improcestout' ); ?>">
+					<?php foreach ( $choices as $icon => $label ) : ?>
+						<?php $field_id = $picker_id . '-' . $icon; ?>
+						<span>
+							<input id="<?php echo esc_attr( $field_id ); ?>" type="radio" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $icon ); ?>" <?php checked( $selected, $icon ); ?> data-icon-label="<?php echo esc_attr( $label ); ?>">
+							<label class="impro-formation-icon-picker__option" for="<?php echo esc_attr( $field_id ); ?>">
+								<?php echo improcestout_get_formation_icon_svg( $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<span class="impro-formation-icon-picker__label"><?php echo esc_html( $label ); ?></span>
+							</label>
+						</span>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
 		<?php
 	}
 endif;
@@ -939,39 +1037,50 @@ if ( ! function_exists( 'improcestout_render_formation_info_admin_page' ) ) :
 			<?php endif; ?>
 			<form method="post">
 				<?php wp_nonce_field( 'improcestout_save_formation_info_settings', 'improcestout_formation_info_settings_nonce' ); ?>
-				<table class="widefat striped">
+				<table class="widefat striped impro-formation-info-settings">
 					<thead>
 						<tr>
+							<th class="impro-formation-info-settings__drag"><span class="screen-reader-text"><?php esc_html_e( 'Reordonner', 'improcestout' ); ?></span></th>
 							<th><?php esc_html_e( 'ID', 'improcestout' ); ?></th>
 							<th><?php esc_html_e( 'Titre', 'improcestout' ); ?></th>
 							<th><?php esc_html_e( 'Picto', 'improcestout' ); ?></th>
 							<th><?php esc_html_e( 'Texte par defaut', 'improcestout' ); ?></th>
-							<th><?php esc_html_e( 'Ordre', 'improcestout' ); ?></th>
 							<th><?php esc_html_e( 'Actif', 'improcestout' ); ?></th>
 							<th><?php esc_html_e( 'Supprimer', 'improcestout' ); ?></th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody data-formation-info-sortable>
 						<?php foreach ( $items as $item ) : ?>
-							<tr>
+							<tr class="impro-formation-info-settings__row" draggable="true" data-formation-info-row>
+								<td class="impro-formation-info-settings__drag">
+									<button type="button" class="impro-formation-info-settings__handle" aria-label="<?php esc_attr_e( 'Deplacer cette rubrique', 'improcestout' ); ?>" title="<?php esc_attr_e( 'Glisser pour reordonner', 'improcestout' ); ?>">
+										<span class="dashicons dashicons-menu" aria-hidden="true"></span>
+									</button>
+								</td>
 								<td>
 									<code><?php echo esc_html( $item['id'] ); ?></code>
 									<input type="hidden" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][id]" value="<?php echo esc_attr( $item['id'] ); ?>">
+									<input type="hidden" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][order]" value="<?php echo esc_attr( $item['order'] ); ?>" data-formation-info-order>
+									<input type="hidden" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][delete]" value="0" data-formation-info-delete>
 								</td>
 								<td><input class="regular-text" type="text" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][title]" value="<?php echo esc_attr( $item['title'] ); ?>"></td>
-								<td><?php improcestout_render_formation_icon_select( 'formation_info_items[' . $item['id'] . '][icon]', $item['icon'] ); ?></td>
+								<td><?php improcestout_render_formation_icon_picker( 'formation_info_items[' . $item['id'] . '][icon]', $item['icon'] ); ?></td>
 								<td><textarea class="large-text" rows="2" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][default]"><?php echo esc_textarea( $item['default'] ); ?></textarea></td>
-								<td><input type="number" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][order]" value="<?php echo esc_attr( $item['order'] ); ?>" style="width:5rem"></td>
 								<td><input type="checkbox" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][active]" value="1" <?php checked( $item['active'] ); ?>></td>
-								<td><input type="checkbox" name="formation_info_items[<?php echo esc_attr( $item['id'] ); ?>][delete]" value="1"></td>
+								<td>
+									<button type="button" class="button impro-formation-info-settings__delete" data-formation-info-delete-button>
+										<span class="dashicons dashicons-trash" aria-hidden="true"></span>
+										<span class="screen-reader-text"><?php esc_html_e( 'Supprimer cette rubrique', 'improcestout' ); ?></span>
+									</button>
+								</td>
 							</tr>
 						<?php endforeach; ?>
-						<tr>
+						<tr class="impro-formation-info-settings__new-row">
+							<td><input type="hidden" name="formation_info_new_item[order]" value="<?php echo esc_attr( count( $items ) * 10 + 10 ); ?>"></td>
 							<td><input type="text" name="formation_info_new_item[id]" placeholder="<?php esc_attr_e( 'nouvelle-rubrique', 'improcestout' ); ?>"></td>
 							<td><input class="regular-text" type="text" name="formation_info_new_item[title]" placeholder="<?php esc_attr_e( 'Nouvelle rubrique', 'improcestout' ); ?>"></td>
-							<td><?php improcestout_render_formation_icon_select( 'formation_info_new_item[icon]', 'check' ); ?></td>
+							<td><?php improcestout_render_formation_icon_picker( 'formation_info_new_item[icon]', 'check' ); ?></td>
 							<td><textarea class="large-text" rows="2" name="formation_info_new_item[default]"></textarea></td>
-							<td><input type="number" name="formation_info_new_item[order]" value="<?php echo esc_attr( count( $items ) * 10 + 10 ); ?>" style="width:5rem"></td>
 							<td><input type="checkbox" name="formation_info_new_item[active]" value="1" checked></td>
 							<td></td>
 						</tr>
