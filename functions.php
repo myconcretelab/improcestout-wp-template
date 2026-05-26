@@ -87,6 +87,403 @@ if ( ! function_exists( 'improcestout_enqueue_header_script' ) ) :
 endif;
 add_action( 'wp_enqueue_scripts', 'improcestout_enqueue_header_script' );
 
+if ( ! function_exists( 'improcestout_register_intervenants' ) ) :
+	/**
+	 * Registers the intervenant content type and its page assignment taxonomy.
+	 *
+	 * @return void
+	 */
+	function improcestout_register_intervenants() {
+		$labels = array(
+			'name'                  => _x( 'Intervenants', 'Post type general name', 'improcestout' ),
+			'singular_name'         => _x( 'Intervenant', 'Post type singular name', 'improcestout' ),
+			'menu_name'             => _x( 'Intervenants', 'Admin Menu text', 'improcestout' ),
+			'name_admin_bar'        => _x( 'Intervenant', 'Add New on Toolbar', 'improcestout' ),
+			'add_new'               => __( 'Ajouter', 'improcestout' ),
+			'add_new_item'          => __( 'Ajouter un intervenant', 'improcestout' ),
+			'new_item'              => __( 'Nouvel intervenant', 'improcestout' ),
+			'edit_item'             => __( 'Modifier l\'intervenant', 'improcestout' ),
+			'view_item'             => __( 'Voir l\'intervenant', 'improcestout' ),
+			'all_items'             => __( 'Tous les intervenants', 'improcestout' ),
+			'search_items'          => __( 'Rechercher des intervenants', 'improcestout' ),
+			'not_found'             => __( 'Aucun intervenant trouve.', 'improcestout' ),
+			'not_found_in_trash'    => __( 'Aucun intervenant dans la corbeille.', 'improcestout' ),
+			'featured_image'        => __( 'Photo', 'improcestout' ),
+			'set_featured_image'    => __( 'Ajouter une photo', 'improcestout' ),
+			'remove_featured_image' => __( 'Retirer la photo', 'improcestout' ),
+			'use_featured_image'    => __( 'Utiliser comme photo', 'improcestout' ),
+		);
+
+		register_post_type(
+			'intervenant',
+			array(
+				'labels'       => $labels,
+				'public'       => true,
+				'show_in_rest' => true,
+				'menu_icon'    => 'dashicons-groups',
+				'has_archive'  => false,
+				'rewrite'      => array( 'slug' => 'intervenants' ),
+				'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions' ),
+			)
+		);
+
+		register_taxonomy(
+			'categorie_intervenant',
+			array( 'intervenant', 'page' ),
+			array(
+				'labels'            => array(
+					'name'                       => _x( 'Categories d\'intervenants', 'Taxonomy general name', 'improcestout' ),
+					'singular_name'              => _x( 'Categorie d\'intervenants', 'Taxonomy singular name', 'improcestout' ),
+					'search_items'               => __( 'Rechercher des categories', 'improcestout' ),
+					'all_items'                  => __( 'Toutes les categories', 'improcestout' ),
+					'parent_item'                => __( 'Categorie parente', 'improcestout' ),
+					'parent_item_colon'          => __( 'Categorie parente :', 'improcestout' ),
+					'edit_item'                  => __( 'Modifier la categorie', 'improcestout' ),
+					'update_item'                => __( 'Mettre a jour la categorie', 'improcestout' ),
+					'add_new_item'               => __( 'Ajouter une categorie', 'improcestout' ),
+					'new_item_name'              => __( 'Nom de la nouvelle categorie', 'improcestout' ),
+					'menu_name'                  => __( 'Categories', 'improcestout' ),
+					'separate_items_with_commas' => __( 'Separer les categories par des virgules', 'improcestout' ),
+					'choose_from_most_used'      => __( 'Choisir parmi les plus utilisees', 'improcestout' ),
+				),
+				'hierarchical'      => true,
+				'public'            => true,
+				'show_admin_column' => true,
+				'show_in_rest'      => true,
+				'rewrite'           => array( 'slug' => 'intervenants-categorie' ),
+			)
+		);
+
+		foreach ( array( 'prenom', 'nom', 'email' ) as $meta_key ) {
+			register_post_meta(
+				'intervenant',
+				'improcestout_intervenant_' . $meta_key,
+				array(
+					'type'              => 'string',
+					'single'            => true,
+					'show_in_rest'      => true,
+					'sanitize_callback' => 'email' === $meta_key ? 'sanitize_email' : 'sanitize_text_field',
+					'auth_callback'     => static function () {
+						return current_user_can( 'edit_posts' );
+					},
+				)
+			);
+		}
+	}
+endif;
+add_action( 'init', 'improcestout_register_intervenants' );
+
+if ( ! function_exists( 'improcestout_add_intervenant_meta_boxes' ) ) :
+	/**
+	 * Adds editable intervenant fields.
+	 *
+	 * @return void
+	 */
+	function improcestout_add_intervenant_meta_boxes() {
+		add_meta_box(
+			'improcestout_intervenant_details',
+			__( 'Informations intervenant', 'improcestout' ),
+			'improcestout_render_intervenant_meta_box',
+			'intervenant',
+			'normal',
+			'high'
+		);
+	}
+endif;
+add_action( 'add_meta_boxes', 'improcestout_add_intervenant_meta_boxes' );
+
+if ( ! function_exists( 'improcestout_render_intervenant_meta_box' ) ) :
+	/**
+	 * Renders the intervenant fields metabox.
+	 *
+	 * @param WP_Post $post Current post object.
+	 * @return void
+	 */
+	function improcestout_render_intervenant_meta_box( $post ) {
+		$prenom = get_post_meta( $post->ID, 'improcestout_intervenant_prenom', true );
+		$nom    = get_post_meta( $post->ID, 'improcestout_intervenant_nom', true );
+		$email  = get_post_meta( $post->ID, 'improcestout_intervenant_email', true );
+
+		wp_nonce_field( 'improcestout_save_intervenant_details', 'improcestout_intervenant_nonce' );
+		?>
+		<p>
+			<label for="improcestout_intervenant_prenom"><strong><?php esc_html_e( 'Prenom', 'improcestout' ); ?></strong></label><br>
+			<input type="text" id="improcestout_intervenant_prenom" name="improcestout_intervenant_prenom" value="<?php echo esc_attr( $prenom ); ?>" class="widefat">
+		</p>
+		<p>
+			<label for="improcestout_intervenant_nom"><strong><?php esc_html_e( 'Nom', 'improcestout' ); ?></strong></label><br>
+			<input type="text" id="improcestout_intervenant_nom" name="improcestout_intervenant_nom" value="<?php echo esc_attr( $nom ); ?>" class="widefat">
+		</p>
+		<p>
+			<label for="improcestout_intervenant_email"><strong><?php esc_html_e( 'Email', 'improcestout' ); ?></strong></label><br>
+			<input type="email" id="improcestout_intervenant_email" name="improcestout_intervenant_email" value="<?php echo esc_attr( $email ); ?>" class="widefat">
+		</p>
+		<p><?php esc_html_e( 'La photo se renseigne avec le bloc Photo de l\'intervenant dans la colonne laterale.', 'improcestout' ); ?></p>
+		<?php
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_save_intervenant_meta' ) ) :
+	/**
+	 * Saves intervenant fields.
+	 *
+	 * @param int     $post_id Current post ID.
+	 * @param WP_Post $post Current post object.
+	 * @return void
+	 */
+	function improcestout_save_intervenant_meta( $post_id, $post ) {
+		if ( ! isset( $_POST['improcestout_intervenant_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['improcestout_intervenant_nonce'] ), 'improcestout_save_intervenant_details' ) ) {
+			return;
+		}
+
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		$prenom = isset( $_POST['improcestout_intervenant_prenom'] ) ? sanitize_text_field( wp_unslash( $_POST['improcestout_intervenant_prenom'] ) ) : '';
+		$nom    = isset( $_POST['improcestout_intervenant_nom'] ) ? sanitize_text_field( wp_unslash( $_POST['improcestout_intervenant_nom'] ) ) : '';
+		$email  = isset( $_POST['improcestout_intervenant_email'] ) ? sanitize_email( wp_unslash( $_POST['improcestout_intervenant_email'] ) ) : '';
+
+		update_post_meta( $post_id, 'improcestout_intervenant_prenom', $prenom );
+		update_post_meta( $post_id, 'improcestout_intervenant_nom', $nom );
+		update_post_meta( $post_id, 'improcestout_intervenant_email', $email );
+
+		$generated_title = trim( $prenom . ' ' . $nom );
+
+		if ( $generated_title && ( '' === trim( $post->post_title ) || __( 'Auto Draft' ) === $post->post_title ) ) {
+			remove_action( 'save_post_intervenant', 'improcestout_save_intervenant_meta', 10 );
+			wp_update_post(
+				array(
+					'ID'         => $post_id,
+					'post_title' => $generated_title,
+				)
+			);
+			add_action( 'save_post_intervenant', 'improcestout_save_intervenant_meta', 10, 2 );
+		}
+	}
+endif;
+add_action( 'save_post_intervenant', 'improcestout_save_intervenant_meta', 10, 2 );
+
+if ( ! function_exists( 'improcestout_get_intervenant_name' ) ) :
+	/**
+	 * Returns the public display name for an intervenant.
+	 *
+	 * @param int $post_id Intervenant post ID.
+	 * @return string
+	 */
+	function improcestout_get_intervenant_name( $post_id ) {
+		$prenom = trim( (string) get_post_meta( $post_id, 'improcestout_intervenant_prenom', true ) );
+		$nom    = trim( (string) get_post_meta( $post_id, 'improcestout_intervenant_nom', true ) );
+		$name   = trim( $prenom . ' ' . $nom );
+
+		return $name ? $name : get_the_title( $post_id );
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_normalize_intervenants_attributes' ) ) :
+	/**
+	 * Normalizes public settings for the intervenants listing.
+	 *
+	 * @param array $attributes Listing attributes.
+	 * @return array
+	 */
+	function improcestout_normalize_intervenants_attributes( $attributes = array() ) {
+		$attributes = wp_parse_args(
+			$attributes,
+			array(
+				'categorySlug'     => '',
+				'categories'       => array(),
+				'inheritPageTerms' => false,
+				'columns'          => 3,
+				'showIntro'        => true,
+				'introText'        => __( 'La troupe en mouvement', 'improcestout' ),
+				'showPhoto'        => true,
+				'showExcerpt'      => true,
+				'showCategories'   => true,
+				'showEmail'        => true,
+				'emptyText'        => __( 'Les intervenants apparaitront ici des qu\'ils seront publies.', 'improcestout' ),
+			)
+		);
+
+		$categories = array();
+
+		if ( '' !== trim( (string) $attributes['categorySlug'] ) ) {
+			$categories[] = sanitize_title( $attributes['categorySlug'] );
+		} elseif ( ! empty( $attributes['categories'] ) ) {
+			$categories = array_map( 'sanitize_title', wp_parse_list( $attributes['categories'] ) );
+		}
+
+		$columns = min( 4, max( 1, absint( $attributes['columns'] ) ) );
+
+		return array(
+			'categories'       => array_values( array_filter( array_unique( $categories ) ) ),
+			'inheritPageTerms' => rest_sanitize_boolean( $attributes['inheritPageTerms'] ),
+			'columns'          => $columns,
+			'showIntro'        => rest_sanitize_boolean( $attributes['showIntro'] ),
+			'introText'        => sanitize_text_field( $attributes['introText'] ),
+			'showPhoto'        => rest_sanitize_boolean( $attributes['showPhoto'] ),
+			'showExcerpt'      => rest_sanitize_boolean( $attributes['showExcerpt'] ),
+			'showCategories'   => rest_sanitize_boolean( $attributes['showCategories'] ),
+			'showEmail'        => rest_sanitize_boolean( $attributes['showEmail'] ),
+			'emptyText'        => sanitize_text_field( $attributes['emptyText'] ),
+		);
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_render_intervenants' ) ) :
+	/**
+	 * Renders the intervenants board.
+	 *
+	 * @param array $attributes Listing attributes.
+	 * @param bool  $use_block_wrapper Whether to add block wrapper attributes.
+	 * @return string
+	 */
+	function improcestout_render_intervenants( $attributes = array(), $use_block_wrapper = false ) {
+		$settings = improcestout_normalize_intervenants_attributes( $attributes );
+
+		$query_args = array(
+			'post_type'      => 'intervenant',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+		);
+
+		if ( $settings['categories'] ) {
+			$query_args['tax_query'] = array(
+				array(
+					'taxonomy' => 'categorie_intervenant',
+					'field'    => 'slug',
+					'terms'    => $settings['categories'],
+				),
+			);
+		} elseif ( $settings['inheritPageTerms'] && is_page() ) {
+			$terms = get_the_terms( get_the_ID(), 'categorie_intervenant' );
+
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+				$query_args['tax_query'] = array(
+					array(
+						'taxonomy' => 'categorie_intervenant',
+						'field'    => 'term_id',
+						'terms'    => wp_list_pluck( $terms, 'term_id' ),
+					),
+				);
+			}
+		}
+
+		$intervenants = new WP_Query( $query_args );
+		$grid_classes = 'impro-intervenants-grid impro-intervenants-grid--columns-' . $settings['columns'];
+		$wrapper      = array( 'class' => 'impro-intervenants-board' );
+
+		ob_start();
+		?>
+		<section <?php echo $use_block_wrapper ? get_block_wrapper_attributes( $wrapper ) : 'class="' . esc_attr( $wrapper['class'] ) . '"'; ?>>
+			<?php if ( $settings['showIntro'] && $settings['introText'] ) : ?>
+				<div class="impro-intervenants-board__intro">
+					<p><?php echo esc_html( $settings['introText'] ); ?></p>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( $intervenants->have_posts() ) : ?>
+				<div class="<?php echo esc_attr( $grid_classes ); ?>">
+					<?php
+					$index = 0;
+					while ( $intervenants->have_posts() ) :
+						$intervenants->the_post();
+						$index++;
+						$post_id = get_the_ID();
+						$email   = get_post_meta( $post_id, 'improcestout_intervenant_email', true );
+						$classes = 'impro-intervenant-card impro-intervenant-card--' . ( $index % 6 );
+						?>
+						<article class="<?php echo esc_attr( $classes ); ?>">
+							<?php if ( $settings['showPhoto'] ) : ?>
+								<div class="impro-intervenant-card__photo">
+									<?php if ( has_post_thumbnail() ) : ?>
+										<?php the_post_thumbnail( 'medium_large' ); ?>
+									<?php else : ?>
+										<span aria-hidden="true"><?php echo esc_html( substr( improcestout_get_intervenant_name( $post_id ), 0, 1 ) ); ?></span>
+									<?php endif; ?>
+								</div>
+							<?php endif; ?>
+							<div class="impro-intervenant-card__content">
+								<h2><?php echo esc_html( improcestout_get_intervenant_name( $post_id ) ); ?></h2>
+								<?php if ( $settings['showExcerpt'] && has_excerpt() ) : ?>
+									<p><?php echo esc_html( get_the_excerpt() ); ?></p>
+								<?php endif; ?>
+								<?php if ( $settings['showCategories'] ) : ?>
+									<?php
+									$term_list = get_the_term_list( $post_id, 'categorie_intervenant', '<div class="impro-intervenant-card__terms">', '', '</div>' );
+									if ( $term_list && ! is_wp_error( $term_list ) ) {
+										echo $term_list; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									}
+									?>
+								<?php endif; ?>
+								<?php if ( $settings['showEmail'] && $email ) : ?>
+									<a class="impro-intervenant-card__email" href="<?php echo esc_url( 'mailto:' . antispambot( $email ) ); ?>"><?php echo esc_html( antispambot( $email ) ); ?></a>
+								<?php endif; ?>
+							</div>
+						</article>
+					<?php endwhile; ?>
+				</div>
+				<?php wp_reset_postdata(); ?>
+			<?php else : ?>
+				<p class="impro-intervenants-empty"><?php echo esc_html( $settings['emptyText'] ); ?></p>
+			<?php endif; ?>
+		</section>
+		<?php
+
+		return ob_get_clean();
+	}
+endif;
+
+if ( ! function_exists( 'improcestout_render_intervenants_shortcode' ) ) :
+	/**
+	 * Renders the intervenants board shortcode.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string
+	 */
+	function improcestout_render_intervenants_shortcode( $atts = array() ) {
+		$atts = shortcode_atts(
+			array(
+				'category'        => '',
+				'categories'      => '',
+				'columns'         => 3,
+				'show_intro'      => true,
+				'intro_text'      => __( 'La troupe en mouvement', 'improcestout' ),
+				'show_photo'      => true,
+				'show_excerpt'    => true,
+				'show_categories' => true,
+				'show_email'      => true,
+				'empty_text'      => __( 'Les intervenants apparaitront ici des qu\'ils seront publies.', 'improcestout' ),
+			),
+			$atts,
+			'improcestout_intervenants'
+		);
+
+		return improcestout_render_intervenants(
+			array(
+				'categorySlug'     => $atts['category'],
+				'categories'       => $atts['categories'],
+				'inheritPageTerms' => '' === trim( (string) $atts['category'] ) && '' === trim( (string) $atts['categories'] ),
+				'columns'          => $atts['columns'],
+				'showIntro'        => $atts['show_intro'],
+				'introText'        => $atts['intro_text'],
+				'showPhoto'        => $atts['show_photo'],
+				'showExcerpt'      => $atts['show_excerpt'],
+				'showCategories'   => $atts['show_categories'],
+				'showEmail'        => $atts['show_email'],
+				'emptyText'        => $atts['empty_text'],
+			)
+		);
+	}
+endif;
+add_shortcode( 'improcestout_intervenants', 'improcestout_render_intervenants_shortcode' );
+
 // Registers custom block styles.
 if ( ! function_exists( 'improcestout_block_styles' ) ) :
 	/**
@@ -501,6 +898,87 @@ if ( ! function_exists( 'improcestout_register_sun_navigation_block' ) ) :
 	}
 endif;
 add_action( 'init', 'improcestout_register_sun_navigation_block' );
+
+if ( ! function_exists( 'improcestout_register_intervenants_block' ) ) :
+	/**
+	 * Registers the configurable intervenants listing block.
+	 *
+	 * @return void
+	 */
+	function improcestout_register_intervenants_block() {
+		$script_path = get_theme_file_path( 'assets/js/intervenants-block.js' );
+
+		wp_register_script(
+			'improcestout-intervenants-block',
+			get_theme_file_uri( 'assets/js/intervenants-block.js' ),
+			array( 'wp-blocks', 'wp-block-editor', 'wp-components', 'wp-data', 'wp-element', 'wp-i18n', 'wp-server-side-render' ),
+			file_exists( $script_path ) ? filemtime( $script_path ) : wp_get_theme()->get( 'Version' ),
+			true
+		);
+
+		register_block_type(
+			'improcestout/intervenants-list',
+			array(
+				'api_version'     => 3,
+				'title'           => __( 'Intervenants', 'improcestout' ),
+				'description'     => __( 'Liste configurable des intervenants.', 'improcestout' ),
+				'category'        => 'widgets',
+				'icon'            => 'groups',
+				'editor_script'   => 'improcestout-intervenants-block',
+				'render_callback' => static function ( $attributes ) {
+					return improcestout_render_intervenants( $attributes, true );
+				},
+				'attributes'      => array(
+					'categorySlug'     => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'inheritPageTerms' => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'columns'          => array(
+						'type'    => 'number',
+						'default' => 3,
+					),
+					'showIntro'        => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'introText'        => array(
+						'type'    => 'string',
+						'default' => __( 'La troupe en mouvement', 'improcestout' ),
+					),
+					'showPhoto'        => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showExcerpt'      => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showCategories'   => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'showEmail'        => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'emptyText'        => array(
+						'type'    => 'string',
+						'default' => __( 'Les intervenants apparaitront ici des qu\'ils seront publies.', 'improcestout' ),
+					),
+				),
+				'supports'        => array(
+					'align' => array( 'wide', 'full' ),
+					'html'  => false,
+				),
+			)
+		);
+	}
+endif;
+add_action( 'init', 'improcestout_register_intervenants_block' );
 
 if ( ! function_exists( 'improcestout_enqueue_block_editor_assets' ) ) :
 	/**
