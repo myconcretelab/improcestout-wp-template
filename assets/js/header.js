@@ -24,6 +24,7 @@
 
 	function updateHeaderMetrics() {
 		root.style.setProperty( '--impro-admin-bar-height', getAdminBarHeight() + 'px' );
+		root.style.setProperty( '--impro-header-height', header.getBoundingClientRect().height + 'px' );
 	}
 
 	function updateHeaderState() {
@@ -38,14 +39,19 @@
 
 		isCondensed = shouldCondense;
 		header.classList.toggle( 'is-condensed', isCondensed );
+		updateHeaderMetrics();
 	}
 
 	function updateHeader() {
 		updateHeaderMetrics();
 		updateHeaderState();
+		window.requestAnimationFrame( updateHeaderMetrics );
 	}
 
 	updateHeader();
+	if ( 'ResizeObserver' in window ) {
+		new ResizeObserver( updateHeaderMetrics ).observe( header );
+	}
 	window.addEventListener( 'scroll', updateHeaderState, { passive: true } );
 	window.addEventListener( 'resize', updateHeader, { passive: true } );
 }() );
