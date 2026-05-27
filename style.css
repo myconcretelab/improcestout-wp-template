@@ -1664,21 +1664,137 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 }
 
 .is-style-theatre-tag {
+	--theatre-tag-font-size: 0.72rem;
+	--theatre-tag-margin-top: 0;
+	--theatre-tag-min-height: 34px;
+	--theatre-tag-padding-x: 0.62rem;
+	--theatre-tag-padding-y: 0.32rem;
+
 	display: inline-flex;
 	align-items: center;
-	min-height: 34px;
-	margin: 0;
-	padding: 0.32rem 0.62rem;
+	box-sizing: border-box;
+	min-height: var(--theatre-tag-min-height);
+	margin: var(--theatre-tag-margin-top) 0 0;
+	padding: var(--theatre-tag-padding-y) var(--theatre-tag-padding-x);
 	border: 2px solid var(--impro-ink);
 	background: var(--impro-paper);
 	box-shadow: 4px 4px 0 var(--impro-ink);
 	color: var(--impro-ink);
 	font-family: var(--wp--preset--font-family--fira-code);
-	font-size: 0.72rem;
+	font-size: var(--theatre-tag-font-size);
 	font-weight: 800;
 	line-height: 1.1;
 	text-transform: uppercase;
 	transform: rotate(var(--tag-tilt, -1deg));
+}
+
+h1.is-style-theatre-tag,
+h2.is-style-theatre-tag,
+h3.is-style-theatre-tag,
+h4.is-style-theatre-tag,
+h5.is-style-theatre-tag,
+h6.is-style-theatre-tag,
+h1.wp-block-heading.is-style-theatre-tag,
+h2.wp-block-heading.is-style-theatre-tag,
+h3.wp-block-heading.is-style-theatre-tag,
+h4.wp-block-heading.is-style-theatre-tag,
+h5.wp-block-heading.is-style-theatre-tag,
+h6.wp-block-heading.is-style-theatre-tag,
+.wp-block-post-content > h1.wp-block-heading.is-style-theatre-tag,
+.wp-block-post-content > h2.wp-block-heading.is-style-theatre-tag,
+.wp-block-post-content > h3.wp-block-heading.is-style-theatre-tag,
+.wp-block-post-content > h4.wp-block-heading.is-style-theatre-tag,
+.wp-block-post-content > h5.wp-block-heading.is-style-theatre-tag,
+.wp-block-post-content > h6.wp-block-heading.is-style-theatre-tag {
+	display: flex;
+	width: fit-content;
+	max-width: 100%;
+	font-size: var(--theatre-tag-font-size);
+	margin-block-start: var(--theatre-tag-heading-margin-top);
+	margin-block-end: 0;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	line-height: 1.05;
+}
+
+h1.is-style-theatre-tag.has-text-align-center,
+h2.is-style-theatre-tag.has-text-align-center,
+h3.is-style-theatre-tag.has-text-align-center,
+h4.is-style-theatre-tag.has-text-align-center,
+h5.is-style-theatre-tag.has-text-align-center,
+h6.is-style-theatre-tag.has-text-align-center,
+.wp-block-post-content > h1.wp-block-heading.is-style-theatre-tag.has-text-align-center,
+.wp-block-post-content > h2.wp-block-heading.is-style-theatre-tag.has-text-align-center,
+.wp-block-post-content > h3.wp-block-heading.is-style-theatre-tag.has-text-align-center,
+.wp-block-post-content > h4.wp-block-heading.is-style-theatre-tag.has-text-align-center,
+.wp-block-post-content > h5.wp-block-heading.is-style-theatre-tag.has-text-align-center,
+.wp-block-post-content > h6.wp-block-heading.is-style-theatre-tag.has-text-align-center {
+	margin-left: auto !important;
+	margin-right: auto !important;
+	text-align: center;
+}
+
+h1.is-style-theatre-tag.has-text-align-right,
+h2.is-style-theatre-tag.has-text-align-right,
+h3.is-style-theatre-tag.has-text-align-right,
+h4.is-style-theatre-tag.has-text-align-right,
+h5.is-style-theatre-tag.has-text-align-right,
+h6.is-style-theatre-tag.has-text-align-right,
+.wp-block-post-content > h1.wp-block-heading.is-style-theatre-tag.has-text-align-right,
+.wp-block-post-content > h2.wp-block-heading.is-style-theatre-tag.has-text-align-right,
+.wp-block-post-content > h3.wp-block-heading.is-style-theatre-tag.has-text-align-right,
+.wp-block-post-content > h4.wp-block-heading.is-style-theatre-tag.has-text-align-right,
+.wp-block-post-content > h5.wp-block-heading.is-style-theatre-tag.has-text-align-right,
+.wp-block-post-content > h6.wp-block-heading.is-style-theatre-tag.has-text-align-right {
+	margin-left: auto !important;
+	margin-right: 0 !important;
+	text-align: right;
+}
+
+h1.is-style-theatre-tag {
+	--theatre-tag-font-size: clamp(1.35rem, 2.8vw, 2.25rem);
+	--theatre-tag-heading-margin-top: clamp(1.8rem, 5vw, 3rem);
+	--theatre-tag-min-height: 58px;
+	--theatre-tag-padding-x: 1rem;
+	--theatre-tag-padding-y: 0.58rem;
+}
+
+h2.is-style-theatre-tag {
+	--theatre-tag-font-size: clamp(1.18rem, 2.25vw, 1.85rem);
+	--theatre-tag-heading-margin-top: clamp(1.55rem, 4vw, 2.5rem);
+	--theatre-tag-min-height: 52px;
+	--theatre-tag-padding-x: 0.92rem;
+	--theatre-tag-padding-y: 0.5rem;
+}
+
+h3.is-style-theatre-tag {
+	--theatre-tag-font-size: clamp(1rem, 1.8vw, 1.45rem);
+	--theatre-tag-heading-margin-top: clamp(1.25rem, 3vw, 2rem);
+	--theatre-tag-min-height: 46px;
+	--theatre-tag-padding-x: 0.82rem;
+	--theatre-tag-padding-y: 0.42rem;
+}
+
+h4.is-style-theatre-tag {
+	--theatre-tag-font-size: clamp(0.88rem, 1.45vw, 1.18rem);
+	--theatre-tag-heading-margin-top: clamp(1.05rem, 2.5vw, 1.7rem);
+	--theatre-tag-min-height: 42px;
+	--theatre-tag-padding-x: 0.76rem;
+	--theatre-tag-padding-y: 0.38rem;
+}
+
+h5.is-style-theatre-tag {
+	--theatre-tag-font-size: clamp(0.78rem, 1.2vw, 1rem);
+	--theatre-tag-heading-margin-top: clamp(0.9rem, 2vw, 1.45rem);
+	--theatre-tag-min-height: 38px;
+	--theatre-tag-padding-x: 0.7rem;
+	--theatre-tag-padding-y: 0.34rem;
+}
+
+h6.is-style-theatre-tag {
+	--theatre-tag-font-size: clamp(0.72rem, 1vw, 0.88rem);
+	--theatre-tag-heading-margin-top: clamp(0.75rem, 1.7vw, 1.2rem);
+	--theatre-tag-min-height: 34px;
 }
 
 .is-style-theatre-tag:nth-child(2n) {
