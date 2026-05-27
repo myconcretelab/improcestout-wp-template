@@ -976,8 +976,11 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 }
 
 .impro-intervenants-board {
+	box-sizing: border-box;
 	position: relative;
-	margin-top: clamp(34px, 6vw, 72px);
+	width: calc(100% - clamp(32px, 8vw, 100px));
+	max-width: var(--wp--style--global--content-size) !important;
+	margin: clamp(34px, 6vw, 72px) auto 0 !important;
 }
 
 .impro-intervenants-board__intro {
