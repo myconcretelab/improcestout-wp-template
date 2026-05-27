@@ -1,0 +1,97 @@
+- generic [active] [ref=e1]:
+  - link "Aller au contenu" [ref=e2] [cursor=pointer]:
+    - /url: "#wp--skip-link--target"
+  - generic [ref=e3]:
+    - banner:
+      - banner [ref=e4]:
+        - generic [ref=e5]:
+          - generic [ref=e6]:
+            - link "Impro c'est tout" [ref=e8] [cursor=pointer]:
+              - /url: http://localhost:8081/
+              - img "Impro c'est tout" [ref=e9]
+            - paragraph [ref=e10]:
+              - link "Impro c'est tout" [ref=e11] [cursor=pointer]:
+                - /url: http://localhost:8081
+          - generic [ref=e12]:
+            - navigation [ref=e13]:
+              - list [ref=e18]:
+                - listitem [ref=e19]:
+                  - link "Social et medico-social" [ref=e20] [cursor=pointer]:
+                    - /url: /pros-du-social-medico-social/
+                - listitem [ref=e21]:
+                  - link "Theatre forum" [ref=e22] [cursor=pointer]:
+                    - /url: /theatre-forum/
+                - listitem [ref=e23]:
+                  - link "Evenementiel" [ref=e24] [cursor=pointer]:
+                    - /url: /evenementiel/
+                - listitem [ref=e25]:
+                  - link "Entreprises" [ref=e26] [cursor=pointer]:
+                    - /url: /entreprises/
+                - listitem [ref=e27]:
+                  - link "Publics fragilises" [ref=e28] [cursor=pointer]:
+                    - /url: /publics-fragilises/
+                - listitem [ref=e29]:
+                  - link "Just do impro" [ref=e30] [cursor=pointer]:
+                    - /url: /just-do-impro/
+            - navigation "Liens pratiques" [ref=e31]:
+              - list "Liens pratiques" [ref=e32]:
+                - listitem [ref=e33]:
+                  - link "Contact" [ref=e34] [cursor=pointer]:
+                    - /url: /contact/
+                - listitem [ref=e35]:
+                  - link "Newsletter" [ref=e36] [cursor=pointer]:
+                    - /url: /newsletter/
+                - listitem [ref=e37]:
+                  - link "Intervenants" [ref=e38] [cursor=pointer]:
+                    - /url: /intervenants/
+    - main [ref=e39]:
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - paragraph [ref=e43]: Intensité garantie
+          - heading "Une formation formatrice" [level=1] [ref=e44]
+          - paragraph [ref=e45]: Venez comme vous êtes, le voyage est à un pas !
+        - figure [ref=e46]
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - article [ref=e49]:
+            - img [ref=e51]
+            - generic [ref=e54]:
+              - heading "Duree" [level=2] [ref=e55]
+              - paragraph [ref=e56]: 6 heures avec buffet et SPA
+          - article [ref=e57]:
+            - img [ref=e59]
+            - generic [ref=e64]:
+              - heading "Cibles / publics vises" [level=2] [ref=e65]
+              - paragraph [ref=e66]: Toutes personnes ayant l'envie de franchir le pas.
+          - article [ref=e67]:
+            - img [ref=e69]
+            - generic [ref=e73]:
+              - heading "Nombre de participants" [level=2] [ref=e74]
+              - paragraph [ref=e75]: 12 adultes
+          - article [ref=e76]:
+            - img [ref=e78]
+            - generic [ref=e81]:
+              - heading "Prerequis" [level=2] [ref=e82]
+              - paragraph [ref=e83]: Aucun.
+        - generic [ref=e84]:
+          - 'heading "Partie I : Comment construire un bon pitch ?" [level=5] [ref=e85]'
+          - list [ref=e86]:
+            - listitem [ref=e87]: Définition et objectifs
+            - listitem [ref=e88]: Les ingrédients d’un « bon pitch »
+            - listitem [ref=e89]: Construire son argumentaire
+          - 'heading "Partie II : Développer sa posture d’orateur" [level=5] [ref=e90]'
+          - list [ref=e91]:
+            - listitem [ref=e92]: Les techniques de gestion du stress
+            - listitem [ref=e93]: Différencier les messages verbaux et non-verbaux que l’on transmet
+            - listitem [ref=e94]: « Raconter » son projet via le storytelling
+            - listitem [ref=e95]: Provoquer l’interaction
+          - 'heading "Partie III : S’adapter aux situations imprévues" [level=5] [ref=e96]'
+          - list [ref=e97]:
+            - listitem [ref=e98]: L’écoute active et l’acceptation
+            - listitem [ref=e99]: L’adaptation aux différents contextes
+            - listitem [ref=e100]: La disponibilité, pour réagir plus promptement face aux imprévus
+    - contentinfo [ref=e101]:
+      - contentinfo [ref=e102]:
+        - generic [ref=e103]:
+          - paragraph [ref=e104]: Impro c’est tout
+          - paragraph [ref=e105]: Théâtre spontané, ateliers et rendez-vous à inventer ensemble.
