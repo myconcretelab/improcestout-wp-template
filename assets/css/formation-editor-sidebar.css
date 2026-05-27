@@ -1,0 +1,86 @@
+.improcestout-formation-info-panel .components-panel__body-toggle,
+.improcestout-formation-intro-panel .components-panel__body-toggle {
+	padding-block: 14px;
+}
+
+.impro-formation-editor-info {
+	margin: 0 0 12px;
+	padding: 10px;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	background: #f6f7f7;
+	transition: background-color 0.16s ease, border-color 0.16s ease;
+}
+
+.impro-formation-editor-info.is-enabled {
+	border-color: #8c8f94;
+	background: #fff;
+}
+
+.impro-formation-editor-info__header {
+	display: grid;
+	grid-template-columns: 20px 28px minmax(0, 1fr);
+	gap: 8px;
+	align-items: center;
+	margin: 0;
+	color: #1d2327;
+	cursor: pointer;
+}
+
+.impro-formation-editor-info__header input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	margin: 0;
+}
+
+.impro-formation-editor-info__icon {
+	display: grid;
+	width: 28px;
+	height: 28px;
+	border: 1px solid #c3c4c7;
+	border-radius: 5px;
+	background: #fff;
+	color: #1d2327;
+	place-items: center;
+}
+
+.impro-formation-editor-info__icon svg {
+	width: 17px;
+	height: 17px;
+}
+
+.impro-formation-editor-info__title {
+	overflow-wrap: anywhere;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.25;
+}
+
+.impro-formation-editor-info:not(.is-enabled) .impro-formation-editor-info__icon,
+.impro-formation-editor-info:not(.is-enabled) .impro-formation-editor-info__title {
+	opacity: 0.54;
+}
+
+.impro-formation-editor-info__default {
+	margin: 10px 0 0 36px;
+}
+
+.impro-formation-editor-info__default .components-base-control__help {
+	margin-top: 4px;
+	font-size: 12px;
+	line-height: 1.35;
+}
+
+.impro-formation-editor-info__textarea {
+	margin-top: 10px;
+}
+
+.impro-formation-editor-info__textarea textarea {
+	display: block;
+	min-height: 74px;
+	resize: vertical;
+}
+
+.impro-formation-editor-info:not(.is-enabled) .impro-formation-editor-info__textarea {
+	display: none;
+}

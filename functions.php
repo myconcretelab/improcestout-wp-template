@@ -721,7 +721,7 @@ if ( ! function_exists( 'improcestout_register_formations' ) ) :
 				'menu_icon'    => 'dashicons-welcome-learn-more',
 				'has_archive'  => true,
 				'rewrite'      => array( 'slug' => 'formations' ),
-				'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes' ),
+				'supports'     => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'custom-fields' ),
 			)
 		);
 
@@ -774,7 +774,25 @@ if ( ! function_exists( 'improcestout_register_formations' ) ) :
 			array(
 				'type'              => 'object',
 				'single'            => true,
-				'show_in_rest'      => false,
+				'show_in_rest'      => array(
+					'schema' => array(
+						'type'                 => 'object',
+						'additionalProperties' => array(
+							'type'       => 'object',
+							'properties' => array(
+								'enabled'     => array(
+									'type' => 'boolean',
+								),
+								'use_default' => array(
+									'type' => 'boolean',
+								),
+								'text'        => array(
+									'type' => 'string',
+								),
+							),
+						),
+					),
+				),
 				'sanitize_callback' => 'improcestout_sanitize_formation_info_values',
 				'auth_callback'     => static function () {
 					return current_user_can( 'edit_posts' );
@@ -810,12 +828,20 @@ if ( ! function_exists( 'improcestout_sanitize_formation_info_values' ) ) :
 	 * @return array
 	 */
 	function improcestout_sanitize_formation_info_values( $values ) {
+		if ( is_object( $values ) ) {
+			$values = get_object_vars( $values );
+		}
+
 		$values = is_array( $values ) ? $values : array();
 		$items  = improcestout_get_formation_info_items_by_id( true );
 		$output = array();
 
 		foreach ( $values as $id => $value ) {
 			$id = sanitize_key( $id );
+
+			if ( is_object( $value ) ) {
+				$value = get_object_vars( $value );
+			}
 
 			if ( ! isset( $items[ $id ] ) || ! is_array( $value ) ) {
 				continue;
@@ -1119,7 +1145,6 @@ if ( ! function_exists( 'improcestout_add_formation_meta_boxes' ) ) :
 		);
 	}
 endif;
-add_action( 'add_meta_boxes', 'improcestout_add_formation_meta_boxes' );
 
 if ( ! function_exists( 'improcestout_render_formation_intro_meta_box' ) ) :
 	/**
@@ -1264,7 +1289,7 @@ if ( ! function_exists( 'improcestout_get_formation_info_rows' ) ) :
 
 		foreach ( $items as $item ) {
 			$value   = isset( $values[ $item['id'] ] ) && is_array( $values[ $item['id'] ] ) ? $values[ $item['id'] ] : array();
-			$enabled = $value ? rest_sanitize_boolean( $value['enabled'] ?? false ) : true;
+			$enabled = $value ? rest_sanitize_boolean( $value['enabled'] ?? false ) : false;
 
 			if ( ! $enabled ) {
 				continue;
@@ -2172,6 +2197,55 @@ if ( ! function_exists( 'improcestout_register_formations_blocks' ) ) :
 	}
 endif;
 add_action( 'init', 'improcestout_register_formations_blocks' );
+
+if ( ! function_exists( 'improcestout_enqueue_formation_editor_sidebar' ) ) :
+	/**
+	 * Loads the formation fields in the Gutenberg document sidebar.
+	 *
+	 * @return void
+	 */
+	function improcestout_enqueue_formation_editor_sidebar() {
+		$screen = get_current_screen();
+
+		if ( ! $screen || 'formation' !== $screen->post_type ) {
+			return;
+		}
+
+		$script_path = get_theme_file_path( 'assets/js/formation-editor-sidebar.js' );
+		$style_path  = get_theme_file_path( 'assets/css/formation-editor-sidebar.css' );
+		$info_items  = array_map(
+			static function ( $item ) {
+				$item['iconSvg'] = improcestout_get_formation_icon_svg( $item['icon'] );
+				return $item;
+			},
+			improcestout_get_formation_info_items()
+		);
+
+		wp_enqueue_style(
+			'improcestout-formation-editor-sidebar',
+			get_theme_file_uri( 'assets/css/formation-editor-sidebar.css' ),
+			array(),
+			file_exists( $style_path ) ? filemtime( $style_path ) : wp_get_theme()->get( 'Version' )
+		);
+
+		wp_enqueue_script(
+			'improcestout-formation-editor-sidebar',
+			get_theme_file_uri( 'assets/js/formation-editor-sidebar.js' ),
+			array( 'wp-components', 'wp-data', 'wp-edit-post', 'wp-element', 'wp-i18n', 'wp-plugins' ),
+			file_exists( $script_path ) ? filemtime( $script_path ) : wp_get_theme()->get( 'Version' ),
+			true
+		);
+
+		wp_localize_script(
+			'improcestout-formation-editor-sidebar',
+			'improcestoutFormationEditor',
+			array(
+				'infoItems' => $info_items,
+			)
+		);
+	}
+endif;
+add_action( 'enqueue_block_editor_assets', 'improcestout_enqueue_formation_editor_sidebar' );
 
 if ( ! function_exists( 'improcestout_enqueue_block_editor_assets' ) ) :
 	/**

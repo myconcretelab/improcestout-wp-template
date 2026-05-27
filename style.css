@@ -1163,23 +1163,36 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 	padding-bottom: clamp(54px, 8vw, 100px);
 }
 
+body.single-formation .wp-block-template-part:has(> .impro-site-header) {
+	position: fixed;
+	right: 0;
+	left: 0;
+}
+
+body.single-formation .impro-formation-single {
+	margin-top: 0 !important;
+	padding-top: 0;
+}
+
 .impro-formation-hero {
 	margin-top: 0;
-	margin-bottom: clamp(34px, 6vw, 76px);
+	margin-bottom: 0;
 	background:
 		linear-gradient(135deg, color-mix(in srgb, var(--impro-red) 70%, var(--impro-cream)) 0 58%, var(--impro-cream) 58% 100%);
 	color: var(--impro-ink);
 }
 
 .impro-formation-hero__inner {
+	box-sizing: border-box;
 	display: grid;
 	grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.72fr);
-	gap: clamp(26px, 5vw, 70px);
+	gap: clamp(22px, 4vw, 54px);
 	align-items: center;
 	width: min(100% - (2 * var(--wp--preset--spacing--50)), var(--wp--style--global--wide-size));
 	margin-inline: auto;
-	padding-top: clamp(62px, 9vw, 124px);
-	padding-bottom: clamp(54px, 8vw, 104px);
+	min-height: calc(100svh - var(--impro-admin-bar-height));
+	padding-top: clamp(180px, 16vw, 270px);
+	padding-bottom: clamp(56px, 6vw, 88px);
 }
 
 .impro-formation-hero__copy {
@@ -1202,10 +1215,10 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 }
 
 .impro-formation-hero h1 {
-	max-width: 11ch;
+	max-width: 12ch;
 	margin: 0;
 	font-family: var(--wp--preset--font-family--fira-code);
-	font-size: clamp(3rem, 8vw, 7.8rem);
+	font-size: clamp(2.8rem, 5.8vw, 5.95rem);
 	font-weight: 700;
 	letter-spacing: 0;
 	line-height: 0.9;
@@ -1227,6 +1240,8 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 
 .impro-formation-hero__media {
 	position: relative;
+	justify-self: end;
+	width: min(100%, clamp(300px, 30vw, 470px));
 	margin: 0;
 	border: 3px solid var(--impro-ink);
 	background: var(--impro-paper);
@@ -1251,40 +1266,73 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 	display: block;
 	width: 100%;
 	aspect-ratio: 4 / 5;
-	height: auto;
+	height: min(44svh, 460px);
 	object-fit: cover;
 }
 
 .impro-formation-single__body,
 .impro-formation-pattern-body {
 	display: grid;
-	gap: clamp(34px, 6vw, 76px);
+	gap: clamp(30px, 5vw, 68px);
+}
+
+body.single-formation .impro-formation-single__body {
+	position: relative;
+	z-index: 4;
+	margin-top: clamp(-132px, -8vw, -82px) !important;
+}
+
+body.single-formation .impro-formation-single__body > .wp-block-post-content {
+	width: min(100%, var(--wp--style--global--content-size));
+	max-width: min(100%, var(--wp--style--global--content-size)) !important;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+body.single-formation .impro-formation-single__body > .wp-block-post-content > * {
+	max-width: min(100%, var(--wp--style--global--content-size));
 }
 
 .impro-formation-info {
 	display: grid;
-	max-width: 980px;
-	margin-inline: auto;
-	background: color-mix(in srgb, var(--impro-red) 58%, var(--impro-cream));
+	gap: clamp(8px, 1.05vw, 12px);
+	position: relative;
+	z-index: 5;
+	width: min(100% - 40px, 465px);
+	max-width: none;
+	margin: 0 clamp(24px, 11vw, 190px) 0 auto;
+	background: transparent;
 	color: var(--impro-paper);
 }
 
 .impro-formation-info__row {
 	display: grid;
-	grid-template-columns: clamp(54px, 8vw, 82px) minmax(0, 1fr);
-	gap: clamp(18px, 3vw, 30px);
+	grid-template-columns: clamp(26px, 3.75vw, 36px) minmax(0, 1fr);
+	gap: clamp(9px, 1.5vw, 14px);
 	align-items: start;
-	padding: clamp(18px, 3vw, 30px) clamp(18px, 4vw, 38px);
-	border-bottom: 3px solid currentColor;
+	padding: clamp(9px, 1.35vw, 14px) clamp(11px, 1.8vw, 17px);
+	border: 3px solid var(--impro-ink);
+	background: color-mix(in srgb, var(--impro-red) 58%, var(--impro-cream));
+	box-shadow: 5px 6px 0 var(--impro-ink);
+	transform: rotate(var(--formation-info-tilt, -0.8deg));
+	transform-origin: center;
 }
 
-.impro-formation-info__row:last-child {
-	border-bottom: 0;
+.impro-formation-info__row:nth-child(2n) {
+	--formation-info-tilt: 0.9deg;
+}
+
+.impro-formation-info__row:nth-child(3n) {
+	--formation-info-tilt: -1.4deg;
+}
+
+.impro-formation-info__row:nth-child(4n) {
+	--formation-info-tilt: 1.5deg;
 }
 
 .impro-formation-info__icon {
 	display: grid;
-	width: clamp(48px, 7vw, 72px);
+	width: clamp(24px, 3.15vw, 35px);
 	aspect-ratio: 1;
 	color: var(--impro-ink);
 	place-items: center;
@@ -1297,7 +1345,7 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 
 .impro-formation-info__content {
 	display: grid;
-	gap: 8px;
+	gap: 6px;
 	min-width: 0;
 }
 
@@ -1305,7 +1353,7 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 	margin: 0;
 	color: var(--impro-ink);
 	font-family: var(--wp--preset--font-family--fira-code);
-	font-size: clamp(1.28rem, 3vw, 2.15rem);
+	font-size: clamp(0.75rem, 1.35vw, 1.02rem);
 	font-weight: 700;
 	letter-spacing: 0;
 	line-height: 1.05;
@@ -1314,7 +1362,7 @@ body.page-id-23 .impro-page-shell > .wp-block-post-featured-image {
 
 .impro-formation-info__content p {
 	margin: 0;
-	font-size: clamp(1.05rem, 2.3vw, 1.72rem);
+	font-size: clamp(0.75rem, 1.275vw, 0.95rem);
 	font-weight: 500;
 	line-height: 1.42;
 }
@@ -2055,8 +2103,13 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	.impro-formation-hero__inner {
 		grid-template-columns: 1fr;
 		width: min(100% - 36px, var(--wp--style--global--wide-size));
+		min-height: auto;
 		padding-top: 42px;
 		padding-bottom: 48px;
+	}
+
+	body.single-formation .impro-formation-hero__inner {
+		padding-top: clamp(150px, 34vw, 220px);
 	}
 
 	.impro-formation-hero h1,
@@ -2071,26 +2124,42 @@ body.page-id-23 .wp-block-cover.is-style-theatre-hero .wp-block-cover__inner-con
 	}
 
 	.impro-formation-hero__media {
+		justify-self: start;
+		width: min(100%, 360px);
 		max-width: min(100%, 360px);
 		box-shadow: 6px 7px 0 var(--impro-ink);
 	}
 
+	.impro-formation-hero__image {
+		height: auto;
+	}
+
+	.impro-formation-info {
+		width: min(100% - 32px, 390px);
+		margin: 0 auto;
+	}
+
+	body.single-formation .impro-formation-single__body {
+		margin-top: -42px !important;
+	}
+
 	.impro-formation-info__row {
-		grid-template-columns: 46px minmax(0, 1fr);
-		gap: 14px;
-		padding: 18px 16px;
+		grid-template-columns: 35px minmax(0, 1fr);
+		gap: 11px;
+		padding: 11px 12px;
+		box-shadow: 5px 5px 0 var(--impro-ink);
 	}
 
 	.impro-formation-info__icon {
-		width: 42px;
+		width: 32px;
 	}
 
 	.impro-formation-info__content h2 {
-		font-size: 1.32rem;
+		font-size: 0.99rem;
 	}
 
 	.impro-formation-info__content p {
-		font-size: 1.05rem;
+		font-size: 0.8rem;
 	}
 
 	.impro-formations-list__grid {
