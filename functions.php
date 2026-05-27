@@ -143,32 +143,23 @@ if ( ! function_exists( 'improcestout_register_intervenants' ) ) :
 			)
 		);
 
-		register_taxonomy(
-			'categorie_intervenant',
-			array( 'intervenant', 'page' ),
-			array(
-				'labels'            => array(
-					'name'                       => _x( 'Categories d\'intervenants', 'Taxonomy general name', 'improcestout' ),
-					'singular_name'              => _x( 'Categorie d\'intervenants', 'Taxonomy singular name', 'improcestout' ),
-					'search_items'               => __( 'Rechercher des categories', 'improcestout' ),
-					'all_items'                  => __( 'Toutes les categories', 'improcestout' ),
-					'parent_item'                => __( 'Categorie parente', 'improcestout' ),
-					'parent_item_colon'          => __( 'Categorie parente :', 'improcestout' ),
-					'edit_item'                  => __( 'Modifier la categorie', 'improcestout' ),
-					'update_item'                => __( 'Mettre a jour la categorie', 'improcestout' ),
-					'add_new_item'               => __( 'Ajouter une categorie', 'improcestout' ),
-					'new_item_name'              => __( 'Nom de la nouvelle categorie', 'improcestout' ),
-					'menu_name'                  => __( 'Categories', 'improcestout' ),
-					'separate_items_with_commas' => __( 'Separer les categories par des virgules', 'improcestout' ),
-					'choose_from_most_used'      => __( 'Choisir parmi les plus utilisees', 'improcestout' ),
-				),
-				'hierarchical'      => true,
-				'public'            => true,
-				'show_admin_column' => true,
-				'show_in_rest'      => true,
-				'rewrite'           => array( 'slug' => 'intervenants-categorie' ),
-			)
-		);
+			register_taxonomy_for_object_type( 'category', 'intervenant' );
+			register_taxonomy_for_object_type( 'category', 'page' );
+
+			if ( ! get_option( 'improcestout_intervenant_categories_migrated' ) ) {
+				register_taxonomy(
+					'categorie_intervenant',
+					array( 'intervenant', 'page' ),
+					array(
+						'hierarchical'      => true,
+						'public'            => false,
+						'show_ui'           => false,
+						'show_admin_column' => false,
+						'show_in_rest'      => false,
+						'rewrite'           => false,
+					)
+				);
+			}
 
 		foreach ( array( 'prenom', 'nom', 'email' ) as $meta_key ) {
 			register_post_meta(
@@ -186,10 +177,66 @@ if ( ! function_exists( 'improcestout_register_intervenants' ) ) :
 			);
 		}
 	}
-endif;
-add_action( 'init', 'improcestout_register_intervenants' );
+	endif;
+	add_action( 'init', 'improcestout_register_intervenants' );
 
-if ( ! function_exists( 'improcestout_add_intervenant_meta_boxes' ) ) :
+if ( ! function_exists( 'improcestout_migrate_intervenant_categories_to_core_categories' ) ) :
+	/**
+	 * Copies old intervenant/page category terms to WordPress native categories.
+	 *
+	 * @return void
+	 */
+	function improcestout_migrate_intervenant_categories_to_core_categories() {
+		if ( get_option( 'improcestout_intervenant_categories_migrated' ) || ! taxonomy_exists( 'categorie_intervenant' ) ) {
+			return;
+		}
+
+		$old_terms = get_terms(
+			array(
+				'taxonomy'   => 'categorie_intervenant',
+				'hide_empty' => false,
+			)
+		);
+
+		if ( is_wp_error( $old_terms ) ) {
+			return;
+		}
+
+		foreach ( $old_terms as $old_term ) {
+			$target_term = term_exists( $old_term->slug, 'category' );
+
+			if ( ! $target_term ) {
+				$target_term = wp_insert_term(
+					$old_term->name,
+					'category',
+					array(
+						'slug'        => $old_term->slug,
+						'description' => $old_term->description,
+					)
+				);
+			}
+
+			if ( is_wp_error( $target_term ) || empty( $target_term['term_id'] ) ) {
+				continue;
+			}
+
+			$object_ids = get_objects_in_term( $old_term->term_id, 'categorie_intervenant' );
+
+			if ( is_wp_error( $object_ids ) || ! $object_ids ) {
+				continue;
+			}
+
+			foreach ( $object_ids as $object_id ) {
+				wp_set_object_terms( (int) $object_id, array( (int) $target_term['term_id'] ), 'category', true );
+			}
+		}
+
+		update_option( 'improcestout_intervenant_categories_migrated', wp_get_theme()->get( 'Version' ), false );
+	}
+endif;
+add_action( 'admin_init', 'improcestout_migrate_intervenant_categories_to_core_categories' );
+
+	if ( ! function_exists( 'improcestout_add_intervenant_meta_boxes' ) ) :
 	/**
 	 * Adds editable intervenant fields.
 	 *
@@ -372,18 +419,18 @@ if ( ! function_exists( 'improcestout_render_intervenants' ) ) :
 		if ( $settings['categories'] ) {
 			$query_args['tax_query'] = array(
 				array(
-					'taxonomy' => 'categorie_intervenant',
+					'taxonomy' => 'category',
 					'field'    => 'slug',
 					'terms'    => $settings['categories'],
 				),
 			);
 		} elseif ( $settings['inheritPageTerms'] && is_page() ) {
-			$terms = get_the_terms( get_the_ID(), 'categorie_intervenant' );
+			$terms = get_the_terms( get_the_ID(), 'category' );
 
 			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 				$query_args['tax_query'] = array(
 					array(
-						'taxonomy' => 'categorie_intervenant',
+						'taxonomy' => 'category',
 						'field'    => 'term_id',
 						'terms'    => wp_list_pluck( $terms, 'term_id' ),
 					),
@@ -432,7 +479,7 @@ if ( ! function_exists( 'improcestout_render_intervenants' ) ) :
 								<?php endif; ?>
 								<?php if ( $settings['showCategories'] ) : ?>
 									<?php
-									$term_list = get_the_term_list( $post_id, 'categorie_intervenant', '<div class="impro-intervenant-card__terms">', '', '</div>' );
+										$term_list = get_the_term_list( $post_id, 'category', '<div class="impro-intervenant-card__terms">', '', '</div>' );
 									if ( $term_list && ! is_wp_error( $term_list ) ) {
 										echo $term_list; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									}
@@ -689,7 +736,7 @@ endif;
 
 if ( ! function_exists( 'improcestout_register_formations' ) ) :
 	/**
-	 * Registers the formation content type, taxonomy and public metas.
+	 * Registers the formation content type and public metas.
 	 *
 	 * @return void
 	 */
@@ -725,32 +772,23 @@ if ( ! function_exists( 'improcestout_register_formations' ) ) :
 			)
 		);
 
-		register_taxonomy(
-			'categorie_formation',
-			array( 'formation', 'page' ),
-			array(
-				'labels'            => array(
-					'name'                       => _x( 'Categories de formations', 'Taxonomy general name', 'improcestout' ),
-					'singular_name'              => _x( 'Categorie de formations', 'Taxonomy singular name', 'improcestout' ),
-					'search_items'               => __( 'Rechercher des categories', 'improcestout' ),
-					'all_items'                  => __( 'Toutes les categories', 'improcestout' ),
-					'parent_item'                => __( 'Categorie parente', 'improcestout' ),
-					'parent_item_colon'          => __( 'Categorie parente :', 'improcestout' ),
-					'edit_item'                  => __( 'Modifier la categorie', 'improcestout' ),
-					'update_item'                => __( 'Mettre a jour la categorie', 'improcestout' ),
-					'add_new_item'               => __( 'Ajouter une categorie', 'improcestout' ),
-					'new_item_name'              => __( 'Nom de la nouvelle categorie', 'improcestout' ),
-					'menu_name'                  => __( 'Categories', 'improcestout' ),
-					'separate_items_with_commas' => __( 'Separer les categories par des virgules', 'improcestout' ),
-					'choose_from_most_used'      => __( 'Choisir parmi les plus utilisees', 'improcestout' ),
-				),
-				'hierarchical'      => true,
-				'public'            => true,
-				'show_admin_column' => true,
-				'show_in_rest'      => true,
-				'rewrite'           => array( 'slug' => 'formations-categorie' ),
-			)
-		);
+		register_taxonomy_for_object_type( 'category', 'formation' );
+		register_taxonomy_for_object_type( 'category', 'page' );
+
+		if ( ! get_option( 'improcestout_formation_categories_migrated' ) ) {
+			register_taxonomy(
+				'categorie_formation',
+				array( 'formation', 'page' ),
+				array(
+					'hierarchical'      => true,
+					'public'            => false,
+					'show_ui'           => false,
+					'show_admin_column' => false,
+					'show_in_rest'      => false,
+					'rewrite'           => false,
+				)
+			);
+		}
 
 		foreach ( array( 'subtitle', 'hook' ) as $meta_key ) {
 			register_post_meta(
@@ -802,6 +840,62 @@ if ( ! function_exists( 'improcestout_register_formations' ) ) :
 	}
 endif;
 add_action( 'init', 'improcestout_register_formations' );
+
+if ( ! function_exists( 'improcestout_migrate_formation_categories_to_core_categories' ) ) :
+	/**
+	 * Copies old formation/page category terms to WordPress native categories.
+	 *
+	 * @return void
+	 */
+	function improcestout_migrate_formation_categories_to_core_categories() {
+		if ( get_option( 'improcestout_formation_categories_migrated' ) || ! taxonomy_exists( 'categorie_formation' ) ) {
+			return;
+		}
+
+		$old_terms = get_terms(
+			array(
+				'taxonomy'   => 'categorie_formation',
+				'hide_empty' => false,
+			)
+		);
+
+		if ( is_wp_error( $old_terms ) ) {
+			return;
+		}
+
+		foreach ( $old_terms as $old_term ) {
+			$target_term = term_exists( $old_term->slug, 'category' );
+
+			if ( ! $target_term ) {
+				$target_term = wp_insert_term(
+					$old_term->name,
+					'category',
+					array(
+						'slug'        => $old_term->slug,
+						'description' => $old_term->description,
+					)
+				);
+			}
+
+			if ( is_wp_error( $target_term ) || empty( $target_term['term_id'] ) ) {
+				continue;
+			}
+
+			$object_ids = get_objects_in_term( $old_term->term_id, 'categorie_formation' );
+
+			if ( is_wp_error( $object_ids ) || ! $object_ids ) {
+				continue;
+			}
+
+			foreach ( $object_ids as $object_id ) {
+				wp_set_object_terms( (int) $object_id, array( (int) $target_term['term_id'] ), 'category', true );
+			}
+		}
+
+		update_option( 'improcestout_formation_categories_migrated', wp_get_theme()->get( 'Version' ), false );
+	}
+endif;
+add_action( 'admin_init', 'improcestout_migrate_formation_categories_to_core_categories' );
 
 if ( ! function_exists( 'improcestout_flush_formations_rewrite_rules_once' ) ) :
 	/**
@@ -1472,18 +1566,18 @@ if ( ! function_exists( 'improcestout_render_formations_list' ) ) :
 		if ( $settings['categories'] ) {
 			$query_args['tax_query'] = array(
 				array(
-					'taxonomy' => 'categorie_formation',
+					'taxonomy' => 'category',
 					'field'    => 'slug',
 					'terms'    => $settings['categories'],
 				),
 			);
 		} elseif ( $settings['inheritPageTerms'] && is_page() ) {
-			$terms = get_the_terms( get_the_ID(), 'categorie_formation' );
+			$terms = get_the_terms( get_the_ID(), 'category' );
 
 			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 				$query_args['tax_query'] = array(
 					array(
-						'taxonomy' => 'categorie_formation',
+						'taxonomy' => 'category',
 						'field'    => 'term_id',
 						'terms'    => wp_list_pluck( $terms, 'term_id' ),
 					),
@@ -1513,7 +1607,7 @@ if ( ! function_exists( 'improcestout_render_formations_list' ) ) :
 							<div class="impro-formation-card__content">
 								<?php if ( $settings['showCategories'] ) : ?>
 									<?php
-									$term_list = get_the_term_list( $post_id, 'categorie_formation', '<div class="impro-formation-card__terms">', '', '</div>' );
+									$term_list = get_the_term_list( $post_id, 'category', '<div class="impro-formation-card__terms">', '', '</div>' );
 									if ( $term_list && ! is_wp_error( $term_list ) ) {
 										echo $term_list; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									}

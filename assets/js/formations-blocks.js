@@ -44,7 +44,7 @@
 		var setAttributes = props.setAttributes;
 		var blockProps = useBlockProps();
 		var terms = useSelect( function ( select ) {
-			return select( 'core' ).getEntityRecords( 'taxonomy', 'categorie_formation', {
+			return select( 'core' ).getEntityRecords( 'taxonomy', 'category', {
 				per_page: -1,
 				orderby: 'name',
 				order: 'asc',
